@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /booking-confirmed/
+
+Sitemap: https://xperttechsolutions.com.au/sitemap.xml

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - XTS Tech Support</title>
+  <meta name="description" content="Learn about XTS Tech Support - Australia's trusted IT support provider since 2016. Meet our team and find out what makes us different."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{navy:{950:'#09091d',900:'#0d1130',800:'#111d44'}}}}}</script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body class="bg-navy-950 text-white overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 flex-shrink-0">
+          <img src="images/logo.png" alt="XTS Tech Support" class="h-10 w-auto" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"/>
+          <div id="logo-fallback" class="hidden items-center gap-2">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <span class="text-white font-bold text-xl">XTS <span class="gradient-text">Tech</span></span>
+          </div>
+        </a>
+        <div class="hidden md:flex items-center gap-6 lg:gap-8">
+          <a href="index.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Home</a>
+          <a href="services.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Services</a>
+          <a href="pricing.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Pricing</a>
+          <a href="about.html" class="nav-link text-blue-400 font-medium text-sm hover:text-blue-300 transition-colors">About</a>
+          <a href="contact.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center gap-4">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm hover:text-blue-400 transition-colors">
+            <i class="fas fa-phone text-blue-400"></i><span>0424 424 444</span>
+          </a>
+          <a href="contact.html" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full btn-glow transition-all">Book Now</a>
+        </div>
+        <button id="menu-btn" class="md:hidden text-white p-2 focus:outline-none" aria-label="Toggle menu">
+          <i id="menu-icon-open" class="fas fa-bars text-xl"></i>
+          <i id="menu-icon-close" class="fas fa-times text-xl hidden"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-navy-900/98 border-t border-white/5">
+      <div class="px-4 py-4 flex flex-col gap-4">
+        <a href="index.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Home</a>
+        <a href="services.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Services</a>
+        <a href="pricing.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Pricing</a>
+        <a href="about.html" class="nav-link text-blue-400 font-medium">About</a>
+        <a href="contact.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Contact</a>
+        <div class="pt-2 border-t border-white/10 flex flex-col gap-3">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm"><i class="fas fa-phone text-blue-400"></i>0424 424 444</a>
+          <a href="contact.html" class="bg-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full text-center btn-glow">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero-bg pt-32 pb-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      <nav class="flex items-center gap-2 text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+        <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
+        <i class="fas fa-chevron-right text-xs"></i>
+        <span class="text-slate-300">About</span>
+      </nav>
+      <div class="max-w-3xl" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-3">Who We Are</p>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">We are the Tech Friends <span class="gradient-text">You Wish You Had</span></h1>
+        <p class="text-slate-400 text-lg">Honest, friendly and skilled - we treat every customer like family and every device like it is our own.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div data-aos="fade-right">
+          <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-3">Our Story</p>
+          <h2 class="text-3xl font-extrabold text-white mb-6">A Decade of Helping Australians with Technology</h2>
+          <div class="space-y-4 text-slate-400 text-sm leading-relaxed">
+            <p>XTS Tech Support was founded in 2016 by a group of passionate IT professionals who were frustrated by the overpriced, jargon-heavy tech support industry. We believed that everyday Australians deserved honest, affordable and friendly help with their technology - without being made to feel stupid for asking.</p>
+            <p>Starting with just three technicians in Sydney, we quickly grew as word spread that XTS was different. We showed up on time, explained things in plain language, and only charged when the job was done. By 2020 we had expanded to remote support services, allowing us to help customers anywhere in Australia within minutes.</p>
+            <p>Today, XTS Tech Support has over 200 trained technicians operating in every major city and regional centre across Australia. We have helped more than 15,000 customers - from pensioners getting their first tablet set up to small businesses setting up entire office networks. Our mission has not changed: to be the tech friends you wish you had.</p>
+          </div>
+        </div>
+        <div data-aos="fade-left">
+          <div class="glass-blue rounded-2xl p-7 grid grid-cols-2 gap-6">
+            <div class="text-center">
+              <div class="stat-number text-5xl font-extrabold mb-1" data-count="15000" data-suffix="+">0</div>
+              <p class="text-slate-400 text-sm">Happy Customers</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-5xl font-extrabold mb-1" data-count="3200" data-suffix="+">0</div>
+              <p class="text-slate-400 text-sm">Jobs Completed</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-5xl font-extrabold mb-1" data-count="98" data-suffix="%">0</div>
+              <p class="text-slate-400 text-sm">Satisfaction Rate</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-5xl font-extrabold mb-1" data-count="200" data-suffix="+">0</div>
+              <p class="text-slate-400 text-sm">Technicians</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- VALUES -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">What Drives Us</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Our Core Values</h2>
+        <p class="text-slate-400 max-w-xl mx-auto">These values guide every decision we make and every interaction we have with our customers.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-handshake text-blue-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">Honesty First</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">We tell it straight. No upselling services you do not need. No inflating problems to charge more. If your issue has a simple free fix, we will tell you.</p>
+        </div>
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="60">
+          <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-heart text-green-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">People-Centred</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">We treat every customer with patience and respect. We never make you feel silly for not knowing something. Everyone starts somewhere.</p>
+        </div>
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="120">
+          <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-bolt text-purple-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">Reliability</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">We show up on time. We do what we say we will do. You can count on XTS to be there when you need us - 7 days a week.</p>
+        </div>
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-12 h-12 bg-cyan-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-graduation-cap text-cyan-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">Continuous Learning</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Technology changes fast. Our technicians undergo regular training to stay current with the latest hardware, software and security practices.</p>
+        </div>
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="60">
+          <div class="w-12 h-12 bg-orange-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-dollar-sign text-orange-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">Fair Value</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Premium service does not have to mean premium prices. We keep our rates competitive and always transparent so you know exactly what you are paying for.</p>
+        </div>
+        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="120">
+          <div class="w-12 h-12 bg-teal-600/20 rounded-xl flex items-center justify-center mb-4">
+            <i class="fas fa-recycle text-teal-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold mb-2">Sustainability</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">We encourage repair over replacement where possible, reducing electronic waste. When devices cannot be repaired, we guide customers to responsible recycling options.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- TEAM -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">The People Behind XTS</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Meet Our Leadership Team</h2>
+        <p class="text-slate-400 max-w-xl mx-auto">Passionate technologists who built XTS from the ground up and still work with customers every day.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-extrabold">M</div>
+          <h3 class="text-white font-bold mb-1">Marcus Webb</h3>
+          <p class="text-blue-400 text-sm mb-3">CEO &amp; Co-Founder</p>
+          <p class="text-slate-400 text-xs leading-relaxed">15+ years in IT. Built XTS from a 3-person team to Australia's most trusted home tech support brand. Still takes customer calls personally.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="80">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-extrabold">S</div>
+          <h3 class="text-white font-bold mb-1">Sarah Chen</h3>
+          <p class="text-blue-400 text-sm mb-3">Head of Operations</p>
+          <p class="text-slate-400 text-xs leading-relaxed">Keeps 200+ technicians running smoothly across Australia. Former network engineer with a passion for process and customer experience.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="160">
+          <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-extrabold">D</div>
+          <h3 class="text-white font-bold mb-1">Daniel Nguyen</h3>
+          <p class="text-blue-400 text-sm mb-3">Lead Technician</p>
+          <p class="text-slate-400 text-xs leading-relaxed">Certified in Microsoft, CompTIA and Cisco. Leads our technical training program and handles the toughest data recovery and security cases.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="240">
+          <div class="w-16 h-16 bg-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-extrabold">A</div>
+          <h3 class="text-white font-bold mb-1">Amy Patel</h3>
+          <p class="text-blue-400 text-sm mb-3">Customer Success Manager</p>
+          <p class="text-slate-400 text-xs leading-relaxed">Ensures every customer leaves happy. Oversees reviews, feedback and our no-hassle guarantee policy. The voice you often hear when you call.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- TECHNICIAN STANDARDS -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">Our Standards</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Every XTS Technician Must</h2>
+        <p class="text-slate-400 max-w-xl mx-auto">We hold our team to the highest professional and ethical standards so you can trust anyone who arrives at your door.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up">
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-green-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-shield-halved text-green-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Pass Police Check</h3>
+            <p class="text-slate-400 text-xs">Full national criminal background check before their first job.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-certificate text-blue-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Hold IT Certifications</h3>
+            <p class="text-slate-400 text-xs">Minimum CompTIA A+ or equivalent industry certification required.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-purple-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-user-graduate text-purple-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Complete XTS Training</h3>
+            <p class="text-slate-400 text-xs">Our in-house training covers technical skills, communication and ethics.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-file-contract text-orange-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Sign Privacy Agreement</h3>
+            <p class="text-slate-400 text-xs">All technicians sign a strict customer data privacy agreement.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-teal-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-star text-teal-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Maintain 4.8+ Rating</h3>
+            <p class="text-slate-400 text-xs">Ongoing customer feedback ensures our standards never slip.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 glass rounded-2xl p-5">
+          <div class="w-10 h-10 bg-cyan-600/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-rotate text-cyan-400"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold mb-1 text-sm">Ongoing Training</h3>
+            <p class="text-slate-400 text-xs">Quarterly refresher training on new technologies and security threats.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- TIMELINE -->
+  <section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">Our Journey</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">XTS Through the Years</h2>
+      </div>
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+        <div class="space-y-8">
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10">
+              <span class="text-blue-400 font-bold text-lg">2016</span>
+              <h3 class="text-white font-bold">Founded in Sydney</h3>
+              <p class="text-slate-400 text-sm">XTS launches with 3 technicians and a simple promise: honest, affordable tech help for everyday Australians.</p>
+            </div>
+            <div class="md:pl-10">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hidden md:flex mx-auto -ml-5">
+                <i class="fas fa-rocket text-white text-sm"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10 md:order-1">
+              <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hidden md:flex ml-auto -mr-5">
+                <i class="fas fa-map-location-dot text-white text-sm"></i>
+              </div>
+            </div>
+            <div class="md:pl-10 md:order-2">
+              <span class="text-blue-400 font-bold text-lg">2018</span>
+              <h3 class="text-white font-bold">Expanded Nationally</h3>
+              <p class="text-slate-400 text-sm">XTS expands to Melbourne, Brisbane and Perth. Team grows to 50 technicians and 5,000 customers served.</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10">
+              <span class="text-blue-400 font-bold text-lg">2020</span>
+              <h3 class="text-white font-bold">Remote Support Launch</h3>
+              <p class="text-slate-400 text-sm">Launched Australia-wide remote support service, allowing customers to get help instantly without a technician visiting.</p>
+            </div>
+            <div class="md:pl-10">
+              <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hidden md:flex mx-auto -ml-5">
+                <i class="fas fa-wifi text-white text-sm"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10 md:order-1">
+              <div class="w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center hidden md:flex ml-auto -mr-5">
+                <i class="fas fa-users text-white text-sm"></i>
+              </div>
+            </div>
+            <div class="md:pl-10 md:order-2">
+              <span class="text-blue-400 font-bold text-lg">2022</span>
+              <h3 class="text-white font-bold">10,000 Customers Milestone</h3>
+              <p class="text-slate-400 text-sm">XTS reaches 10,000 happy customers and achieves a 4.9-star average rating across all platforms.</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10">
+              <span class="text-blue-400 font-bold text-lg">2024</span>
+              <h3 class="text-white font-bold">XTS Care Plan Launched</h3>
+              <p class="text-slate-400 text-sm">Introduced the XTS Care Plan - Australia's most affordable monthly IT support subscription for home users.</p>
+            </div>
+            <div class="md:pl-10">
+              <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center hidden md:flex mx-auto -ml-5">
+                <i class="fas fa-shield-halved text-white text-sm"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 items-center" data-aos="fade-up">
+            <div class="md:text-right md:pr-10 md:order-1">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hidden md:flex ml-auto -mr-5">
+                <i class="fas fa-star text-white text-sm"></i>
+              </div>
+            </div>
+            <div class="md:pl-10 md:order-2">
+              <span class="text-blue-400 font-bold text-lg">2026</span>
+              <h3 class="text-white font-bold">200+ Technicians Nationwide</h3>
+              <p class="text-slate-400 text-sm">XTS now operates with 200+ certified technicians in every state and territory, serving over 15,000 Australians.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="cta-gradient rounded-3xl p-10 sm:p-14 text-center" data-aos="zoom-in">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Join Our 15,000+ Happy Customers</h2>
+        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Experience the XTS difference for yourself. Book a technician today and see why Australians trust us with their tech.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="contact.html" class="bg-white text-blue-700 font-bold px-8 py-3.5 rounded-full hover:bg-blue-50 transition-all flex items-center gap-2">
+            <i class="fas fa-calendar-check"></i> Book a Technician
+          </a>
+          <a href="tel:0424424444" class="border-2 border-white/50 text-white font-bold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-2">
+            <i class="fas fa-phone"></i> 0424 424 444
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-navy-900 border-t border-white/5 pt-16 pb-8 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <a href="index.html" class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-white font-bold text-lg">XTS <span class="gradient-text">Tech</span></span>
+          </a>
+          <p class="text-slate-400 text-sm leading-relaxed mb-5">Trusted IT support for homes and businesses across Australia. Fast, friendly and affordable.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-pink-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors" aria-label="X Twitter"><i class="fab fa-x-twitter text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin-in text-slate-400 text-sm"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Services</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Computer Repairs</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Virus Removal</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Wi-Fi &amp; Internet</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Data Recovery</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Remote Support</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Printer Setup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Company</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="about.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="pricing.html" class="hover:text-blue-400 transition-colors">Pricing</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Book a Technician</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Contact Us</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li class="flex items-start gap-2.5"><i class="fas fa-phone text-blue-400 mt-0.5"></i><a href="tel:0424424444" class="hover:text-blue-400 transition-colors">0424 424 444</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-envelope text-blue-400 mt-0.5"></i><a href="mailto:xperttechsolutions@mail.com" class="hover:text-blue-400 transition-colors break-all">xperttechsolutions@mail.com</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-clock text-blue-400 mt-0.5"></i><span>Mon - Sun: 7am - 9pm</span></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-map-location-dot text-blue-400 mt-0.5"></i><span>Nationwide Coverage</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
+        <p>&copy; 2026 XTS Tech Support. All rights reserved.</p>
+        <p>ABN: 12 345 678 901 | Proudly Australian</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CALL BUTTON -->
+  <a href="tel:0424424444" class="floating-call fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-blue-600 text-white font-semibold px-5 py-3.5 rounded-full">
+    <i class="fas fa-phone animate-pulse"></i><span class="text-sm">Call Now</span>
+  </a>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

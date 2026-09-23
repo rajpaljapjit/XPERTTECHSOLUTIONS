@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XTS Tech Support - Your Local Tech Experts</title>
+  <meta name="description" content="Professional IT support for homes and businesses. Computer repairs, virus removal, Wi-Fi setup and more. Available 7 days a week across Australia."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{navy:{950:'#09091d',900:'#0d1130',800:'#111d44'}}}}}</script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body class="bg-navy-950 text-white overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 flex-shrink-0">
+          <img src="images/logo.png" alt="XTS Tech Support" class="h-10 w-auto" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"/>
+          <div id="logo-fallback" class="hidden items-center gap-2">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <span class="text-white font-bold text-xl">XTS <span class="gradient-text">Tech</span></span>
+          </div>
+        </a>
+        <div class="hidden md:flex items-center gap-6 lg:gap-8">
+          <a href="index.html" class="nav-link text-blue-400 font-medium text-sm hover:text-blue-300 transition-colors">Home</a>
+          <a href="services.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Services</a>
+          <a href="pricing.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Pricing</a>
+          <a href="about.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">About</a>
+          <a href="contact.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center gap-4">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm hover:text-blue-400 transition-colors">
+            <i class="fas fa-phone text-blue-400"></i>
+            <span>0424 424 444</span>
+          </a>
+          <a href="contact.html" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full btn-glow transition-all">Book Now</a>
+        </div>
+        <button id="menu-btn" class="md:hidden text-white p-2 focus:outline-none" aria-label="Toggle menu">
+          <i id="menu-icon-open" class="fas fa-bars text-xl"></i>
+          <i id="menu-icon-close" class="fas fa-times text-xl hidden"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-navy-900/98 border-t border-white/5">
+      <div class="px-4 py-4 flex flex-col gap-4">
+        <a href="index.html" class="nav-link text-blue-400 font-medium">Home</a>
+        <a href="services.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Services</a>
+        <a href="pricing.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Pricing</a>
+        <a href="about.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">About</a>
+        <a href="contact.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Contact</a>
+        <div class="pt-2 border-t border-white/10 flex flex-col gap-3">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm">
+            <i class="fas fa-phone text-blue-400"></i>0424 424 444
+          </a>
+          <a href="contact.html" class="bg-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full text-center btn-glow">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-bg grid-pattern min-h-screen flex items-center pt-24 pb-16 px-4">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-blue-600/10 border border-blue-500/20 rounded-full px-4 py-1.5 mb-6" data-aos="fade-down">
+            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <span class="text-blue-300 text-sm font-medium">Available Today - 7 Days a Week</span>
+          </div>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4" data-aos="fade-up">
+            Your Local<br/>
+            <span class="gradient-text">Tech Experts,</span><br/>
+            Available Today
+          </h1>
+          <p class="text-slate-400 text-lg mb-4" data-aos="fade-up" data-aos-delay="100">
+            Fast, friendly, affordable IT support for&nbsp;
+            <span id="typed-text" class="text-blue-400 font-semibold"></span>
+          </p>
+          <p class="text-slate-500 text-base mb-8" data-aos="fade-up" data-aos-delay="150">
+            Trusted by over 15,000 Australians. Same-day service available. No fix, no fee guarantee.
+          </p>
+          <div class="flex flex-wrap gap-4 mb-10" data-aos="fade-up" data-aos-delay="200">
+            <a href="contact.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-7 py-3.5 rounded-full btn-glow flex items-center gap-2 transition-all">
+              <i class="fas fa-calendar-check"></i> Book a Technician
+            </a>
+            <a href="tel:0424424444" class="border border-white/20 hover:border-blue-500/50 text-white font-semibold px-7 py-3.5 rounded-full flex items-center gap-2 transition-all hover:bg-blue-600/10">
+              <i class="fas fa-phone text-blue-400"></i> Call 0424 424 444
+            </a>
+          </div>
+          <div class="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="250">
+            <span class="flex items-center gap-1.5 text-slate-400 text-xs bg-white/5 rounded-full px-3 py-1.5 border border-white/10">
+              <i class="fas fa-shield-halved text-green-400"></i> Police Checked
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-400 text-xs bg-white/5 rounded-full px-3 py-1.5 border border-white/10">
+              <i class="fas fa-star text-yellow-400"></i> 4.9 Star Rating
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-400 text-xs bg-white/5 rounded-full px-3 py-1.5 border border-white/10">
+              <i class="fas fa-bolt text-blue-400"></i> Same-Day Available
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-400 text-xs bg-white/5 rounded-full px-3 py-1.5 border border-white/10">
+              <i class="fas fa-thumbs-up text-blue-400"></i> No Fix, No Fee
+            </span>
+          </div>
+        </div>
+        <div class="hidden lg:flex justify-center items-center" data-aos="zoom-in" data-aos-delay="200">
+          <div class="glass rounded-3xl p-8 glow-blue max-w-sm w-full">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                <i class="fas fa-laptop-code text-white text-xl"></i>
+              </div>
+              <div>
+                <p class="text-white font-bold">Tech Support</p>
+                <p class="text-slate-400 text-sm">Ready to help</p>
+              </div>
+              <span class="ml-auto w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3 bg-white/5 rounded-xl p-3">
+                <div class="w-9 h-9 bg-purple-600/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-virus-slash text-purple-400"></i>
+                </div>
+                <div>
+                  <p class="text-white text-sm font-medium">Virus Removal</p>
+                  <p class="text-slate-500 text-xs">Fast &amp; thorough</p>
+                </div>
+                <span class="ml-auto text-green-400 text-xs font-semibold">From $79</span>
+              </div>
+              <div class="flex items-center gap-3 bg-white/5 rounded-xl p-3">
+                <div class="w-9 h-9 bg-blue-600/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-wifi text-blue-400"></i>
+                </div>
+                <div>
+                  <p class="text-white text-sm font-medium">Wi-Fi Setup</p>
+                  <p class="text-slate-500 text-xs">Full coverage</p>
+                </div>
+                <span class="ml-auto text-green-400 text-xs font-semibold">From $89</span>
+              </div>
+              <div class="flex items-center gap-3 bg-white/5 rounded-xl p-3">
+                <div class="w-9 h-9 bg-cyan-600/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-hard-drive text-cyan-400"></i>
+                </div>
+                <div>
+                  <p class="text-white text-sm font-medium">Data Recovery</p>
+                  <p class="text-slate-500 text-xs">Files saved</p>
+                </div>
+                <span class="ml-auto text-green-400 text-xs font-semibold">From $99</span>
+              </div>
+            </div>
+            <a href="contact.html" class="mt-5 w-full bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 btn-glow transition-all">
+              <i class="fas fa-calendar-plus"></i> Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <section class="py-6 border-y border-white/5 bg-navy-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap justify-center gap-4 lg:gap-8">
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-calendar-week text-blue-400"></i><span>7 Days a Week</span></div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-bolt text-blue-400"></i><span>Same-Day Service</span></div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-shield-halved text-green-400"></i><span>Police Checked Techs</span></div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-thumbs-up text-blue-400"></i><span>No Fix, No Fee</span></div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-map-location-dot text-blue-400"></i><span>Nationwide Coverage</span></div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm"><i class="fas fa-dollar-sign text-green-400"></i><span>Fixed Pricing</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES GRID -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">What We Fix</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Complete IT Support Services</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">From slow computers to full business IT setups - our expert technicians handle it all, at your home or office.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-laptop text-blue-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Computer Repairs</h3>
+          <p class="text-slate-500 text-xs">Slow PCs, crashes, hardware faults</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="50">
+          <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-virus-slash text-red-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Virus Removal</h3>
+          <p class="text-slate-500 text-xs">Malware, ransomware, spyware</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-tablet-screen-button text-purple-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Tablet Repairs</h3>
+          <p class="text-slate-500 text-xs">iPad &amp; Android tablets</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="150">
+          <div class="w-12 h-12 bg-pink-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-mobile-screen-button text-pink-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Phone Support</h3>
+          <p class="text-slate-500 text-xs">Setup, data transfer, issues</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-12 h-12 bg-cyan-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-hard-drive text-cyan-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Data Recovery</h3>
+          <p class="text-slate-500 text-xs">Lost files, backup solutions</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-wifi text-green-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Internet &amp; Wi-Fi</h3>
+          <p class="text-slate-500 text-xs">Setup, speed issues, dropouts</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="50">
+          <div class="w-12 h-12 bg-orange-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-envelope text-orange-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Email Setup</h3>
+          <p class="text-slate-500 text-xs">Gmail, Outlook, Office 365</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-12 h-12 bg-yellow-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-lock text-yellow-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Privacy &amp; Security</h3>
+          <p class="text-slate-500 text-xs">VPN, passwords, protection</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="150">
+          <div class="w-12 h-12 bg-teal-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-print text-teal-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Printer &amp; Scanner</h3>
+          <p class="text-slate-500 text-xs">Install, network, troubleshoot</p>
+        </div>
+        <div class="service-card glass rounded-2xl p-5 text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fas fa-headset text-indigo-400 text-xl"></i></div>
+          <h3 class="text-white font-semibold text-sm mb-1">Remote Support</h3>
+          <p class="text-slate-500 text-xs">Help from anywhere, fast</p>
+        </div>
+      </div>
+      <div class="text-center mt-10" data-aos="fade-up">
+        <a href="services.html" class="border border-blue-500/30 hover:border-blue-500 text-blue-400 hover:text-blue-300 font-semibold px-7 py-3 rounded-full transition-all">
+          View All Services <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- WHY CHOOSE US -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">Why XTS</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">The XTS Difference</h2>
+        <p class="text-slate-400 max-w-xl mx-auto">We put people first. No tech jargon, no hidden fees - just honest, expert service delivered with a smile.</p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-10 items-start">
+        <div class="space-y-6" data-aos="fade-right">
+          <div class="glass-blue rounded-2xl p-7 grid grid-cols-2 gap-6">
+            <div class="text-center">
+              <div class="stat-number text-4xl font-extrabold mb-1" data-count="15000" data-suffix="+">0</div>
+              <p class="text-slate-400 text-sm">Happy Customers</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-4xl font-extrabold mb-1" data-count="3200" data-suffix="+">0</div>
+              <p class="text-slate-400 text-sm">Jobs Completed</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-4xl font-extrabold mb-1" data-count="98" data-suffix="%">0</div>
+              <p class="text-slate-400 text-sm">Satisfaction Rate</p>
+            </div>
+            <div class="text-center">
+              <div class="stat-number text-4xl font-extrabold mb-1" data-count="10" data-suffix=" Yrs">0</div>
+              <p class="text-slate-400 text-sm">In Business</p>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6 border-l-4 border-blue-500">
+            <p class="text-slate-300 italic text-sm leading-relaxed mb-3">"XTS had my computer running perfectly within 2 hours. The technician was polite, professional and explained everything in plain English. Highly recommend!"</p>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center font-bold text-sm">S</div>
+              <div>
+                <p class="text-white font-semibold text-sm">Sandra M.</p>
+                <p class="text-slate-500 text-xs">Sydney, NSW</p>
+              </div>
+              <div class="ml-auto stars text-sm">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-5" data-aos="fade-left">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fas fa-bolt text-blue-400 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="text-white font-bold mb-1">Same-Day Availability</h3>
+              <p class="text-slate-400 text-sm">Most jobs booked before midday are completed the same day. We know your time matters.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fas fa-dollar-sign text-green-400 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="text-white font-bold mb-1">Transparent Fixed Pricing</h3>
+              <p class="text-slate-400 text-sm">We quote before we start. No surprise bills, no hidden call-out fees.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fas fa-user-shield text-purple-400 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="text-white font-bold mb-1">Police-Checked Technicians</h3>
+              <p class="text-slate-400 text-sm">Every XTS technician is fully vetted, background-checked, and insured for your peace of mind.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-cyan-600/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fas fa-headset text-cyan-400 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="text-white font-bold mb-1">After-Service Support</h3>
+              <p class="text-slate-400 text-sm">We follow up after every job. If something is not right, we come back - no questions asked.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- REVIEWS -->
+  <section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14" data-aos="fade-up">
+        <p class="text-blue-400 font-semibold text-sm uppercase tracking-widest mb-2">Customer Reviews</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">What Our Customers Say</h2>
+        <div class="flex items-center justify-center gap-3 mb-2">
+          <div class="stars text-2xl">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="text-white text-2xl font-bold">4.9</span>
+          <span class="text-slate-400 text-sm">based on 2,400+ reviews</span>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Booked online at 9am and had a tech at my door by 11am. Fixed my slow laptop in under an hour. Brilliant service!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-blue-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">J</div>
+            <div><p class="text-white font-semibold text-sm">James T.</p><p class="text-slate-500 text-xs">Melbourne, VIC</p></div>
+          </div>
+        </div>
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="80">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"My computer had a terrible virus and I thought I had lost everything. XTS recovered all my files and cleaned it up perfectly."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-purple-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">M</div>
+            <div><p class="text-white font-semibold text-sm">Mary K.</p><p class="text-slate-500 text-xs">Brisbane, QLD</p></div>
+          </div>
+        </div>
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="160">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Set up our whole office network in one afternoon. Professional, efficient and very reasonably priced. Will use again."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-green-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">R</div>
+            <div><p class="text-white font-semibold text-sm">Robert H.</p><p class="text-slate-500 text-xs">Perth, WA</p></div>
+          </div>
+        </div>
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Used the remote support option - connected within minutes and fixed my email problem without anyone needing to visit. Amazing!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-cyan-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">L</div>
+            <div><p class="text-white font-semibold text-sm">Linda P.</p><p class="text-slate-500 text-xs">Adelaide, SA</p></div>
+          </div>
+        </div>
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="80">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"The technician explained everything clearly and did not talk down to me. I finally understand how to back up my photos. Thank you!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-pink-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">D</div>
+            <div><p class="text-white font-semibold text-sm">Dorothy W.</p><p class="text-slate-500 text-xs">Hobart, TAS</p></div>
+          </div>
+        </div>
+        <div class="review-card glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="160">
+          <div class="stars text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"My printer would not connect to the new router for weeks. XTS sorted it in 20 minutes. Wish I had called sooner!"</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-orange-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">K</div>
+            <div><p class="text-white font-semibold text-sm">Kevin A.</p><p class="text-slate-500 text-xs">Canberra, ACT</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-5xl mx-auto"></div>
+
+  <!-- CTA BANNER -->
+  <section class="py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="cta-gradient rounded-3xl p-10 sm:p-14 text-center" data-aos="zoom-in">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Ready to Fix Your Tech Problem?</h2>
+        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Our expert technicians are available today. Book online in 60 seconds or give us a call.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="contact.html" class="bg-white text-blue-700 font-bold px-8 py-3.5 rounded-full hover:bg-blue-50 transition-all flex items-center gap-2">
+            <i class="fas fa-calendar-check"></i> Book a Technician
+          </a>
+          <a href="tel:0424424444" class="border-2 border-white/50 text-white font-bold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-2">
+            <i class="fas fa-phone"></i> 0424 424 444
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-navy-900 border-t border-white/5 pt-16 pb-8 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <a href="index.html" class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-white font-bold text-lg">XTS <span class="gradient-text">Tech</span></span>
+          </a>
+          <p class="text-slate-400 text-sm leading-relaxed mb-5">Trusted IT support for homes and businesses across Australia. Fast, friendly and affordable.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-pink-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors" aria-label="X Twitter"><i class="fab fa-x-twitter text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin-in text-slate-400 text-sm"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Services</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Computer Repairs</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Virus Removal</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Wi-Fi &amp; Internet</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Data Recovery</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Remote Support</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Printer Setup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Company</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="about.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="pricing.html" class="hover:text-blue-400 transition-colors">Pricing</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Book a Technician</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Contact Us</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li class="flex items-start gap-2.5"><i class="fas fa-phone text-blue-400 mt-0.5"></i><a href="tel:0424424444" class="hover:text-blue-400 transition-colors">0424 424 444</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-envelope text-blue-400 mt-0.5"></i><a href="mailto:xperttechsolutions@mail.com" class="hover:text-blue-400 transition-colors break-all">xperttechsolutions@mail.com</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-clock text-blue-400 mt-0.5"></i><span>Mon - Sun: 7am - 9pm</span></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-map-location-dot text-blue-400 mt-0.5"></i><span>Nationwide Coverage</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
+        <p>&copy; 2026 XTS Tech Support. All rights reserved.</p>
+        <p>ABN: 12 345 678 901 | Proudly Australian</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CALL BUTTON -->
+  <a href="tel:0424424444" class="floating-call fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-blue-600 text-white font-semibold px-5 py-3.5 rounded-full">
+    <i class="fas fa-phone animate-pulse"></i><span class="text-sm">Call Now</span>
+  </a>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

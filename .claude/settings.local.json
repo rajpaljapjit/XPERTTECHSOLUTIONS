@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"print\\('hello'\\)\")",
+      "Bash(python3 -c \"print\\('hello'\\)\")",
+      "Bash(npm install:*)",
+      "Bash(npx next:*)",
+      "Bash(ls /c/Users/rajpa/XTS-website/*.json /c/Users/rajpa/XTS-website/*.mjs /c/Users/rajpa/XTS-website/*.js)",
+      "Bash(node_modules/.bin/next build:*)"
+    ]
+  }
+}

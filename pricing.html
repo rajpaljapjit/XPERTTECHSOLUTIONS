@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pricing - XTS Tech Support</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{navy:{950:'#09091d',900:'#0d1130',800:'#111d44'}}}}}</script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body class="bg-navy-950 text-white overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 flex-shrink-0">
+          <img src="images/logo.png" alt="XTS Tech Support" class="h-10 w-auto" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"/>
+          <div id="logo-fallback" class="hidden items-center gap-2">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <span class="text-white font-bold text-xl">XTS <span class="gradient-text">Tech</span></span>
+          </div>
+        </a>
+        <div class="hidden md:flex items-center gap-6 lg:gap-8">
+          <a href="index.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Home</a>
+          <a href="services.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Services</a>
+          <a href="pricing.html" class="nav-link text-blue-400 font-medium text-sm hover:text-blue-300 transition-colors">Pricing</a>
+          <a href="about.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">About</a>
+          <a href="contact.html" class="nav-link text-slate-300 font-medium text-sm hover:text-blue-400 transition-colors">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center gap-4">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm hover:text-blue-400 transition-colors">
+            <i class="fas fa-phone text-blue-400"></i>
+            <span>0424 424 444</span>
+          </a>
+          <a href="contact.html" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full btn-glow transition-all">Book Now</a>
+        </div>
+        <button id="menu-btn" class="md:hidden text-white p-2 focus:outline-none" aria-label="Toggle menu">
+          <i id="menu-icon-open" class="fas fa-bars text-xl"></i>
+          <i id="menu-icon-close" class="fas fa-times text-xl hidden"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-navy-900/98 border-t border-white/5">
+      <div class="px-4 py-4 flex flex-col gap-4">
+        <a href="index.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Home</a>
+        <a href="services.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Services</a>
+        <a href="pricing.html" class="nav-link text-blue-400 font-medium">Pricing</a>
+        <a href="about.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">About</a>
+        <a href="contact.html" class="nav-link text-slate-300 font-medium hover:text-blue-400">Contact</a>
+        <div class="pt-2 border-t border-white/10 flex flex-col gap-3">
+          <a href="tel:0424424444" class="flex items-center gap-2 text-slate-300 text-sm">
+            <i class="fas fa-phone text-blue-400"></i>0424 424 444
+          </a>
+          <a href="contact.html" class="bg-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full text-center btn-glow">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero-bg grid-pattern pt-32 pb-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <nav class="flex justify-center items-center gap-2 text-sm text-slate-500 mb-6" data-aos="fade-down">
+        <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
+        <i class="fas fa-chevron-right text-xs"></i>
+        <span class="text-slate-300">Pricing</span>
+      </nav>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6" data-aos="fade-up">
+        Simple, <span class="gradient-text">Transparent</span> Pricing
+      </h1>
+      <p class="text-xl sm:text-2xl font-semibold text-blue-300 mb-8" data-aos="fade-up" data-aos-delay="100">
+        Same-day service. No callout fees. No fix, no fee. From just $89/hr.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3" data-aos="fade-up" data-aos-delay="200">
+        <span class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold text-sm px-4 py-2 rounded-full">
+          <i class="fas fa-check-circle"></i> $0 Callout Fee
+        </span>
+        <span class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold text-sm px-4 py-2 rounded-full">
+          <i class="fas fa-check-circle"></i> No Fix No Fee
+        </span>
+        <span class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold text-sm px-4 py-2 rounded-full">
+          <i class="fas fa-check-circle"></i> Same-Day Free
+        </span>
+        <span class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 font-semibold text-sm px-4 py-2 rounded-full">
+          <i class="fas fa-check-circle"></i> 7 Days a Week
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELLING POINTS BAR -->
+  <section class="border-y border-white/8 bg-blue-600/5 py-5 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-center">
+        <span class="flex items-center gap-2 font-bold text-green-400">
+          <i class="fas fa-circle-dollar-to-slot"></i> $0 Callout Fee
+        </span>
+        <span class="flex items-center gap-2 text-slate-300">
+          <i class="fas fa-bolt text-blue-400"></i> Same-day at no extra charge
+        </span>
+        <span class="flex items-center gap-2 text-slate-300">
+          <i class="fas fa-shield-halved text-blue-400"></i> No fix, no fee on every job
+        </span>
+        <span class="flex items-center gap-2 font-semibold text-green-400">
+          <i class="fas fa-arrow-down"></i> Cheaper than Geeks2U by up to $38/hr
+        </span>
+        <span class="flex items-center gap-2 text-slate-300">
+          <i class="fas fa-calendar-days text-blue-400"></i> Available 7 days a week
+        </span>
+        <span class="flex items-center gap-2 text-slate-300">
+          <i class="fas fa-laptop text-blue-400"></i> On-site OR remote support
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING CARDS -->
+  <section class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-8 items-start">
+
+        <!-- Card 1: Home Visit -->
+        <div class="pricing-card glass rounded-3xl p-8 border border-white/8" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-14 h-14 bg-blue-600/20 rounded-2xl flex items-center justify-center mb-5">
+            <i class="fas fa-house text-blue-400 text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3">Home Visit</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">A friendly technician comes to your home and fixes your tech on the spot.</p>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold text-white">From $120</span><span class="text-slate-400 text-base">/hr (inc. GST)</span>
+            <p class="text-slate-500 text-xs mt-1">1 hour minimum</p>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No callout fee -- ever
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Same-day service at no extra charge
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No fix, no fee guarantee
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              1 hour minimum booking
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Fix multiple issues in one visit
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Available 7 days a week
+            </li>
+          </ul>
+          <a href="contact.html" class="block text-center border border-white/20 hover:border-blue-500/50 text-white font-semibold py-3 rounded-full hover:bg-blue-600/10 transition-all">Book Home Visit</a>
+        </div>
+
+        <!-- Card 2: Business Visit (Popular) -->
+        <div class="pricing-card pricing-popular rounded-3xl p-8 relative" data-aos="fade-up" data-aos-delay="100">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-widest">MOST POPULAR</span>
+          </div>
+          <div class="w-14 h-14 bg-blue-600/20 rounded-2xl flex items-center justify-center mb-5">
+            <i class="fas fa-briefcase text-blue-400 text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3">Business Visit</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-6">Expert on-site IT support for your business.</p>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold text-white">From $150</span><span class="text-slate-300 text-base">/hr (inc. GST)</span>
+            <p class="text-slate-400 text-xs mt-1">1 hour minimum</p>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No callout fee -- ever
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Same-day service at no extra charge
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No fix, no fee guarantee
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              1 hour minimum booking
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Network and cybersecurity support
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-white">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Priority same-day scheduling
+            </li>
+          </ul>
+          <a href="contact.html" class="block text-center bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-full btn-glow transition-all">Book Business Visit</a>
+        </div>
+
+        <!-- Card 3: Remote Support -->
+        <div class="pricing-card glass rounded-3xl p-8 border border-white/8" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center mb-5">
+            <i class="fas fa-desktop text-cyan-400 text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3">Remote Support</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">We connect securely to your device and fix it online.</p>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold text-white">From $89</span><span class="text-slate-400 text-base">/hr (inc. GST)</span>
+            <p class="text-slate-500 text-xs mt-1">1 hour minimum</p>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Available Australia-wide
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No travel required
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Fast same-day connection
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              No fix, no fee guarantee
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              You watch everything in real time
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <i class="fas fa-check-circle text-green-400 mt-0.5 flex-shrink-0"></i>
+              Secure -- disconnect any time
+            </li>
+          </ul>
+          <a href="contact.html" class="block text-center border border-cyan-500/40 hover:border-cyan-400 text-cyan-400 font-semibold py-3 rounded-full hover:bg-cyan-500/10 transition-all">Book Remote Session</a>
+        </div>
+
+      </div>
+
+      <!-- Business IT Package Banner -->
+      <div class="mt-10 glass rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6" data-aos="fade-up">
+        <div class="w-14 h-14 bg-violet-600/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-building text-violet-400 text-2xl"></i>
+        </div>
+        <div class="flex-1 text-center sm:text-left">
+          <h3 class="text-xl font-bold text-white mb-1">Business IT Package -- Custom Pricing</h3>
+          <p class="text-slate-400 text-sm">Monthly or ad-hoc support. Includes network, cybersecurity, on-site and remote, priority scheduling.</p>
+        </div>
+        <a href="contact.html" class="flex-shrink-0 bg-violet-600 hover:bg-violet-500 text-white font-bold px-7 py-3 rounded-full transition-all">Get Custom Quote</a>
+      </div>
+
+      <!-- Price note -->
+      <p class="text-center text-slate-500 text-xs mt-6" data-aos="fade-up">All prices include GST. No fix, no fee on every job. A clear quote is provided before any work begins.</p>
+
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="py-20 px-4 bg-navy-900/50">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Why Pay More?</h2>
+        <p class="text-slate-400 text-lg">See how much you save -- up to $38/hr compared to Geeks2U.</p>
+      </div>
+      <div class="glass rounded-3xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-white/5 border-b border-white/8">
+              <th class="text-left px-6 py-4 text-slate-300 font-semibold">Provider</th>
+              <th class="text-center px-4 py-4 text-slate-300 font-semibold">Hourly Rate</th>
+              <th class="text-center px-4 py-4 text-slate-300 font-semibold">Callout Fee</th>
+              <th class="text-center px-4 py-4 text-slate-300 font-semibold">Same-Day</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5 bg-blue-600/10 border-l-4 border-l-blue-500">
+              <td class="px-6 py-4 font-semibold text-white">XTS Tech Support <span class="text-slate-400 font-normal">(Home Visit)</span></td>
+              <td class="text-center px-4 py-4 font-bold text-green-400">$120/hr</td>
+              <td class="text-center px-4 py-4"><span class="text-green-400 font-semibold"><i class="fas fa-check-circle mr-1"></i>FREE</span></td>
+              <td class="text-center px-4 py-4"><span class="text-green-400 font-semibold"><i class="fas fa-check-circle mr-1"></i>FREE</span></td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="px-6 py-4 text-slate-300">Geeks2U <span class="text-slate-500">(Home Visit)</span></td>
+              <td class="text-center px-4 py-4 font-bold text-red-400">$158/hr</td>
+              <td class="text-center px-4 py-4 text-slate-400">Included</td>
+              <td class="text-center px-4 py-4"><span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Costs extra</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-slate-300">Other Local Techs <span class="text-slate-500">(Average)</span></td>
+              <td class="text-center px-4 py-4 font-bold text-red-400">$150-205/hr</td>
+              <td class="text-center px-4 py-4"><span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Applies</span></td>
+              <td class="text-center px-4 py-4"><span class="text-red-400"><i class="fas fa-times-circle mr-1"></i>Limited hours</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Savings callout strip -->
+      <div class="mt-8 cta-gradient rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4" data-aos="fade-up">
+        <p class="text-white font-bold text-lg text-center sm:text-left">Save up to $38/hr compared to Geeks2U</p>
+        <a href="contact.html" class="flex-shrink-0 bg-white text-blue-700 font-bold px-7 py-3 rounded-full hover:bg-blue-50 transition-all">Book Now and Save</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE SECTION -->
+  <section class="py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Our Guarantees</h2>
+        <p class="text-slate-400">Every booking, every time -- no exceptions.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-7 text-center border border-green-500/20" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-14 h-14 bg-green-500/15 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <i class="fas fa-shield-halved text-green-400 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-3">No Fix No Fee</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">If we cannot solve your problem, you pay absolutely nothing. Zero risk, always.</p>
+        </div>
+        <div class="glass rounded-2xl p-7 text-center border border-blue-500/20" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-14 h-14 bg-blue-600/15 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <i class="fas fa-circle-dollar-to-slot text-blue-400 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-3">$0 Callout Fee</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">We never charge just to show up. You only pay for actual time spent working on your tech.</p>
+        </div>
+        <div class="glass rounded-2xl p-7 text-center border border-yellow-500/20" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-14 h-14 bg-yellow-500/15 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <i class="fas fa-bolt text-yellow-400 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-3">Same-Day Free</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Same-day bookings come at no extra cost. Urgency should not cost you more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="py-20 px-4 bg-navy-900/50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Pricing FAQ</h2>
+        <p class="text-slate-400">Everything you need to know before you book.</p>
+      </div>
+      <div class="space-y-3" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">Is there a callout fee?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">No. We charge zero callout fees. You only pay for the time we work. Competitors charge $50-80 just to show up.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">What if you cannot fix my problem?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">You pay nothing. No fix, no fee means zero risk.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">How long does a typical job take?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">Most home repairs are done within 1 hour. We charge a 1-hour minimum, then by the 15 minute.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">Do you work on weekends and public holidays?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">Yes, 7 days a week including public holidays, 7am-9pm, at no extra charge.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">Can you help remotely?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">Yes, from $89/hr. Secure connection, you watch in real time, disconnect any time.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">Are there any hidden fees?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">None ever. No callout fee, no same-day surcharge, no weekend penalty. Just the hourly rate.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl border border-white/8">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+            <span class="font-semibold text-white">How do I pay?</span>
+            <i class="faq-chevron fas fa-chevron-down text-blue-400 flex-shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer hidden px-6 pb-5">
+            <p class="text-slate-400 text-sm leading-relaxed">All major cards, bank transfer, or cash. Payment at end once you are happy.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="cta-gradient rounded-3xl p-10 sm:p-14 text-center" data-aos="zoom-in">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">From just $89/hr. No callout fee. No fix, no fee.</h2>
+        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Book your technician today -- same-day available at no extra charge.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="contact.html" class="bg-white text-blue-700 font-bold px-8 py-3.5 rounded-full hover:bg-blue-50 transition-all flex items-center gap-2">
+            <i class="fas fa-calendar-check"></i> Book a Technician
+          </a>
+          <a href="tel:0424424444" class="border-2 border-white/50 text-white font-bold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all flex items-center gap-2">
+            <i class="fas fa-phone"></i> Call 0424 424 444
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-navy-900 border-t border-white/5 pt-16 pb-8 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div>
+          <a href="index.html" class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-white font-bold text-lg">XTS <span class="gradient-text">Tech</span></span>
+          </a>
+          <p class="text-slate-400 text-sm leading-relaxed mb-5">Trusted IT support for homes and businesses across Australia. Fast, friendly and affordable.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-pink-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors" aria-label="X Twitter"><i class="fab fa-x-twitter text-slate-400 text-sm"></i></a>
+            <a href="#" class="w-9 h-9 bg-white/5 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin-in text-slate-400 text-sm"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Services</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Computer Repairs</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Virus Removal</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Wi-Fi &amp; Internet</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Data Recovery</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Remote Support</a></li>
+            <li><a href="services.html" class="hover:text-blue-400 transition-colors">Printer Setup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Company</h4>
+          <ul class="space-y-2.5 text-sm text-slate-400">
+            <li><a href="about.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="pricing.html" class="hover:text-blue-400 transition-colors">Pricing</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+            <li><a href="contact.html" class="hover:text-blue-400 transition-colors">Book a Technician</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Contact Us</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li class="flex items-start gap-2.5"><i class="fas fa-phone text-blue-400 mt-0.5"></i><a href="tel:0424424444" class="hover:text-blue-400 transition-colors">0424 424 444</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-envelope text-blue-400 mt-0.5"></i><a href="mailto:xperttechsolutions@mail.com" class="hover:text-blue-400 transition-colors break-all">xperttechsolutions@mail.com</a></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-clock text-blue-400 mt-0.5"></i><span>Mon - Sun: 7am - 9pm</span></li>
+            <li class="flex items-start gap-2.5"><i class="fas fa-map-location-dot text-blue-400 mt-0.5"></i><span>Nationwide Coverage</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-sm">
+        <p>&copy; 2026 XTS Tech Support. All rights reserved.</p>
+        <p>ABN: 12 345 678 901 | Proudly Australian</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CALL BUTTON -->
+  <a href="tel:0424424444" class="floating-call fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-blue-600 text-white font-semibold px-5 py-3.5 rounded-full">
+    <i class="fas fa-phone animate-pulse"></i><span class="text-sm">Call Now</span>
+  </a>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

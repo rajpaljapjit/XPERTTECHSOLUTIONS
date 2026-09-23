@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XTS Tech Support – Fast, Friendly IT Help at Home & Work</title>
+  <meta name="description" content="Same-day computer repairs, virus removal, Wi-Fi setup, and remote IT support for homes and businesses. Book a technician today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ======= NAVBAR ======= -->
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>XTS</span> <em>Tech</em>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html"    class="active">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <div class="nav-phone">
+        <span class="icon">📞</span>
+        <a href="tel:0424424444">0424 424 444</a>
+      </div>
+      <a href="contact.html" class="btn btn-primary btn-sm">Book Now</a>
+    </div>
+
+    <button class="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="tel:0424424444" class="btn btn-outline mt-2">📞 0424 424 444</a>
+    <a href="contact.html" class="btn btn-primary">Book a Technician</a>
+  </div>
+</nav>
+
+<!-- ======= HERO ======= -->
+<section class="hero">
+  <div class="container hero-grid">
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        ✅ Trusted by <strong>15,000+ Australians</strong> — 7 days a week
+      </div>
+      <h1>Fast, Friendly<br><span style="color:#fb923c;">IT Support</span><br>That Actually Helps</h1>
+      <p>Same-day technicians for your home or business. We fix computers, remove viruses, set up Wi-Fi, and explain everything in plain English — no jargon, no drama.</p>
+      <div class="hero-actions">
+        <a href="contact.html" class="btn btn-primary btn-lg">📅 Book a Technician</a>
+        <a href="tel:0424424444" class="btn btn-secondary btn-lg">📞 Call 0424 424 444</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num" data-count="15000" data-suffix="+">0+</div>
+          <div class="stat-label">Happy Customers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="98" data-suffix="%">0%</div>
+          <div class="stat-label">Satisfaction Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="7" data-suffix=" days">0 days</div>
+          <div class="stat-label">A Week Support</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-main-card float">
+          <div class="hero-card-header">
+            <div class="hero-avatar">👨‍💻</div>
+            <div class="hero-card-info">
+              <h4>Technician On The Way</h4>
+              <p>Arriving today between 2 – 4 PM</p>
+            </div>
+          </div>
+          <div class="tech-list">
+            <div class="tech-item">
+              <div class="tech-icon">💻</div>
+              <div class="tech-text">
+                <h5>Computer Repair</h5>
+                <p>Fix slow startup &amp; crashes</p>
+              </div>
+              <span class="tech-check">✓</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">🛡️</div>
+              <div class="tech-text">
+                <h5>Virus Removal</h5>
+                <p>Full malware scan &amp; clean</p>
+              </div>
+              <span class="tech-check">✓</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">📶</div>
+              <div class="tech-text">
+                <h5>Wi-Fi Boost</h5>
+                <p>Extend coverage, fix drops</p>
+              </div>
+              <span class="tech-check">✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="floating-badge badge-1">
+          <div class="dot"></div>
+          Technician nearby
+        </div>
+        <div class="floating-badge badge-2">
+          ⭐ 4.9 — 3,200+ reviews
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======= TRUST BAR ======= -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-items">
+      <div class="trust-item"><span class="icon">🗓️</span> Same-Day Service Available</div>
+      <div class="trust-item"><span class="icon">🔒</span> Fully Screened Technicians</div>
+      <div class="trust-item"><span class="icon">💬</span> Plain English — No Jargon</div>
+      <div class="trust-item"><span class="icon">🏠</span> Home &amp; Business Visits</div>
+      <div class="trust-item"><span class="icon">🖥️</span> Remote Support Available</div>
+      <div class="trust-item"><span class="icon">⭐</span> 4.9 Star Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= SERVICES OVERVIEW ======= -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Everything Tech — Sorted</h2>
+    <p class="section-sub">From slow computers to Wi-Fi headaches, our expert technicians handle it all — at your home, your office, or remotely.</p>
+
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon ic-blue">💻</div>
+        <h3>Computer &amp; Laptop Repairs</h3>
+        <p>Slow startup, crashes, freezing, new setup, hardware faults — we get you up and running fast.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-red">🛡️</div>
+        <h3>Virus Removal &amp; Security</h3>
+        <p>Full malware scans, virus removal, anti-virus installation, and ongoing protection.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-purple">📱</div>
+        <h3>Tablet &amp; Phone Support</h3>
+        <p>Apple, Samsung, Android — setup, troubleshooting, data transfer, Wi-Fi and Bluetooth fixes.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-green">☁️</div>
+        <h3>File Backup &amp; Recovery</h3>
+        <p>Cloud backup setup, data recovery, and safeguarding your precious photos and documents.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-teal">📶</div>
+        <h3>Internet &amp; Wi-Fi</h3>
+        <p>New network setup, fix slow internet, extend Wi-Fi range, and troubleshoot dropouts.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-orange">📧</div>
+        <h3>Email Setup &amp; Support</h3>
+        <p>Gmail, Outlook, and more — set up across all devices and fix sync issues.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-pink">🔐</div>
+        <h3>Privacy &amp; Security</h3>
+        <p>Secure your devices, protect your social media, and set strong passwords safely.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-yellow">🖨️</div>
+        <h3>Printer &amp; Scanner Setup</h3>
+        <p>Wi-Fi printing, new printer setup, ink issues, and scan-to-email configuration.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon ic-indigo">🖥️</div>
+        <h3>Remote IT Support</h3>
+        <p>We connect securely to your device and fix issues without needing to visit — fast and easy.</p>
+        <a href="services.html" class="learn-more">Learn more →</a>
+      </div>
+
+      <div class="service-card" style="background:rgba(26,111,196,.04); border-style:dashed;">
+        <div class="service-icon ic-cyan">➕</div>
+        <h3>More Services</h3>
+        <p>Smart TV setup, NBN help, software installs, data migration, and much more.</p>
+        <a href="services.html" class="learn-more">See all services →</a>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="services.html" class="btn btn-outline btn-lg">View All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======= WHY CHOOSE US ======= -->
+<section class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">Why Thousands Choose <span class="highlight">XTS Tech</span></h2>
+    <p class="section-sub">We're not just technicians — we're your friendly neighbours who happen to be experts.</p>
+
+    <div class="why-grid">
+      <div class="why-features">
+        <div class="why-feature">
+          <div class="why-feat-icon">🗓️</div>
+          <div class="why-feat-body">
+            <h4>Same-Day Service, 7 Days a Week</h4>
+            <p>Morning, afternoon, or evening — we fit around your schedule, including weekends and public holidays.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feat-icon">💬</div>
+          <div class="why-feat-body">
+            <h4>Plain English, Always</h4>
+            <p>We explain exactly what's wrong and how we're fixing it — no confusing tech speak, ever.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feat-icon">🔒</div>
+          <div class="why-feat-body">
+            <h4>Fully Screened Technicians</h4>
+            <p>Every XTS tech passes police checks and identity verification before ever visiting a customer.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feat-icon">🏠</div>
+          <div class="why-feat-body">
+            <h4>In-Person &amp; Remote Support</h4>
+            <p>We come to you OR connect remotely — whichever is faster and more convenient for your situation.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-feat-icon">🛠️</div>
+          <div class="why-feat-body">
+            <h4>Fix Multiple Issues in One Visit</h4>
+            <p>Got a list? Great. Our technicians stay until everything on your list is sorted out properly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-visual">
+        <h3>Our Results Speak for Themselves</h3>
+        <div class="why-stats-grid">
+          <div class="why-stat">
+            <div class="why-stat-num" data-count="15000" data-suffix="+">15,000+</div>
+            <div class="why-stat-label">Customers Helped</div>
+          </div>
+          <div class="why-stat">
+            <div class="why-stat-num" data-count="98" data-suffix="%">98%</div>
+            <div class="why-stat-label">Satisfaction Rate</div>
+          </div>
+          <div class="why-stat">
+            <div class="why-stat-num" data-count="3200" data-suffix="+">3,200+</div>
+            <div class="why-stat-label">5-Star Reviews</div>
+          </div>
+          <div class="why-stat">
+            <div class="why-stat-num" data-count="10" data-suffix=" yrs">10 yrs</div>
+            <div class="why-stat-label">In Business</div>
+          </div>
+        </div>
+        <div style="margin-top:28px; padding-top:24px; border-top:1px solid rgba(255,255,255,.2);">
+          <p style="color:rgba(255,255,255,.75); font-size:.9rem; margin-bottom:16px;">
+            ⭐⭐⭐⭐⭐ &nbsp;"Fixed my computer the same afternoon — couldn't believe how quick and friendly the tech was!"
+          </p>
+          <p style="color:rgba(255,255,255,.5); font-size:.8rem; margin:0;">— Margaret T., Sydney</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= REVIEWS ======= -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">What Our Customers Say</h2>
+    <p class="section-sub">Real reviews from real Australians — verified and unedited.</p>
+
+    <div class="rating-summary">
+      <div class="rating-big">4.9</div>
+      <div class="rating-detail">
+        <div class="stars">★★★★★</div>
+        <p>Based on 3,200+ reviews</p>
+      </div>
+      <div class="rating-bars">
+        <div class="rating-row">
+          <span>5 ★</span>
+          <div class="rating-bar-bg"><div class="rating-bar-fill" data-width="88%"></div></div>
+          <span>88%</span>
+        </div>
+        <div class="rating-row">
+          <span>4 ★</span>
+          <div class="rating-bar-bg"><div class="rating-bar-fill" data-width="9%"></div></div>
+          <span>9%</span>
+        </div>
+        <div class="rating-row">
+          <span>3 ★</span>
+          <div class="rating-bar-bg"><div class="rating-bar-fill" data-width="2%"></div></div>
+          <span>2%</span>
+        </div>
+        <div class="rating-row">
+          <span>2 ★</span>
+          <div class="rating-bar-bg"><div class="rating-bar-fill" data-width="1%"></div></div>
+          <span>1%</span>
+        </div>
+        <div class="rating-row">
+          <span>1 ★</span>
+          <div class="rating-bar-bg"><div class="rating-bar-fill" data-width="0%"></div></div>
+          <span>0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"The technician arrived within 2 hours of my call. He removed three viruses from my laptop and set up my new printer — all in one visit. Absolutely brilliant service!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#1a6fc4;">MT</div>
+          <div class="reviewer-info">
+            <h5>Margaret Thompson</h5>
+            <p>Sydney, NSW · Computer &amp; Printer Help</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"I'm not tech-savvy at all but the XTS guy explained everything so clearly. He set up my email on my new tablet and backed up all my photos to the cloud. No jargon — just helpful!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#7c3aed;">RK</div>
+          <div class="reviewer-info">
+            <h5>Robert Kimura</h5>
+            <p>Melbourne, VIC · Email &amp; Tablet Setup</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Our office network was a mess — slow internet, printers not working, constant dropouts. XTS came in and sorted the entire thing in one afternoon. Best investment we've made!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#14b8a6;">SC</div>
+          <div class="reviewer-info">
+            <h5>Sarah Chen</h5>
+            <p>Brisbane, QLD · Business Network Setup</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"My 78-year-old mum was scammed and her computer was completely locked. XTS came the same day, cleaned everything up, and set her up with proper security. Mum loved the technician!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#ec4899;">PW</div>
+          <div class="reviewer-info">
+            <h5>Peter Walsh</h5>
+            <p>Perth, WA · Virus Removal &amp; Security</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Used the remote support option — took less than 30 minutes to fix an issue that had been driving me nuts for weeks. Friendly, professional, and very affordable. Highly recommend!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#f97316;">LN</div>
+          <div class="reviewer-info">
+            <h5>Lisa Nguyen</h5>
+            <p>Adelaide, SA · Remote Support</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Recovered photos from my crashed hard drive that I thought were gone forever — including my late father's photos. I cannot thank XTS enough. Truly life-changing service."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#38a169;">DM</div>
+          <div class="reviewer-info">
+            <h5>Diana Markov</h5>
+            <p>Canberra, ACT · Data Recovery</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======= WHO WE SERVE ======= -->
+<section class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">We Help Everyone</h2>
+    <p class="section-sub">Whether you're a retiree learning your first tablet or a business managing a team — XTS has you covered.</p>
+    <div class="services-grid" style="grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));">
+      <div class="service-card text-center">
+        <div class="service-icon ic-blue" style="margin:0 auto 16px;">👴</div>
+        <h3>Seniors &amp; Retirees</h3>
+        <p>Patient, friendly support with no rush. We love helping seniors get comfortable with technology.</p>
+      </div>
+      <div class="service-card text-center">
+        <div class="service-icon ic-orange" style="margin:0 auto 16px;">👨‍👩‍👧</div>
+        <h3>Families at Home</h3>
+        <p>Secure home networks, parental controls, new device setup, and keeping the family safe online.</p>
+      </div>
+      <div class="service-card text-center">
+        <div class="service-icon ic-green" style="margin:0 auto 16px;">💼</div>
+        <h3>Small Businesses</h3>
+        <p>IT support without a full-time hire. Keep your computers, network, and team productive.</p>
+      </div>
+      <div class="service-card text-center">
+        <div class="service-icon ic-purple" style="margin:0 auto 16px;">🏢</div>
+        <h3>Offices &amp; Enterprises</h3>
+        <p>Bulk device setup, office network management, security audits, and ongoing IT support contracts.</p>
+      </div>
+      <div class="service-card text-center">
+        <div class="service-icon ic-teal" style="margin:0 auto 16px;">🎓</div>
+        <h3>Students</h3>
+        <p>Laptop setups, software installs, cloud storage, and keeping your study machine running smoothly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CTA BANNER ======= -->
+<section class="cta-banner">
+  <div class="container">
+    <h2>Ready to Get Your Tech Sorted?</h2>
+    <p>Book a technician today — same-day slots available across Australia.</p>
+    <div class="cta-actions">
+      <a href="contact.html" class="btn btn-white btn-lg">📅 Book a Technician</a>
+      <a href="tel:0424424444" class="btn btn-outline-white btn-lg">📞 Call 0424 424 444</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOOTER ======= -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">⚡</div>
+          <span>XTS</span> <em>Tech</em>
+        </a>
+        <p>Australia's trusted IT support service for homes and businesses. Friendly experts who explain things in plain English — 7 days a week.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Facebook">f</a>
+          <a href="#" class="social-link" aria-label="Instagram">in</a>
+          <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
+          <a href="#" class="social-link" aria-label="LinkedIn">Li</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html">Computer Repairs</a></li>
+          <li><a href="services.html">Virus Removal</a></li>
+          <li><a href="services.html">Wi-Fi &amp; Internet</a></li>
+          <li><a href="services.html">Email Setup</a></li>
+          <li><a href="services.html">Data Backup</a></li>
+          <li><a href="services.html">Remote Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item">
+          <span class="icon">📞</span>
+          <a href="tel:0424424444" style="color:rgba(255,255,255,.55);">0424 424 444</a>
+        </div>
+        <div class="footer-contact-item">
+          <span class="icon">📧</span>
+          <a href="mailto:xperttechsolutions@mail.com" style="color:rgba(255,255,255,.55);">xperttechsolutions@mail.com</a>
+        </div>
+        <div class="footer-contact-item">
+          <span class="icon">🕐</span>
+          <span>Mon–Sun: 7am – 9pm</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="icon">📍</span>
+          <span>Nationwide — we come to you</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 XTS Tech Support. All rights reserved. ABN: 12 345 678 901</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

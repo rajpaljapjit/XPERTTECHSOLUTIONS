@@ -1,0 +1,230 @@
+/* ===== XTS Tech Support - Custom Styles ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* { font-family: 'Poppins', sans-serif; }
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+
+/* ---- Navbar scroll effect ---- */
+#navbar { transition: all 0.35s ease; padding: 20px 0; }
+#navbar.scrolled {
+  background: rgba(9, 11, 29, 0.96) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 40px rgba(0,0,0,0.6);
+  padding: 12px 0 !important;
+  border-bottom: 1px solid rgba(59,130,246,0.15);
+}
+
+/* ---- Glassmorphism ---- */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-blue {
+  background: rgba(59, 130, 246, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* ---- Gradient text ---- */
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-orange {
+  background: linear-gradient(135deg, #f97316, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- Typing cursor ---- */
+#typed-text::after {
+  content: '|';
+  animation: blink 0.75s step-end infinite;
+  color: #60a5fa;
+  margin-left: 2px;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ---- Hero gradient background ---- */
+.hero-bg {
+  background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 100%, rgba(6,182,212,0.08) 0%, transparent 50%),
+              #09091d;
+}
+
+/* ---- Grid pattern overlay ---- */
+.grid-pattern {
+  background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ---- Glow effects ---- */
+.glow-blue {
+  box-shadow: 0 0 30px rgba(59,130,246,0.25), 0 0 60px rgba(59,130,246,0.1);
+}
+.glow-blue-hover:hover {
+  box-shadow: 0 0 40px rgba(59,130,246,0.4), 0 0 80px rgba(59,130,246,0.15);
+  transform: translateY(-4px);
+}
+.btn-glow {
+  box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+  transition: all 0.3s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 6px 30px rgba(59,130,246,0.6);
+  transform: translateY(-2px);
+}
+
+/* ---- Card hover transitions ---- */
+.service-card {
+  transition: all 0.35s ease;
+  cursor: default;
+}
+.service-card:hover {
+  background: rgba(59,130,246,0.1) !important;
+  border-color: rgba(59,130,246,0.35) !important;
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(59,130,246,0.1);
+}
+
+/* ---- Pricing card ---- */
+.pricing-card { transition: all 0.3s ease; }
+.pricing-card:hover { transform: translateY(-8px); }
+.pricing-popular {
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1)) !important;
+  border-color: rgba(59,130,246,0.4) !important;
+  position: relative;
+}
+
+/* ---- Floating call button ---- */
+.floating-call {
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.5);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+.floating-call:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 12px 40px rgba(59,130,246,0.7);
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 8px 32px rgba(59,130,246,0.5); }
+  50% { box-shadow: 0 8px 50px rgba(59,130,246,0.8), 0 0 0 8px rgba(59,130,246,0.05); }
+}
+
+/* ---- Star rating ---- */
+.stars { color: #fbbf24; letter-spacing: 2px; }
+
+/* ---- Review card ---- */
+.review-card { transition: all 0.3s ease; }
+.review-card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,0.3) !important; }
+
+/* ---- Section divider ---- */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+}
+
+/* ---- Tag/badge ---- */
+.tag {
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: #93c5fd;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* ---- Mobile menu ---- */
+#mobile-menu {
+  transition: all 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+#mobile-menu.open { max-height: 500px; }
+
+/* ---- FAQ accordion ---- */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.faq-answer.open { max-height: 300px; }
+.faq-chevron { transition: transform 0.3s ease; }
+.faq-chevron.open { transform: rotate(180deg); }
+
+/* ---- Form inputs ---- */
+.form-input {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  color: white;
+  border-radius: 10px;
+  padding: 12px 16px;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.form-input:focus {
+  border-color: rgba(59,130,246,0.6);
+  background: rgba(59,130,246,0.05);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+.form-input::placeholder { color: rgba(255,255,255,0.3); }
+.form-input option { background: #0f172a; color: white; }
+
+/* ---- Page hero ---- */
+.page-hero-bg {
+  background: linear-gradient(135deg, #09091d 0%, #0d1a3a 50%, #09091d 100%);
+}
+
+/* ---- Scroll reveal (for elements before AOS initialises) ---- */
+[data-aos] { opacity: 0; }
+
+/* ---- Timeline ---- */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(59,130,246,0.5), transparent);
+}
+
+/* ---- Number counter ---- */
+.stat-number {
+  background: linear-gradient(135deg, #60a5fa, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* ---- CTA gradient ---- */
+.cta-gradient {
+  background: linear-gradient(135deg, rgba(37,99,235,0.9) 0%, rgba(124,58,237,0.8) 50%, rgba(6,182,212,0.7) 100%);
+}
+
+/* ---- Responsive nav ---- */
+@media (max-width: 768px) {
+  .hero-bg { background-size: cover; }
+}
+
+/* ---- AOS overrides ---- */
+[data-aos="fade-up"] { transform: translateY(30px); }
+[data-aos="zoom-in"] { transform: scale(0.9); }

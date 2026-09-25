@@ -1,8 +1,6 @@
 import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import FloatingCallButton from '@/components/FloatingCallButton'
+import SiteShell from '@/components/SiteShell'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' })
@@ -37,10 +35,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <FloatingCallButton />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   )

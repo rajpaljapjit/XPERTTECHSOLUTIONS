@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XTS Marketing Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #050816; color: #fff; margin: 0; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Space Grotesk', sans-serif; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #050816; }
+    ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 3px; }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+    }
+    .input-field {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #fff;
+      padding: 10px 14px;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus { border-color: rgba(124,58,237,0.6); }
+    .input-field::placeholder { color: rgba(255,255,255,0.3); }
+    textarea.input-field { resize: vertical; height: 90px; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-action {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #94a3b8;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-action:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .post-type-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .post-type-btn:hover { border-color: rgba(245,158,11,0.4); color: #fff; background: rgba(245,158,11,0.06); }
+    .post-type-btn.active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.1); }
+    .post-type-btn .emoji { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+
+    /* Poster styles */
+    #poster-wrap { aspect-ratio: 1; width: 100%; position: relative; border-radius: 16px; overflow: hidden; }
+    .poster-placeholder {
+      background: rgba(255,255,255,0.03);
+      border: 2px dashed rgba(255,255,255,0.1);
+      border-radius: 16px;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #poster-canvas {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+    }
+    .poster-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .poster-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      width: fit-content;
+    }
+    .poster-emoji { font-size: 2.8rem; line-height: 1; margin: 10px 0 8px; }
+    .poster-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .poster-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .poster-cta {
+      display: inline-block;
+      background: #f59e0b;
+      color: #000;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 9px 20px;
+      border-radius: 30px;
+      width: fit-content;
+    }
+    .poster-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .poster-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    .poster-brand span { color: #f59e0b; }
+    .poster-url { font-size: 0.7rem; color: rgba(255,255,255,0.5); }
+
+    /* Password overlay */
+    #pw-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: #050816;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .pw-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%; max-width: 360px;
+      text-align: center;
+    }
+    .pw-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 1.4rem;
+    }
+
+    /* API key card */
+    #api-key-saved { display: none; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Caption box */
+    #caption-box { display: none; }
+    #action-buttons { display: none; }
+
+    /* Header */
+    #hub-header {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(5,8,22,0.96);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800; font-size: 0.85rem; color: #fff;
+      flex-shrink: 0;
+    }
+
+    /* Schedule bar */
+    .schedule-bar {
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.78rem;
+      color: #fcd34d;
+      line-height: 1.6;
+    }
+
+    /* Collapsible */
+    .collapsible-content { overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; }
+    .collapsible-content.collapsed { max-height: 0 !important; opacity: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ── Password Overlay ──────────────────────────────────────── -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-icon">🔒</div>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:4px;">Marketing Hub</h1>
+    <p style="color:#475569;font-size:0.82rem;margin-bottom:24px;">Xpert Tech Solutions — Private Access</p>
+    <div style="text-align:left;margin-bottom:16px;">
+      <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;margin-bottom:8px;">Password</label>
+      <div style="position:relative;">
+        <input id="pw-input" type="password" placeholder="Enter admin password" class="input-field" style="padding-right:44px;" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <button onclick="togglePwVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;" title="Toggle visibility">👁️</button>
+      </div>
+    </div>
+    <p id="pw-error" style="color:#f87171;font-size:0.78rem;margin-bottom:10px;display:none;">Incorrect password. Try again.</p>
+    <button onclick="doLogin()" class="btn-primary">Enter Marketing Hub</button>
+  </div>
+</div>
+
+<!-- ── Header ────────────────────────────────────────────────── -->
+<header id="hub-header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="logo-mark">XTS</div>
+    <div style="width:1px;height:24px;background:rgba(255,255,255,0.1);"></div>
+    <div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.95rem;">Marketing Hub</div>
+      <div style="font-size:0.68rem;color:#475569;">AI-Powered Social Content</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="font-size:0.72rem;color:#334155;">Private · Not linked publicly</span>
+    <a href="/admin" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:#64748b;border-radius:8px;padding:6px 12px;font-size:0.75rem;font-weight:600;text-decoration:none;">← Admin</a>
+  </div>
+</header>
+
+<!-- ── Main Layout ────────────────────────────────────────────── -->
+<main style="max-width:1200px;margin:0 auto;padding:28px 20px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;" id="main-grid">
+
+    <!-- ══ LEFT COLUMN ══════════════════════════════════════════ -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- SECTION 1: API Key -->
+      <div class="card" style="padding:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;cursor:pointer;" onclick="toggleApiCard()">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:1rem;">🔑</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.9rem;">Anthropic API Key</span>
+          </div>
+          <div id="api-key-saved" style="background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.3);color:#4ade80;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">
+            API Key Saved ✓
+          </div>
+          <span id="api-chevron" style="color:#475569;font-size:0.8rem;transition:transform 0.3s;">▼</span>
+        </div>
+        <div id="api-card-body" class="collapsible-content" style="max-height:200px;opacity:1;">
+          <div style="position:relative;margin-bottom:10px;">
+            <input id="api-key-input" type="password" placeholder="sk-ant-api03-..." class="input-field" style="padding-right:44px;font-family:monospace;font-size:0.82rem;"/>
+            <button onclick="toggleApiVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:0.9rem;color:#64748b;" title="Show/hide key">👁️</button>
+          </div>
+          <p style="font-size:0.72rem;color:#475569;margin-bottom:14px;">
+            Don't have a key? <a href="https://console.anthropic.com" target="_blank" style="color:#a78bfa;">Get your free API key at console.anthropic.com →</a>
+          </p>
+          <button onclick="saveApiKey()" style="background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.4);color:#c4b5fd;border-radius:10px;padding:9px 18px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;">
+            Save API Key
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Post Type -->
+      <div class="card" style="padding:20px;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.88rem;margin-bottom:14px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;font-size:0.72rem;">Post Type</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <button class="post-type-btn active" data-type="Special Offer" onclick="selectType(this)">
+            <span class="emoji">🎯</span>Special Offer
+          </button>
+          <button class="post-type-btn" data-type="Tech Tip" onclick="selectType(this)">
+            <span class="emoji">💡</span>Tech Tip
+          </button>
+          <button class="post-type-btn" data-type="Before & After" onclick="selectType(this)">
+            <span class="emoji">🔧</span>Before &amp; After
+          </button>
+          <button class="post-type-btn" data-type="FAQ" onclick="selectType(this)">
+            <span class="emoji">🤔</span>FAQ
+          </button>
+          <button class="post-type-btn" data-type="Testimonial" onclick="selectType(this)">
+            <span class="emoji">⭐</span>Testimonial
+          </button>
+          <button class="post-type-btn" data-type="Service" onclick="selectType(this)">
+            <span class="emoji">🖥️</span>Service
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Description -->
+      <div class="card" style="padding:20px;">
+        <label for="post-desc" style="display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;margin-bottom:10px;">
+          Describe Today's Post
+        </label>
+        <textarea id="post-desc" class="input-field" placeholder="e.g. $30 off virus removal this week&#10;Why is my laptop running slow?&#10;Fixed a broken screen for a customer in Southport"></textarea>
+      </div>
+
+      <!-- Generate Button -->
+      <button id="generate-btn" class="btn-primary" onclick="generatePost()" style="font-size:1rem;padding:15px;">
+        ✨ Generate Today's Ad
+      </button>
+
+      <!-- Schedule Reminder Bar -->
+      <div class="schedule-bar">
+        📅 <strong>Post DAILY for first 90 days</strong> · Then every Tuesday<br/>
+        Best times: <strong>7am · 12pm · 6pm AEST</strong>
+      </div>
+
+    </div><!-- /left column -->
+
+    <!-- ══ RIGHT COLUMN ═════════════════════════════════════════ -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- Poster Preview -->
+      <div>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;margin-bottom:12px;">Poster Preview</p>
+
+        <div id="poster-placeholder" class="poster-placeholder">
+          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.3;">🖼️</div>
+          <p style="font-weight:600;color:#475569;">Your poster will appear here</p>
+          <p style="font-size:0.78rem;color:#1e293b;margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
+        </div>
+
+        <div id="poster-canvas" style="display:none;">
+          <!-- dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Caption Box -->
+      <div id="caption-box" class="card" style="padding:18px;position:relative;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.8rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Caption</span>
+          <button onclick="copyCaption()" class="btn-action" style="padding:5px 12px;font-size:0.72rem;">📋 Copy</button>
+        </div>
+        <p id="caption-text" style="font-size:0.85rem;color:#cbd5e1;line-height:1.6;margin-bottom:10px;"></p>
+        <p id="hashtag-text" style="font-size:0.8rem;color:#60a5fa;line-height:1.7;word-break:break-word;"></p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div id="action-buttons" style="display:none;grid-template-columns:1fr 1fr;gap:10px;">
+        <button class="btn-action" onclick="downloadPoster()" style="padding:12px;font-size:0.82rem;text-align:center;">
+          ⬇️ Download Poster
+        </button>
+        <button class="btn-action" onclick="copyCaption()" style="padding:12px;font-size:0.82rem;text-align:center;">
+          📋 Copy Caption
+        </button>
+        <button class="btn-action" onclick="window.open('https://www.facebook.com/pages','_blank')" style="padding:12px;font-size:0.82rem;text-align:center;">
+          📘 Open Facebook
+        </button>
+        <button class="btn-action" onclick="window.open('https://www.instagram.com','_blank')" style="padding:12px;font-size:0.82rem;text-align:center;">
+          📸 Open Instagram
+        </button>
+      </div>
+
+    </div><!-- /right column -->
+
+  </div><!-- /main-grid -->
+</main>
+
+<!-- ── Responsive CSS ─────────────────────────────────────────── -->
+<style>
+  @media (max-width: 768px) {
+    #main-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<!-- ── JavaScript ─────────────────────────────────────────────── -->
+<script>
+  const PASS = 'XTS2024admin'
+  let selectedType = 'Special Offer'
+  let lastResult = null
+
+  /* ── Auth ──────────────────────────────────────────────────── */
+  function doLogin() {
+    const val = document.getElementById('pw-input').value
+    if (val === PASS) {
+      sessionStorage.setItem('xts_mhub', 'true')
+      document.getElementById('pw-overlay').style.display = 'none'
+    } else {
+      document.getElementById('pw-error').style.display = 'block'
+    }
+  }
+  function togglePwVis() {
+    const el = document.getElementById('pw-input')
+    el.type = el.type === 'password' ? 'text' : 'password'
+  }
+  if (sessionStorage.getItem('xts_mhub') === 'true') {
+    document.getElementById('pw-overlay').style.display = 'none'
+  }
+
+  /* ── API Key ────────────────────────────────────────────────── */
+  function loadSavedKey() {
+    const k = localStorage.getItem('xts_api_key')
+    if (k) {
+      document.getElementById('api-key-input').value = k
+      document.getElementById('api-key-saved').style.display = 'flex'
+      document.getElementById('api-chevron').style.display = 'none'
+      collapseApiCard()
+    }
+  }
+  function saveApiKey() {
+    const k = document.getElementById('api-key-input').value.trim()
+    if (!k) { alert('Please enter your API key first.'); return; }
+    localStorage.setItem('xts_api_key', k)
+    document.getElementById('api-key-saved').style.display = 'flex'
+    document.getElementById('api-chevron').style.display = 'none'
+    collapseApiCard()
+  }
+  function toggleApiVis() {
+    const el = document.getElementById('api-key-input')
+    el.type = el.type === 'password' ? 'text' : 'password'
+  }
+  function collapseApiCard() {
+    const body = document.getElementById('api-card-body')
+    body.style.maxHeight = '0'
+    body.style.opacity = '0'
+    body.classList.add('collapsed')
+  }
+  function toggleApiCard() {
+    const body = document.getElementById('api-card-body')
+    if (body.classList.contains('collapsed')) {
+      body.classList.remove('collapsed')
+      body.style.maxHeight = '200px'
+      body.style.opacity = '1'
+    } else {
+      collapseApiCard()
+    }
+  }
+  loadSavedKey()
+
+  /* ── Post Type ──────────────────────────────────────────────── */
+  function selectType(btn) {
+    document.querySelectorAll('.post-type-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    selectedType = btn.dataset.type
+  }
+
+  /* ── Gradients ──────────────────────────────────────────────── */
+  const GRADIENTS = {
+    purple: 'linear-gradient(145deg, #3b1fa5, #1e3a8a, #0f172a)',
+    gold:   'linear-gradient(145deg, #92400e, #78350f, #1c0a00)',
+    blue:   'linear-gradient(145deg, #1e3a8a, #1e40af, #0f172a)',
+    dark:   'linear-gradient(145deg, #1e293b, #0f172a)',
+  }
+
+  /* ── Render Poster ──────────────────────────────────────────── */
+  function renderPoster(data) {
+    const grad = GRADIENTS[data.style] || GRADIENTS.dark
+    const canvas = document.getElementById('poster-canvas')
+    canvas.style.background = grad
+    canvas.innerHTML = `
+      <div class="poster-circle" style="width:280px;height:280px;background:rgba(255,255,255,1);top:-80px;right:-80px;"></div>
+      <div class="poster-circle" style="width:200px;height:200px;background:rgba(255,255,255,1);bottom:-60px;left:-60px;"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;">
+        <div>
+          <div class="poster-badge">${data.badge}</div>
+          <div class="poster-emoji">${data.emoji}</div>
+          <div class="poster-headline">${data.headline}</div>
+          <div class="poster-sub">${data.sub}</div>
+          <div class="poster-cta">${data.cta}</div>
+        </div>
+        <div class="poster-footer">
+          <div class="poster-brand">Xpert <span>Tech</span> Solutions</div>
+          <div class="poster-url">xperttechsolutions.com.au</div>
+        </div>
+      </div>
+    `
+    document.getElementById('poster-placeholder').style.display = 'none'
+    canvas.style.display = 'flex'
+    canvas.style.flexDirection = 'column'
+
+    document.getElementById('caption-text').textContent = data.caption
+    document.getElementById('hashtag-text').textContent = data.hashtags
+    document.getElementById('caption-box').style.display = 'block'
+    document.getElementById('action-buttons').style.display = 'grid'
+  }
+
+  /* ── Generate ───────────────────────────────────────────────── */
+  async function generatePost() {
+    const apiKey = localStorage.getItem('xts_api_key')
+    if (!apiKey) {
+      alert('⚠️ Please add your Anthropic API key at the top of the page.')
+      document.getElementById('api-card-body').classList.remove('collapsed')
+      document.getElementById('api-card-body').style.maxHeight = '200px'
+      document.getElementById('api-card-body').style.opacity = '1'
+      return
+    }
+    const desc = document.getElementById('post-desc').value.trim()
+    if (!desc) { alert('Please describe your post idea first.'); return; }
+
+    const btn = document.getElementById('generate-btn')
+    btn.disabled = true
+    btn.innerHTML = '<span class="spinner"></span> Generating...'
+
+    const systemPrompt = `You are a social media marketing expert for "Xpert Tech Solutions" — a professional computer repair and IT support business run by Jamie Rajpal (Master of IT, CCNA Certified) serving Brisbane and Gold Coast, Queensland, Australia. Website: xperttechsolutions.com.au`
+
+    const userPrompt = `Create a ${selectedType} social media post based on this idea: "${desc}"
+
+Return ONLY valid JSON — no markdown, no extra text:
+{
+  "badge": "2-3 word label (e.g. Limited Offer, Quick Tip, Success Story)",
+  "emoji": "one relevant emoji",
+  "headline": "Max 7 words, punchy and bold",
+  "sub": "One sentence, max 18 words, specific",
+  "cta": "2-4 words (e.g. Book Now!, Call Today!)",
+  "style": "purple OR gold OR blue OR dark",
+  "caption": "2-3 sentences, conversational Australian tone, mention Brisbane/Gold Coast suburbs naturally",
+  "hashtags": "#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions #LaptopRepairs #ITSupport #TechHelp #Brisbane #GoldCoast plus 6-8 more relevant hashtags"
+}`
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'x-api-key': apiKey,
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-3-5-haiku-20241022',
+          max_tokens: 800,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }]
+        })
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error?.message || `API error ${res.status}`)
+      }
+
+      const json = await res.json()
+      const text = json.content[0].text.trim()
+
+      // Strip markdown code fences if present
+      const cleaned = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim()
+      const data = JSON.parse(cleaned)
+      lastResult = data
+      renderPoster(data)
+
+    } catch (err) {
+      console.error(err)
+      alert('❌ Error: ' + err.message + '\n\nCheck your API key is correct and has credits.')
+    } finally {
+      btn.disabled = false
+      btn.innerHTML = '✨ Generate Today\'s Ad'
+    }
+  }
+
+  /* ── Download Poster ────────────────────────────────────────── */
+  async function downloadPoster() {
+    const el = document.getElementById('poster-canvas')
+    try {
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null })
+      const a = document.createElement('a')
+      a.href = canvas.toDataURL('image/png')
+      a.download = 'xts-post.png'
+      a.click()
+    } catch(e) {
+      alert('Download failed: ' + e.message)
+    }
+  }
+
+  /* ── Copy Caption ───────────────────────────────────────────── */
+  function copyCaption() {
+    if (!lastResult) return
+    const text = lastResult.caption + '\n\n' + lastResult.hashtags
+    navigator.clipboard.writeText(text).then(() => {
+      const btns = document.querySelectorAll('[onclick="copyCaption()"]')
+      btns.forEach(b => { const orig = b.textContent; b.textContent = '✅ Copied!'; setTimeout(() => b.textContent = orig, 1800) })
+    })
+  }
+</script>
+</body>
+</html>

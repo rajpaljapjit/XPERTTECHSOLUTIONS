@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /booking-confirmed/
+Disallow: /marketing-hub.html
 
 Sitemap: https://xperttechsolutions.com.au/sitemap.xml

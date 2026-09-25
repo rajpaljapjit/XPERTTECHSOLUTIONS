@@ -459,7 +459,13 @@ export default function AdminDashboard() {
             })}
           </nav>
 
-          <div className="mt-auto px-4 pb-6">
+          <div className="mt-auto px-4 pb-6 flex flex-col gap-3">
+            <a href="/marketing-hub.html"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all w-full"
+              style={{ background: 'rgba(245,158,11,0.08)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)', fontFamily: 'var(--font-space)', textDecoration: 'none' }}>
+              <span className="text-sm">📣</span>
+              Marketing Hub
+            </a>
             <div className="rounded-xl p-3 text-xs" style={{ background: 'rgba(255,255,255,0.02)', color: '#1e293b' }}>
               Private — not linked publicly
             </div>

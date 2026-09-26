@@ -315,6 +315,45 @@
         </div>
       </div>
 
+      <!-- SECTION 1b: Settings -->
+      <div class="card" style="padding:20px;background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;cursor:pointer;" onclick="toggleSettings()">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:1rem;">⚙️</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.9rem;">Social Posting Settings</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="settings-saved-badge" style="display:none;background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.3);color:#4ade80;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">✅ Saved!</span>
+            <span id="settings-chevron" style="color:#475569;font-size:0.8rem;transition:transform 0.3s;">▼</span>
+          </div>
+        </div>
+        <div id="settings-body" class="collapsible-content" style="max-height:0;opacity:0;" class="collapsed">
+          <div style="padding-top:14px;display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Facebook Page Access Token</label>
+              <input id="fb-token" type="password" class="input-field" placeholder="EAA..." style="font-family:monospace;font-size:0.8rem;"/>
+              <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Generate in <a href="https://developers.facebook.com/tools/explorer/" target="_blank" style="color:#60a5fa;">Graph API Explorer →</a></p>
+            </div>
+            <div>
+              <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Facebook Page ID</label>
+              <input id="fb-page-id" type="text" class="input-field" value="1275753969129194" placeholder="1275753969129194"/>
+            </div>
+            <div>
+              <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Instagram Business Account ID</label>
+              <input id="ig-id" type="text" class="input-field" placeholder="17841400000000000"/>
+            </div>
+            <div>
+              <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">imgbb API Key</label>
+              <input id="imgbb-key" type="password" class="input-field" value="70de87aa92ddb84d229b71844a0972ab" style="font-family:monospace;font-size:0.8rem;"/>
+              <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Free image host for Instagram posts — <a href="https://api.imgbb.com/" target="_blank" style="color:#60a5fa;">api.imgbb.com →</a></p>
+            </div>
+            <button onclick="saveSettings()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:#f59e0b;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;transition:all 0.2s;">
+              Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- SECTION 2: Post Type -->
       <div class="card" style="padding:20px;">
         <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.88rem;margin-bottom:14px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;font-size:0.72rem;">Post Type</p>
@@ -397,12 +436,24 @@
         <button class="btn-action" onclick="copyCaption()" style="padding:12px;font-size:0.82rem;text-align:center;">
           📋 Copy Caption
         </button>
-        <button class="btn-action" onclick="window.open('https://www.facebook.com/pages','_blank')" style="padding:12px;font-size:0.82rem;text-align:center;">
-          📘 Open Facebook
+      </div>
+
+      <!-- Social Posting Buttons -->
+      <div id="social-buttons" style="display:none;flex-direction:column;gap:10px;">
+        <button id="btn-fb" class="btn-social" onclick="postToFacebook()"
+          style="background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.3);color:#93c5fd;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
+          📘 Post to Facebook
         </button>
-        <button class="btn-action" onclick="window.open('https://www.instagram.com','_blank')" style="padding:12px;font-size:0.82rem;text-align:center;">
-          📸 Open Instagram
+        <button id="btn-ig" class="btn-social" onclick="postToInstagram()"
+          style="background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);color:#f9a8d4;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
+          📸 Post to Instagram
         </button>
+        <button id="btn-both" class="btn-social" onclick="postToBoth()"
+          style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(37,99,235,0.15));border:1px solid rgba(245,158,11,0.3);color:#f59e0b;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
+          🚀 Post to Both
+        </button>
+        <!-- Status messages -->
+        <div id="post-status" style="display:none;border-radius:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;line-height:1.5;"></div>
       </div>
 
     </div><!-- /right column -->
@@ -526,6 +577,8 @@
     document.getElementById('hashtag-text').textContent = data.hashtags
     document.getElementById('caption-box').style.display = 'block'
     document.getElementById('action-buttons').style.display = 'grid'
+    document.getElementById('social-buttons').style.display = 'flex'
+    document.getElementById('post-status').style.display = 'none'
   }
 
   /* ── Generate ───────────────────────────────────────────────── */
@@ -623,6 +676,240 @@ Return ONLY valid JSON — no markdown, no extra text:
       const btns = document.querySelectorAll('[onclick="copyCaption()"]')
       btns.forEach(b => { const orig = b.textContent; b.textContent = '✅ Copied!'; setTimeout(() => b.textContent = orig, 1800) })
     })
+  }
+
+  /* ── Settings ───────────────────────────────────────────────── */
+  function toggleSettings() {
+    const body = document.getElementById('settings-body')
+    const chev = document.getElementById('settings-chevron')
+    if (body.style.maxHeight === '0px' || body.style.maxHeight === '0' || !body.style.maxHeight) {
+      body.style.maxHeight = '600px'
+      body.style.opacity = '1'
+      chev.style.transform = 'rotate(180deg)'
+    } else {
+      body.style.maxHeight = '0'
+      body.style.opacity = '0'
+      chev.style.transform = 'rotate(0deg)'
+    }
+  }
+  function saveSettings() {
+    const fbToken  = document.getElementById('fb-token').value.trim()
+    const fbPageId = document.getElementById('fb-page-id').value.trim()
+    const igId     = document.getElementById('ig-id').value.trim()
+    const imgbbKey = document.getElementById('imgbb-key').value.trim()
+    if (fbToken)  localStorage.setItem('xts_fb_token', fbToken)
+    if (fbPageId) localStorage.setItem('xts_fb_page_id', fbPageId)
+    if (igId)     localStorage.setItem('xts_ig_id', igId)
+    if (imgbbKey) localStorage.setItem('xts_imgbb_key', imgbbKey)
+    const badge = document.getElementById('settings-saved-badge')
+    badge.style.display = 'inline-block'
+    setTimeout(() => badge.style.display = 'none', 3000)
+  }
+  function loadSettings() {
+    const t = localStorage.getItem('xts_fb_token')
+    const p = localStorage.getItem('xts_fb_page_id')
+    const i = localStorage.getItem('xts_ig_id')
+    const k = localStorage.getItem('xts_imgbb_key')
+    if (t) document.getElementById('fb-token').value = t
+    if (p) document.getElementById('fb-page-id').value = p
+    if (i) document.getElementById('ig-id').value = i
+    if (k) document.getElementById('imgbb-key').value = k
+  }
+  loadSettings()
+
+  /* ── Status helpers ─────────────────────────────────────────── */
+  function setStatus(msg, type) {
+    const el = document.getElementById('post-status')
+    el.style.display = 'block'
+    const colours = {
+      info:    { bg: 'rgba(37,99,235,0.12)',   border: 'rgba(37,99,235,0.3)',   color: '#93c5fd' },
+      success: { bg: 'rgba(22,163,74,0.12)',   border: 'rgba(22,163,74,0.3)',   color: '#4ade80' },
+      error:   { bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.3)',   color: '#f87171' },
+    }
+    const c = colours[type] || colours.info
+    el.style.background  = c.bg
+    el.style.border      = `1px solid ${c.border}`
+    el.style.color       = c.color
+    el.innerHTML         = msg
+  }
+  function setSocialBtnsDisabled(disabled) {
+    ['btn-fb','btn-ig','btn-both'].forEach(id => {
+      const b = document.getElementById(id)
+      b.disabled = disabled
+      b.style.opacity = disabled ? '0.5' : '1'
+      b.style.cursor  = disabled ? 'not-allowed' : 'pointer'
+    })
+  }
+
+  /* ── Post to Facebook ───────────────────────────────────────── */
+  async function postToFacebook() {
+    const fbToken  = localStorage.getItem('xts_fb_token')
+    const fbPageId = localStorage.getItem('xts_fb_page_id') || document.getElementById('fb-page-id').value
+    if (!fbToken)  { setStatus('❌ No Facebook token — open Settings and save your Page Access Token.', 'error'); return }
+    if (!fbPageId) { setStatus('❌ No Facebook Page ID — open Settings and save your Page ID.', 'error'); return }
+    if (!lastResult) { setStatus('❌ Generate a post first.', 'error'); return }
+
+    setSocialBtnsDisabled(true)
+    setStatus('📘 Posting to Facebook...', 'info')
+
+    const caption = lastResult.caption + '\n\n' + lastResult.hashtags
+    try {
+      const res = await fetch(`https://graph.facebook.com/v18.0/${fbPageId}/feed`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: caption, access_token: fbToken })
+      })
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        const code = data.error?.code
+        if (code === 190) {
+          setStatus('❌ Token expired — generate a new Page Access Token in <a href="https://developers.facebook.com/tools/explorer/" target="_blank" style="color:#93c5fd;text-decoration:underline;">Graph API Explorer</a>', 'error')
+        } else {
+          setStatus('❌ Facebook error: ' + (data.error?.message || JSON.stringify(data)), 'error')
+        }
+      } else {
+        setStatus('✅ Posted to Facebook! Post ID: ' + data.id, 'success')
+      }
+    } catch(e) {
+      setStatus('❌ Network error: ' + e.message, 'error')
+    } finally {
+      setSocialBtnsDisabled(false)
+    }
+  }
+
+  /* ── Post to Instagram ──────────────────────────────────────── */
+  async function postToInstagram() {
+    const fbToken  = localStorage.getItem('xts_fb_token')
+    const igId     = localStorage.getItem('xts_ig_id') || document.getElementById('ig-id').value
+    const imgbbKey = localStorage.getItem('xts_imgbb_key') || document.getElementById('imgbb-key').value
+    if (!fbToken)  { setStatus('❌ No Facebook token — open Settings and save your Page Access Token.', 'error'); return }
+    if (!igId)     { setStatus('❌ No Instagram Business Account ID — open Settings and save it.', 'error'); return }
+    if (!imgbbKey) { setStatus('❌ No imgbb API key — open Settings and save it.', 'error'); return }
+    if (!lastResult) { setStatus('❌ Generate a post first.', 'error'); return }
+
+    setSocialBtnsDisabled(true)
+
+    try {
+      // Step 1: capture poster
+      setStatus('📸 Capturing poster...', 'info')
+      const posterEl = document.getElementById('poster-canvas')
+      const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
+      const base64 = canvas.toDataURL('image/png').split(',')[1]
+
+      // Step 2: upload to imgbb
+      setStatus('☁️ Uploading image to imgbb...', 'info')
+      const form = new FormData()
+      form.append('key', imgbbKey)
+      form.append('image', base64)
+      const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
+      const uploadData = await uploadRes.json()
+      if (!uploadRes.ok || !uploadData.data?.url) {
+        throw new Error('imgbb upload failed: ' + (uploadData.error?.message || JSON.stringify(uploadData)))
+      }
+      const imageUrl = uploadData.data.url
+
+      // Step 3: create media container
+      setStatus('🎯 Creating Instagram post...', 'info')
+      const caption = lastResult.caption + '\n\n' + lastResult.hashtags
+      const mediaRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_url: imageUrl, caption: caption, access_token: fbToken })
+      })
+      const mediaData = await mediaRes.json()
+      if (!mediaRes.ok || mediaData.error) {
+        throw new Error('Media container error: ' + (mediaData.error?.message || JSON.stringify(mediaData)))
+      }
+
+      // Step 4: publish
+      const publishRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media_publish`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ creation_id: mediaData.id, access_token: fbToken })
+      })
+      const publishData = await publishRes.json()
+      if (!publishRes.ok || publishData.error) {
+        throw new Error('Publish error: ' + (publishData.error?.message || JSON.stringify(publishData)))
+      }
+
+      setStatus('✅ Posted to Instagram! Post ID: ' + publishData.id, 'success')
+
+    } catch(e) {
+      setStatus('❌ Instagram error: ' + e.message, 'error')
+    } finally {
+      setSocialBtnsDisabled(false)
+    }
+  }
+
+  /* ── Post to Both ───────────────────────────────────────────── */
+  async function postToBoth() {
+    if (!lastResult) { setStatus('❌ Generate a post first.', 'error'); return }
+    setSocialBtnsDisabled(true)
+    setStatus('🚀 Posting to Facebook and Instagram...', 'info')
+    try {
+      await postToFacebookInternal()
+      await postToInstagramInternal()
+      setStatus('✅ Posted to both Facebook and Instagram!', 'success')
+    } catch(e) {
+      setStatus('❌ ' + e.message, 'error')
+    } finally {
+      setSocialBtnsDisabled(false)
+    }
+  }
+
+  /* Internal versions (no status/disable toggling) */
+  async function postToFacebookInternal() {
+    const fbToken  = localStorage.getItem('xts_fb_token')
+    const fbPageId = localStorage.getItem('xts_fb_page_id') || document.getElementById('fb-page-id').value
+    if (!fbToken || !fbPageId) throw new Error('Missing Facebook token or Page ID — check Settings.')
+    const caption = lastResult.caption + '\n\n' + lastResult.hashtags
+    setStatus('📘 Posting to Facebook...', 'info')
+    const res = await fetch(`https://graph.facebook.com/v18.0/${fbPageId}/feed`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: caption, access_token: fbToken })
+    })
+    const data = await res.json()
+    if (!res.ok || data.error) {
+      const code = data.error?.code
+      if (code === 190) throw new Error('Facebook token expired — regenerate in Graph API Explorer.')
+      throw new Error('Facebook: ' + (data.error?.message || JSON.stringify(data)))
+    }
+  }
+
+  async function postToInstagramInternal() {
+    const fbToken  = localStorage.getItem('xts_fb_token')
+    const igId     = localStorage.getItem('xts_ig_id') || document.getElementById('ig-id').value
+    const imgbbKey = localStorage.getItem('xts_imgbb_key') || document.getElementById('imgbb-key').value
+    if (!fbToken || !igId || !imgbbKey) throw new Error('Missing Instagram settings — check Settings.')
+    setStatus('📸 Capturing poster for Instagram...', 'info')
+    const posterEl = document.getElementById('poster-canvas')
+    const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
+    const base64 = canvas.toDataURL('image/png').split(',')[1]
+    setStatus('☁️ Uploading image...', 'info')
+    const form = new FormData()
+    form.append('key', imgbbKey)
+    form.append('image', base64)
+    const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
+    const uploadData = await uploadRes.json()
+    if (!uploadRes.ok || !uploadData.data?.url) throw new Error('imgbb upload failed: ' + (uploadData.error?.message || ''))
+    const imageUrl = uploadData.data.url
+    setStatus('🎯 Creating Instagram post...', 'info')
+    const caption = lastResult.caption + '\n\n' + lastResult.hashtags
+    const mediaRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image_url: imageUrl, caption: caption, access_token: fbToken })
+    })
+    const mediaData = await mediaRes.json()
+    if (!mediaRes.ok || mediaData.error) throw new Error('IG media: ' + (mediaData.error?.message || ''))
+    const publishRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media_publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ creation_id: mediaData.id, access_token: fbToken })
+    })
+    const publishData = await publishRes.json()
+    if (!publishRes.ok || publishData.error) throw new Error('IG publish: ' + (publishData.error?.message || ''))
   }
 </script>
 </body>

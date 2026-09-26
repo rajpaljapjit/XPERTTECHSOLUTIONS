@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /booking-confirmed/
 Disallow: /marketing-hub.html
+Disallow: /admin-dashboard.html
 
 Sitemap: https://xperttechsolutions.com.au/sitemap.xml

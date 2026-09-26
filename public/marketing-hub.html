@@ -398,6 +398,7 @@
           </button>
         </div>
         <textarea id="post-desc" class="input-field" placeholder="e.g. $30 off virus removal this week&#10;Why is my laptop running slow?&#10;Fixed a broken screen for a customer in Southport"></textarea>
+        <div id="mic-error" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#f87171;font-size:0.78rem;font-family:'Space Grotesk',sans-serif;"></div>
       </div>
 
       <!-- Generate Button -->
@@ -971,52 +972,95 @@ Return ONLY valid JSON — no markdown, no extra text:
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognition) return  // browser doesn't support — stay hidden
 
-    const btn   = document.getElementById('mic-btn')
-    const label = document.getElementById('mic-label')
-    const area  = document.getElementById('post-desc')
-    btn.style.display = 'flex'  // show the button
+    const btn    = document.getElementById('mic-btn')
+    const label  = document.getElementById('mic-label')
+    const area   = document.getElementById('post-desc')
+    const errMsg = document.getElementById('mic-error')
+    btn.style.display = 'flex'
 
-    const recognition = new SpeechRecognition()
-    recognition.lang              = 'en-AU'
-    recognition.continuous        = false
-    recognition.interimResults    = false
-    recognition.maxAlternatives   = 1
+    let recognition = null
+    let listening   = false
 
-    let listening = false
-
-    recognition.onresult = (e) => {
-      const transcript = e.results[0][0].transcript
-      const current    = area.value.trim()
-      area.value       = current ? current + ' ' + transcript : transcript
-    }
-
-    recognition.onend = () => {
-      listening          = false
+    function setIdle() {
+      listening             = false
       btn.style.background  = 'rgba(245,158,11,0.08)'
       btn.style.border      = '1px solid rgba(245,158,11,0.3)'
       btn.style.color       = '#f59e0b'
       btn.style.boxShadow   = 'none'
-      btn.firstChild.textContent = '🎤 '
       label.textContent     = 'Speak'
     }
 
-    recognition.onerror = () => {
-      recognition.onend()
+    function setListening() {
+      listening             = true
+      btn.style.background  = 'rgba(239,68,68,0.15)'
+      btn.style.border      = '1px solid rgba(239,68,68,0.5)'
+      btn.style.color       = '#f87171'
+      btn.style.boxShadow   = '0 0 12px rgba(239,68,68,0.3)'
+      label.textContent     = 'Listening...'
+    }
+
+    function showErr(msg) {
+      if (errMsg) { errMsg.textContent = msg; errMsg.style.display = 'block' }
+      setTimeout(() => { if (errMsg) errMsg.style.display = 'none' }, 4000)
+    }
+
+    function buildRecognition() {
+      const r             = new SpeechRecognition()
+      r.lang              = 'en-AU'
+      r.continuous        = false
+      r.interimResults    = false
+      r.maxAlternatives   = 1
+
+      r.onresult = (e) => {
+        const transcript = e.results[0][0].transcript
+        const current    = area.value.trim()
+        area.value       = current ? current + ' ' + transcript : transcript
+      }
+
+      r.onend = () => { setIdle() }
+
+      r.onerror = (e) => {
+        if (e.error === 'not-allowed' || e.error === 'permission-denied') {
+          showErr('⚠️ Microphone access denied. Please allow microphone in your browser settings.')
+        } else if (e.error === 'no-speech') {
+          showErr('No speech detected. Try again.')
+        } else if (e.error === 'network') {
+          showErr('⚠️ Network error — speech recognition needs an internet connection.')
+        } else {
+          showErr('Mic error: ' + e.error)
+        }
+        // onend fires automatically after onerror, so no need to call setIdle() here
+      }
+
+      return r
     }
 
     window.toggleMic = function() {
       if (listening) {
-        recognition.stop()
-      } else {
-        listening = true
-        btn.style.background  = 'rgba(239,68,68,0.15)'
-        btn.style.border      = '1px solid rgba(239,68,68,0.5)'
-        btn.style.color       = '#f87171'
-        btn.style.boxShadow   = '0 0 12px rgba(239,68,68,0.3)'
-        btn.firstChild.textContent = '🔴 '
-        label.textContent     = 'Listening...'
-        recognition.start()
+        if (recognition) recognition.stop()
+        setIdle()
+        return
       }
+      // Request mic permission first, then start recognition
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(() => {
+          recognition = buildRecognition()
+          setListening()
+          try {
+            recognition.start()
+          } catch(e) {
+            showErr('Could not start mic: ' + e.message)
+            setIdle()
+          }
+        })
+        .catch((err) => {
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            showErr('⚠️ Microphone blocked. Tap the 🔒 icon in your browser address bar and allow microphone access.')
+          } else {
+            showErr('Mic unavailable: ' + err.message)
+          }
+          setIdle()
+        })
     }
   })()
 </script>

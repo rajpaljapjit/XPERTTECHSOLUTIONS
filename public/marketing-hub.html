@@ -328,7 +328,14 @@
           </div>
         </div>
         <div id="settings-body" class="collapsible-content" style="max-height:0;opacity:0;" class="collapsed">
-          <div style="padding-top:14px;display:flex;flex-direction:column;gap:12px;">
+          <!-- Credential status indicators -->
+          <div id="cred-status" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px;margin-bottom:4px;">
+            <div id="cred-fb-token"  class="cred-row">...</div>
+            <div id="cred-fb-page"   class="cred-row">...</div>
+            <div id="cred-imgbb"     class="cred-row">...</div>
+            <div id="cred-ig"        class="cred-row">...</div>
+          </div>
+          <div style="padding-top:10px;display:flex;flex-direction:column;gap:12px;">
             <div>
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Facebook Page Access Token</label>
               <input id="fb-token" type="password" class="input-field" placeholder="EAA..." style="font-family:monospace;font-size:0.8rem;"/>
@@ -692,6 +699,42 @@ Return ONLY valid JSON — no markdown, no extra text:
       chev.style.transform = 'rotate(0deg)'
     }
   }
+  /* ── Defaults ──────────────────────────────────────────────── */
+  const DEFAULTS = {
+    xts_fb_token:   'EAAXCwloA9s8BSuX8ZA19eB0oFsFvop5APLxjs1zTa3tmwCgA5vWe9VpH3MRt2jGYZBIon0z1SmC3pb2oOezbjfzZAvZARl6A1MtGdJylJC74FQMrwpEaJ6fQkpgZBL7daLvPwqZAVAF6MoM9zDLr58OYMfj9cjEmfuFQdGhadngOgsUywjfFfFf9cuEyMu5Xl2xZBs6hm0FYDPsMdDUfTCsE2ZCChzyR8jYFqZB1agJLE8IPU',
+    xts_fb_page_id: '1275753969129194',
+    xts_imgbb_key:  '70de87aa92ddb84d229b71844a0972ab',
+    xts_ig_id:      '',
+  }
+  /* Returns stored value, falling back to default */
+  function getCredential(key) {
+    return localStorage.getItem(key) || DEFAULTS[key] || ''
+  }
+
+  /* ── Credential status indicators ──────────────────────────── */
+  function updateCredIndicators() {
+    const creds = [
+      { id: 'cred-fb-token', key: 'xts_fb_token',   label: 'FB Token'  },
+      { id: 'cred-fb-page',  key: 'xts_fb_page_id', label: 'Page ID'   },
+      { id: 'cred-imgbb',    key: 'xts_imgbb_key',  label: 'imgbb Key' },
+      { id: 'cred-ig',       key: 'xts_ig_id',      label: 'IG Acct ID'},
+    ]
+    creds.forEach(({ id, key, label }) => {
+      const val = getCredential(key)
+      const el  = document.getElementById(id)
+      const ok  = val && val.length > 0
+      el.innerHTML = `<span style="font-size:0.95rem;">${ok ? '✅' : '❌'}</span>
+        <span style="font-size:0.72rem;font-weight:600;color:${ok ? '#4ade80' : '#f87171'};">${label}</span>`
+      el.style.background  = ok ? 'rgba(22,163,74,0.08)'  : 'rgba(239,68,68,0.08)'
+      el.style.border      = ok ? '1px solid rgba(22,163,74,0.2)' : '1px solid rgba(239,68,68,0.18)'
+      el.style.borderRadius = '8px'
+      el.style.padding     = '6px 10px'
+      el.style.display     = 'flex'
+      el.style.alignItems  = 'center'
+      el.style.gap         = '6px'
+    })
+  }
+
   function saveSettings() {
     const fbToken  = document.getElementById('fb-token').value.trim()
     const fbPageId = document.getElementById('fb-page-id').value.trim()
@@ -701,19 +744,18 @@ Return ONLY valid JSON — no markdown, no extra text:
     if (fbPageId) localStorage.setItem('xts_fb_page_id', fbPageId)
     if (igId)     localStorage.setItem('xts_ig_id', igId)
     if (imgbbKey) localStorage.setItem('xts_imgbb_key', imgbbKey)
+    updateCredIndicators()
     const badge = document.getElementById('settings-saved-badge')
     badge.style.display = 'inline-block'
     setTimeout(() => badge.style.display = 'none', 3000)
   }
+
   function loadSettings() {
-    const t = localStorage.getItem('xts_fb_token')
-    const p = localStorage.getItem('xts_fb_page_id')
-    const i = localStorage.getItem('xts_ig_id')
-    const k = localStorage.getItem('xts_imgbb_key')
-    if (t) document.getElementById('fb-token').value = t
-    if (p) document.getElementById('fb-page-id').value = p
-    if (i) document.getElementById('ig-id').value = i
-    if (k) document.getElementById('imgbb-key').value = k
+    document.getElementById('fb-token').value   = getCredential('xts_fb_token')
+    document.getElementById('fb-page-id').value = getCredential('xts_fb_page_id')
+    document.getElementById('ig-id').value      = getCredential('xts_ig_id')
+    document.getElementById('imgbb-key').value  = getCredential('xts_imgbb_key')
+    updateCredIndicators()
   }
   loadSettings()
 
@@ -743,8 +785,8 @@ Return ONLY valid JSON — no markdown, no extra text:
 
   /* ── Post to Facebook ───────────────────────────────────────── */
   async function postToFacebook() {
-    const fbToken  = localStorage.getItem('xts_fb_token')
-    const fbPageId = localStorage.getItem('xts_fb_page_id') || document.getElementById('fb-page-id').value
+    const fbToken  = getCredential('xts_fb_token')
+    const fbPageId = getCredential('xts_fb_page_id')
     if (!fbToken)  { setStatus('❌ No Facebook token — open Settings and save your Page Access Token.', 'error'); return }
     if (!fbPageId) { setStatus('❌ No Facebook Page ID — open Settings and save your Page ID.', 'error'); return }
     if (!lastResult) { setStatus('❌ Generate a post first.', 'error'); return }
@@ -779,9 +821,9 @@ Return ONLY valid JSON — no markdown, no extra text:
 
   /* ── Post to Instagram ──────────────────────────────────────── */
   async function postToInstagram() {
-    const fbToken  = localStorage.getItem('xts_fb_token')
-    const igId     = localStorage.getItem('xts_ig_id') || document.getElementById('ig-id').value
-    const imgbbKey = localStorage.getItem('xts_imgbb_key') || document.getElementById('imgbb-key').value
+    const fbToken  = getCredential('xts_fb_token')
+    const igId     = getCredential('xts_ig_id')
+    const imgbbKey = getCredential('xts_imgbb_key')
     if (!fbToken)  { setStatus('❌ No Facebook token — open Settings and save your Page Access Token.', 'error'); return }
     if (!igId)     { setStatus('❌ No Instagram Business Account ID — open Settings and save it.', 'error'); return }
     if (!imgbbKey) { setStatus('❌ No imgbb API key — open Settings and save it.', 'error'); return }
@@ -859,8 +901,8 @@ Return ONLY valid JSON — no markdown, no extra text:
 
   /* Internal versions (no status/disable toggling) */
   async function postToFacebookInternal() {
-    const fbToken  = localStorage.getItem('xts_fb_token')
-    const fbPageId = localStorage.getItem('xts_fb_page_id') || document.getElementById('fb-page-id').value
+    const fbToken  = getCredential('xts_fb_token')
+    const fbPageId = getCredential('xts_fb_page_id')
     if (!fbToken || !fbPageId) throw new Error('Missing Facebook token or Page ID — check Settings.')
     const caption = lastResult.caption + '\n\n' + lastResult.hashtags
     setStatus('📘 Posting to Facebook...', 'info')
@@ -878,9 +920,9 @@ Return ONLY valid JSON — no markdown, no extra text:
   }
 
   async function postToInstagramInternal() {
-    const fbToken  = localStorage.getItem('xts_fb_token')
-    const igId     = localStorage.getItem('xts_ig_id') || document.getElementById('ig-id').value
-    const imgbbKey = localStorage.getItem('xts_imgbb_key') || document.getElementById('imgbb-key').value
+    const fbToken  = getCredential('xts_fb_token')
+    const igId     = getCredential('xts_ig_id')
+    const imgbbKey = getCredential('xts_imgbb_key')
     if (!fbToken || !igId || !imgbbKey) throw new Error('Missing Instagram settings — check Settings.')
     setStatus('📸 Capturing poster for Instagram...', 'info')
     const posterEl = document.getElementById('poster-canvas')

@@ -425,8 +425,8 @@
         </div>
       </div>
 
-      <!-- Caption Box -->
-      <div id="caption-box" class="card" style="padding:18px;position:relative;">
+      <!-- Caption Box (hidden until generated) -->
+      <div id="caption-box" class="card" style="display:none;padding:18px;position:relative;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.8rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Caption</span>
           <button onclick="copyCaption()" class="btn-action" style="padding:5px 12px;font-size:0.72rem;">📋 Copy</button>
@@ -435,7 +435,7 @@
         <p id="hashtag-text" style="font-size:0.8rem;color:#60a5fa;line-height:1.7;word-break:break-word;"></p>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Download / Copy (hidden until generated) -->
       <div id="action-buttons" style="display:none;grid-template-columns:1fr 1fr;gap:10px;">
         <button class="btn-action" onclick="downloadPoster()" style="padding:12px;font-size:0.82rem;text-align:center;">
           ⬇️ Download Poster
@@ -445,22 +445,26 @@
         </button>
       </div>
 
-      <!-- Social Posting Buttons -->
-      <div id="social-buttons" style="display:none;flex-direction:column;gap:10px;">
-        <button id="btn-fb" class="btn-social" onclick="postToFacebook()"
-          style="background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.3);color:#93c5fd;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
-          📘 Post to Facebook
-        </button>
-        <button id="btn-ig" class="btn-social" onclick="postToInstagram()"
-          style="background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);color:#f9a8d4;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
-          📸 Post to Instagram
-        </button>
-        <button id="btn-both" class="btn-social" onclick="postToBoth()"
-          style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(37,99,235,0.15));border:1px solid rgba(245,158,11,0.3);color:#f59e0b;border-radius:12px;padding:13px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;">
-          🚀 Post to Both
-        </button>
+      <!-- ── PUBLISH BUTTONS — always visible ── -->
+      <div class="card" style="padding:20px;background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:#f59e0b;margin-bottom:4px;">Publish to Social Media</p>
+        <p id="publish-hint" style="font-size:0.75rem;color:#475569;margin-bottom:14px;">Generate a post above first, then publish directly.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button id="btn-fb" onclick="postToFacebook()"
+            style="background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.3);color:#93c5fd;border-radius:12px;padding:14px 18px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;width:100%;">
+            📘 Post to Facebook
+          </button>
+          <button id="btn-ig" onclick="postToInstagram()"
+            style="background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);color:#f9a8d4;border-radius:12px;padding:14px 18px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;width:100%;">
+            📸 Post to Instagram
+          </button>
+          <button id="btn-both" onclick="postToBoth()"
+            style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(37,99,235,0.2));border:1px solid rgba(245,158,11,0.4);color:#f59e0b;border-radius:12px;padding:14px 18px;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;text-align:left;width:100%;">
+            🚀 Post to Both Platforms
+          </button>
+        </div>
         <!-- Status messages -->
-        <div id="post-status" style="display:none;border-radius:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;line-height:1.5;"></div>
+        <div id="post-status" style="display:none;border-radius:10px;padding:12px 16px;font-size:0.82rem;font-weight:600;line-height:1.5;margin-top:12px;"></div>
       </div>
 
     </div><!-- /right column -->
@@ -584,8 +588,9 @@
     document.getElementById('hashtag-text').textContent = data.hashtags
     document.getElementById('caption-box').style.display = 'block'
     document.getElementById('action-buttons').style.display = 'grid'
-    document.getElementById('social-buttons').style.display = 'flex'
     document.getElementById('post-status').style.display = 'none'
+    document.getElementById('publish-hint').textContent = '✅ Post ready — click a button below to publish.'
+    document.getElementById('publish-hint').style.color = '#4ade80'
   }
 
   /* ── Generate ───────────────────────────────────────────────── */
@@ -777,6 +782,7 @@ Return ONLY valid JSON — no markdown, no extra text:
   function setSocialBtnsDisabled(disabled) {
     ['btn-fb','btn-ig','btn-both'].forEach(id => {
       const b = document.getElementById(id)
+      if (!b) return
       b.disabled = disabled
       b.style.opacity = disabled ? '0.5' : '1'
       b.style.cursor  = disabled ? 'not-allowed' : 'pointer'

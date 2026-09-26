@@ -388,9 +388,15 @@
 
       <!-- SECTION 3: Description -->
       <div class="card" style="padding:20px;">
-        <label for="post-desc" style="display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;margin-bottom:10px;">
-          Describe Today's Post
-        </label>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <label for="post-desc" style="display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;">
+            Describe Today's Post
+          </label>
+          <button id="mic-btn" onclick="toggleMic()" title="Tap and speak your idea"
+            style="display:none;align-items:center;gap:5px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;border-radius:8px;padding:5px 10px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;">
+            🎤 <span id="mic-label">Speak</span>
+          </button>
+        </div>
         <textarea id="post-desc" class="input-field" placeholder="e.g. $30 off virus removal this week&#10;Why is my laptop running slow?&#10;Fixed a broken screen for a customer in Southport"></textarea>
       </div>
 
@@ -959,6 +965,60 @@ Return ONLY valid JSON — no markdown, no extra text:
     const publishData = await publishRes.json()
     if (!publishRes.ok || publishData.error) throw new Error('IG publish: ' + (publishData.error?.message || ''))
   }
+
+  /* ── Speech Recognition (Mic Button) ───────────────────────── */
+  ;(function initMic() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) return  // browser doesn't support — stay hidden
+
+    const btn   = document.getElementById('mic-btn')
+    const label = document.getElementById('mic-label')
+    const area  = document.getElementById('post-desc')
+    btn.style.display = 'flex'  // show the button
+
+    const recognition = new SpeechRecognition()
+    recognition.lang              = 'en-AU'
+    recognition.continuous        = false
+    recognition.interimResults    = false
+    recognition.maxAlternatives   = 1
+
+    let listening = false
+
+    recognition.onresult = (e) => {
+      const transcript = e.results[0][0].transcript
+      const current    = area.value.trim()
+      area.value       = current ? current + ' ' + transcript : transcript
+    }
+
+    recognition.onend = () => {
+      listening          = false
+      btn.style.background  = 'rgba(245,158,11,0.08)'
+      btn.style.border      = '1px solid rgba(245,158,11,0.3)'
+      btn.style.color       = '#f59e0b'
+      btn.style.boxShadow   = 'none'
+      btn.firstChild.textContent = '🎤 '
+      label.textContent     = 'Speak'
+    }
+
+    recognition.onerror = () => {
+      recognition.onend()
+    }
+
+    window.toggleMic = function() {
+      if (listening) {
+        recognition.stop()
+      } else {
+        listening = true
+        btn.style.background  = 'rgba(239,68,68,0.15)'
+        btn.style.border      = '1px solid rgba(239,68,68,0.5)'
+        btn.style.color       = '#f87171'
+        btn.style.boxShadow   = '0 0 12px rgba(239,68,68,0.3)'
+        btn.firstChild.textContent = '🔴 '
+        label.textContent     = 'Listening...'
+        recognition.start()
+      }
+    }
+  })()
 </script>
 </body>
 </html>

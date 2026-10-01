@@ -184,6 +184,15 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* AI toggle buttons */
+    .ai-toggle {
+      flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6); border-radius: 20px; padding: 8px 16px;
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .ai-toggle.active { background: rgba(245,158,11,0.2); border-color: #f59e0b; color: #f59e0b; }
+
     /* Caption box */
     #caption-box { display: none; }
     #action-buttons { display: none; }
@@ -310,6 +319,7 @@
             <div id="cred-fb-page"   class="cred-row">...</div>
             <div id="cred-imgbb"     class="cred-row">...</div>
             <div id="cred-ig"        class="cred-row">...</div>
+            <div id="cred-openai"    class="cred-row">...</div>
           </div>
           <div style="padding-top:10px;display:flex;flex-direction:column;gap:12px;">
             <div>
@@ -329,6 +339,11 @@
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">imgbb API Key</label>
               <input id="imgbb-key" type="password" class="input-field" value="70de87aa92ddb84d229b71844a0972ab" style="font-family:monospace;font-size:0.8rem;"/>
               <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Free image host for Instagram posts — <a href="https://api.imgbb.com/" target="_blank" style="color:#60a5fa;">api.imgbb.com →</a></p>
+            </div>
+            <div>
+              <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">🎨 OpenAI API Key (for DALL-E posters)</label>
+              <input id="openai-key" type="password" class="input-field" style="font-family:monospace;font-size:0.8rem;" placeholder="sk-..."/>
+              <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Get key at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#60a5fa;">platform.openai.com/api-keys →</a></p>
             </div>
             <button onclick="saveSettings()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:#f59e0b;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;transition:all 0.2s;">
               Save Settings
@@ -379,6 +394,12 @@
         </div>
         <textarea id="post-desc" class="input-field" placeholder="e.g. $30 off virus removal this week&#10;Why is my laptop running slow?&#10;Fixed a broken screen for a customer in Southport"></textarea>
         <div id="mic-error" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#f87171;font-size:0.78rem;font-family:'Space Grotesk',sans-serif;"></div>
+      </div>
+
+      <!-- AI Mode Toggle -->
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button id="useClaudeBtn" class="ai-toggle active" onclick="setAI('claude')">🤖 Claude AI Poster</button>
+        <button id="useDalleBtn" class="ai-toggle" onclick="setAI('dalle')">🎨 DALL-E Image Poster</button>
       </div>
 
       <!-- Generate Button -->
@@ -471,6 +492,13 @@
   const PASS = 'XTS2024admin'
   let selectedType = 'Special Offer'
   let lastResult = null
+  let selectedAI = 'claude'
+
+  function setAI(mode) {
+    selectedAI = mode
+    document.getElementById('useClaudeBtn').classList.toggle('active', mode === 'claude')
+    document.getElementById('useDalleBtn').classList.toggle('active', mode === 'dalle')
+  }
 
   /* ── Auth ──────────────────────────────────────────────────── */
   function doLogin() {
@@ -550,6 +578,8 @@
 
   /* ── Render Poster ──────────────────────────────────────────── */
   function renderPoster(data) {
+    window.usingDalleImage = false
+    window.currentDalleImageUrl = null
     const meta = TYPE_META[selectedType] || { glow: 'rgba(245,158,11,0.2)', shadow: 'rgba(245,158,11,0.4)', faIcon: 'fas fa-star' }
     const badgeLabel = selectedType.toUpperCase()
     const headShadow = `0 0 60px ${meta.shadow}, 0 2px 4px rgba(0,0,0,0.5)`
@@ -605,6 +635,8 @@
 
   /* ── Generate ───────────────────────────────────────────────── */
   async function generatePost() {
+    if (selectedAI === 'dalle') { return generateDallePoster(); }
+
     const apiKey = localStorage.getItem('xts_api_key')
     if (!apiKey) {
       alert('⚠️ Please add your Anthropic API key at the top of the page.')
@@ -673,6 +705,80 @@ Return ONLY valid JSON — no markdown, no extra text:
     }
   }
 
+  /* ── DALL-E Poster ──────────────────────────────────────────── */
+  async function generateDallePoster() {
+    const openaiKey = getCredential('xts_openai_key')
+    if (!openaiKey) {
+      alert('⚠️ Please add your OpenAI API key in Settings to use DALL-E.')
+      return
+    }
+    const anthropicKey = localStorage.getItem('xts_api_key')
+    if (!anthropicKey) {
+      alert('⚠️ Please add your Anthropic API key — it\'s still needed for captions.')
+      return
+    }
+    const desc = document.getElementById('post-desc').value.trim()
+    if (!desc) { alert('Please describe your post idea first.'); return; }
+
+    const btn = document.getElementById('generate-btn')
+    btn.disabled = true
+    btn.innerHTML = '<span class="spinner"></span> Generating DALL-E image...'
+
+    try {
+      // 1. Build DALL-E prompt
+      const dallePrompt = `Professional social media poster for an IT support business called "Xpert Tech Solutions" (XTS). Post type: ${selectedType}. Concept: ${desc}. Style: dark tech background (#050816), gold (#f59e0b) accent colours, modern professional design. Include visual elements relevant to IT and computer repair. Square format, high quality, photorealistic.`
+
+      const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
+        body: JSON.stringify({ model: 'dall-e-3', prompt: dallePrompt, n: 1, size: '1024x1024', quality: 'hd' })
+      })
+      if (!imgRes.ok) {
+        const e = await imgRes.json()
+        throw new Error(e.error?.message || `OpenAI error ${imgRes.status}`)
+      }
+      const imgJson = await imgRes.json()
+      const imageUrl = imgJson.data[0].url
+
+      // 2. Show DALL-E image in poster area
+      window.usingDalleImage = true
+      window.currentDalleImageUrl = imageUrl
+      const poster = document.getElementById('posterPreview')
+      poster.innerHTML = `<img src="${imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" crossorigin="anonymous"/>`
+      document.getElementById('poster-placeholder').style.display = 'none'
+      poster.style.display = 'block'
+
+      // 3. Get caption from Claude
+      btn.innerHTML = '<span class="spinner"></span> Generating caption...'
+      const captionPrompt = `Write a social media caption for an IT support business (Xpert Tech Solutions, Brisbane/Gold Coast). Post type: ${selectedType}. Concept: "${desc}". Return ONLY valid JSON: {"caption":"2-3 sentences, conversational Australian tone","hashtags":"#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions plus 8-10 more relevant hashtags"}`
+
+      const capRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-api-key': anthropicKey, 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 500, messages: [{ role: 'user', content: captionPrompt }] })
+      })
+      const capJson = await capRes.json()
+      const capText = capJson.content[0].text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/\s*```$/i,'').trim()
+      const capData = JSON.parse(capText)
+      lastResult = capData
+
+      document.getElementById('caption-text').textContent = capData.caption
+      document.getElementById('hashtag-text').textContent = capData.hashtags || ''
+      document.getElementById('caption-box').style.display = 'block'
+      document.getElementById('action-buttons').style.display = 'grid'
+      document.getElementById('post-status').style.display = 'none'
+      document.getElementById('publish-hint').textContent = '✅ DALL-E image ready — click a button below to publish.'
+      document.getElementById('publish-hint').style.color = '#4ade80'
+
+    } catch (err) {
+      console.error(err)
+      alert('❌ DALL-E Error: ' + err.message)
+    } finally {
+      btn.disabled = false
+      btn.innerHTML = '✨ Generate Today\'s Ad'
+    }
+  }
+
   /* ── Download Poster ────────────────────────────────────────── */
   async function downloadPoster() {
     const el = document.getElementById('posterPreview')
@@ -730,6 +836,7 @@ Return ONLY valid JSON — no markdown, no extra text:
       { id: 'cred-fb-page',  key: 'xts_fb_page_id', label: 'Page ID'   },
       { id: 'cred-imgbb',    key: 'xts_imgbb_key',  label: 'imgbb Key' },
       { id: 'cred-ig',       key: 'xts_ig_id',      label: 'IG Acct ID'},
+      { id: 'cred-openai',   key: 'xts_openai_key', label: 'OpenAI Key'},
     ]
     creds.forEach(({ id, key, label }) => {
       const val = getCredential(key)
@@ -748,14 +855,16 @@ Return ONLY valid JSON — no markdown, no extra text:
   }
 
   function saveSettings() {
-    const fbToken  = document.getElementById('fb-token').value.trim()
-    const fbPageId = document.getElementById('fb-page-id').value.trim()
-    const igId     = document.getElementById('ig-id').value.trim()
-    const imgbbKey = document.getElementById('imgbb-key').value.trim()
-    if (fbToken)  localStorage.setItem('xts_fb_token', fbToken)
-    if (fbPageId) localStorage.setItem('xts_fb_page_id', fbPageId)
-    if (igId)     localStorage.setItem('xts_ig_id', igId)
-    if (imgbbKey) localStorage.setItem('xts_imgbb_key', imgbbKey)
+    const fbToken   = document.getElementById('fb-token').value.trim()
+    const fbPageId  = document.getElementById('fb-page-id').value.trim()
+    const igId      = document.getElementById('ig-id').value.trim()
+    const imgbbKey  = document.getElementById('imgbb-key').value.trim()
+    const openaiKey = document.getElementById('openai-key').value.trim()
+    if (fbToken)   localStorage.setItem('xts_fb_token', fbToken)
+    if (fbPageId)  localStorage.setItem('xts_fb_page_id', fbPageId)
+    if (igId)      localStorage.setItem('xts_ig_id', igId)
+    if (imgbbKey)  localStorage.setItem('xts_imgbb_key', imgbbKey)
+    if (openaiKey) localStorage.setItem('xts_openai_key', openaiKey)
     updateCredIndicators()
     const badge = document.getElementById('settings-saved-badge')
     badge.style.display = 'inline-block'
@@ -767,6 +876,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     document.getElementById('fb-page-id').value = getCredential('xts_fb_page_id')
     document.getElementById('ig-id').value      = getCredential('xts_ig_id')
     document.getElementById('imgbb-key').value  = getCredential('xts_imgbb_key')
+    document.getElementById('openai-key').value = getCredential('xts_openai_key')
     updateCredIndicators()
   }
   loadSettings()
@@ -868,23 +978,29 @@ Return ONLY valid JSON — no markdown, no extra text:
     setSocialBtnsDisabled(true)
 
     try {
-      // Step 1: capture poster
-      setStatus('📸 Capturing poster...', 'info')
-      const posterEl = document.getElementById('posterPreview')
-      const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
-      const base64 = canvas.toDataURL('image/png').split(',')[1]
+      let imageUrl
+      if (window.usingDalleImage && window.currentDalleImageUrl) {
+        // DALL-E image: use the URL directly (already public)
+        imageUrl = window.currentDalleImageUrl
+      } else {
+        // Step 1: capture poster
+        setStatus('📸 Capturing poster...', 'info')
+        const posterEl = document.getElementById('posterPreview')
+        const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
+        const base64 = canvas.toDataURL('image/png').split(',')[1]
 
-      // Step 2: upload to imgbb
-      setStatus('☁️ Uploading image to imgbb...', 'info')
-      const form = new FormData()
-      form.append('key', imgbbKey)
-      form.append('image', base64)
-      const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
-      const uploadData = await uploadRes.json()
-      if (!uploadRes.ok || !uploadData.data?.url) {
-        throw new Error('imgbb upload failed: ' + (uploadData.error?.message || JSON.stringify(uploadData)))
+        // Step 2: upload to imgbb
+        setStatus('☁️ Uploading image to imgbb...', 'info')
+        const form = new FormData()
+        form.append('key', imgbbKey)
+        form.append('image', base64)
+        const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
+        const uploadData = await uploadRes.json()
+        if (!uploadRes.ok || !uploadData.data?.url) {
+          throw new Error('imgbb upload failed: ' + (uploadData.error?.message || JSON.stringify(uploadData)))
+        }
+        imageUrl = uploadData.data.url
       }
-      const imageUrl = uploadData.data.url
 
       // Step 3: create media container
       setStatus('🎯 Creating Instagram post...', 'info')
@@ -960,18 +1076,23 @@ Return ONLY valid JSON — no markdown, no extra text:
     const igId     = getCredential('xts_ig_id')
     const imgbbKey = getCredential('xts_imgbb_key')
     if (!fbToken || !igId || !imgbbKey) throw new Error('Missing Instagram settings — check Settings.')
-    setStatus('📸 Capturing poster for Instagram...', 'info')
-    const posterEl = document.getElementById('posterPreview')
-    const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
-    const base64 = canvas.toDataURL('image/png').split(',')[1]
-    setStatus('☁️ Uploading image...', 'info')
-    const form = new FormData()
-    form.append('key', imgbbKey)
-    form.append('image', base64)
-    const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
-    const uploadData = await uploadRes.json()
-    if (!uploadRes.ok || !uploadData.data?.url) throw new Error('imgbb upload failed: ' + (uploadData.error?.message || ''))
-    const imageUrl = uploadData.data.url
+    let imageUrl
+    if (window.usingDalleImage && window.currentDalleImageUrl) {
+      imageUrl = window.currentDalleImageUrl
+    } else {
+      setStatus('📸 Capturing poster for Instagram...', 'info')
+      const posterEl = document.getElementById('posterPreview')
+      const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
+      const base64 = canvas.toDataURL('image/png').split(',')[1]
+      setStatus('☁️ Uploading image...', 'info')
+      const form = new FormData()
+      form.append('key', imgbbKey)
+      form.append('image', base64)
+      const uploadRes = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: form })
+      const uploadData = await uploadRes.json()
+      if (!uploadRes.ok || !uploadData.data?.url) throw new Error('imgbb upload failed: ' + (uploadData.error?.message || ''))
+      imageUrl = uploadData.data.url
+    }
     setStatus('🎯 Creating Instagram post...', 'info')
     const caption = lastResult.caption + '\n\n' + lastResult.hashtags
     const mediaRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media`, {

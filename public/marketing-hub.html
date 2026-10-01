@@ -107,71 +107,155 @@
       position: relative;
       overflow: hidden;
       display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 28px;
+      background: linear-gradient(145deg, #050816, #0a1628);
     }
-    .poster-circle {
+    .poster-bg-glow {
       position: absolute;
+      width: 80%;
+      height: 80%;
       border-radius: 50%;
-      opacity: 0.12;
+      top: -20%;
+      right: -20%;
+      z-index: 0;
       pointer-events: none;
     }
+    .poster-gold-glow {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+      bottom: 5%;
+      left: -10%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .poster-dots {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-radial-gradient(circle, rgba(245,158,11,0.1) 1px, transparent 1px);
+      background-size: 22px 22px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .poster-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(245,158,11,0.2);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .poster-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 6%;
+      box-sizing: border-box;
+    }
+    .poster-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5%;
+    }
+    .poster-xts {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: #f59e0b;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .poster-brand-tag {
+      font-size: clamp(0.48rem, 1.2vw, 0.68rem);
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-align: right;
+      line-height: 1.4;
+    }
+    .poster-badge-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5%;
+    }
     .poster-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(245,158,11,0.12);
+      border: 1.5px solid rgba(245,158,11,0.5);
+      border-radius: 30px;
+      padding: 3px 14px;
+      font-size: clamp(0.5rem, 1.1vw, 0.65rem);
+      font-weight: 800;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #fff;
+      color: #f59e0b;
       width: fit-content;
     }
-    .poster-emoji { font-size: 2.8rem; line-height: 1; margin: 10px 0 8px; }
     .poster-headline {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.55rem;
-      font-weight: 800;
+      font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+      font-weight: 900;
       color: #fff;
-      line-height: 1.2;
-      margin-bottom: 10px;
+      line-height: 1.12;
+      text-align: center;
+      margin-bottom: 4%;
+      letter-spacing: -0.01em;
+    }
+    .poster-divider {
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+      border-radius: 2px;
+      margin: 0 auto 4%;
+      flex-shrink: 0;
     }
     .poster-sub {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.5;
-      margin-bottom: 16px;
+      font-size: clamp(0.6rem, 1.5vw, 0.85rem);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      line-height: 1.55;
+      flex: 1;
     }
-    .poster-cta {
-      display: inline-block;
+    .poster-footer-bar {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 10px;
+      padding: 3% 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5%;
+      flex-shrink: 0;
+    }
+    .poster-phone {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.62rem, 1.6vw, 0.9rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .poster-website {
+      font-size: clamp(0.46rem, 1.1vw, 0.6rem);
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+    }
+    .poster-cta-pill {
       background: #f59e0b;
       color: #000;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 800;
-      font-size: 0.85rem;
-      padding: 9px 20px;
+      font-size: clamp(0.5rem, 1.3vw, 0.72rem);
+      padding: 5px 12px;
       border-radius: 30px;
-      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .poster-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.12);
-    }
-    .poster-brand {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 800;
-      font-size: 0.85rem;
-      color: #fff;
-    }
-    .poster-brand span { color: #f59e0b; }
-    .poster-url { font-size: 0.7rem; color: rgba(255,255,255,0.5); }
 
     /* Password overlay */
     #pw-overlay {
@@ -357,6 +441,10 @@
             <button onclick="saveSettings()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:#f59e0b;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;transition:all 0.2s;">
               Save Settings
             </button>
+            <button onclick="testConnection()" style="background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);color:#93c5fd;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;transition:all 0.2s;">
+              🔌 Test Connection
+            </button>
+            <div id="test-conn-result" style="display:none;border-radius:8px;padding:10px 14px;font-size:0.82rem;font-weight:600;line-height:1.5;"></div>
           </div>
         </div>
       </div>
@@ -558,38 +646,51 @@
   }
 
   /* ── Gradients ──────────────────────────────────────────────── */
-  const GRADIENTS = {
-    purple: 'linear-gradient(145deg, #3b1fa5, #1e3a8a, #0f172a)',
-    gold:   'linear-gradient(145deg, #92400e, #78350f, #1c0a00)',
-    blue:   'linear-gradient(145deg, #1e3a8a, #1e40af, #0f172a)',
-    dark:   'linear-gradient(145deg, #1e293b, #0f172a)',
+  /* ── Type Accents ───────────────────────────────────────────────── */
+  const TYPE_ACCENTS = {
+    'Special Offer':  'rgba(239,68,68,0.22)',
+    'Tech Tip':       'rgba(37,99,235,0.22)',
+    'Before & After': 'rgba(124,58,237,0.22)',
+    'FAQ':            'rgba(20,184,166,0.22)',
+    'Testimonial':    'rgba(236,72,153,0.22)',
+    'Service':        'rgba(34,197,94,0.22)',
   }
 
   /* ── Render Poster ──────────────────────────────────────────── */
   function renderPoster(data) {
-    const grad = GRADIENTS[data.style] || GRADIENTS.dark
+    const accentGlow = TYPE_ACCENTS[selectedType] || 'rgba(245,158,11,0.15)'
     const canvas = document.getElementById('poster-canvas')
-    canvas.style.background = grad
+    canvas.style.background = 'linear-gradient(145deg, #050816, #0a1628)'
     canvas.innerHTML = `
-      <div class="poster-circle" style="width:280px;height:280px;background:rgba(255,255,255,1);top:-80px;right:-80px;"></div>
-      <div class="poster-circle" style="width:200px;height:200px;background:rgba(255,255,255,1);bottom:-60px;left:-60px;"></div>
-      <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;">
-        <div>
-          <div class="poster-badge">${data.badge}</div>
-          <div class="poster-emoji">${data.emoji}</div>
-          <div class="poster-headline">${data.headline}</div>
-          <div class="poster-sub">${data.sub}</div>
-          <div class="poster-cta">${data.cta}</div>
+      <div class="poster-bg-glow" style="background:radial-gradient(circle, ${accentGlow} 0%, transparent 70%);"></div>
+      <div class="poster-gold-glow"></div>
+      <div class="poster-dots"></div>
+      <div class="poster-ring" style="width:44%;height:44%;top:-12%;right:-10%;"></div>
+      <div class="poster-ring" style="width:32%;height:32%;bottom:-8%;left:-8%;"></div>
+      <div style="position:absolute;top:0;right:0;width:0;height:0;border-top:110px solid rgba(245,158,11,0.07);border-left:110px solid transparent;z-index:0;"></div>
+      <div style="position:absolute;top:11%;right:5%;width:130px;height:2px;background:linear-gradient(270deg,rgba(245,158,11,0.55),transparent);transform:rotate(45deg);transform-origin:right center;z-index:0;pointer-events:none;"></div>
+      <div class="poster-content">
+        <div class="poster-topbar">
+          <div class="poster-xts">XTS</div>
+          <div class="poster-brand-tag">Xpert Tech Solutions<br/>Brisbane · Gold Coast</div>
         </div>
-        <div class="poster-footer">
-          <div class="poster-brand">Xpert <span>Tech</span> Solutions</div>
-          <div class="poster-url">xperttechsolutions.com.au</div>
+        <div class="poster-badge-wrap">
+          <div class="poster-badge">${data.badge}</div>
+        </div>
+        <div class="poster-headline">${data.headline}</div>
+        <div class="poster-divider"></div>
+        <div class="poster-sub">${data.sub}</div>
+        <div class="poster-footer-bar">
+          <div>
+            <div class="poster-phone">📞 0424 167 601</div>
+            <div class="poster-website">xperttechsolutions.com.au</div>
+          </div>
+          <div class="poster-cta-pill">${data.cta}</div>
         </div>
       </div>
     `
     document.getElementById('poster-placeholder').style.display = 'none'
-    canvas.style.display = 'flex'
-    canvas.style.flexDirection = 'column'
+    canvas.style.display = 'block'
 
     document.getElementById('caption-text').textContent = data.caption
     document.getElementById('hashtag-text').textContent = data.hashtags
@@ -771,6 +872,29 @@ Return ONLY valid JSON — no markdown, no extra text:
   }
   loadSettings()
 
+  /* ── Test Connection ────────────────────────────────────────── */
+  async function testConnection() {
+    const fbToken = getCredential('xts_fb_token')
+    const el = document.getElementById('test-conn-result')
+    const show = (msg, type) => {
+      const c = { ok: ['rgba(22,163,74,0.12)','rgba(22,163,74,0.3)','#4ade80'], err: ['rgba(239,68,68,0.12)','rgba(239,68,68,0.3)','#f87171'], info: ['rgba(37,99,235,0.12)','rgba(37,99,235,0.3)','#93c5fd'] }[type]
+      el.style.display = 'block'; el.style.background = c[0]; el.style.border = `1px solid ${c[1]}`; el.style.color = c[2]; el.textContent = msg
+    }
+    if (!fbToken) { show('❌ No token saved — enter your Page Access Token above first.', 'err'); return }
+    show('⏳ Testing connection...', 'info')
+    try {
+      const res = await fetch(`https://graph.facebook.com/v18.0/me?access_token=${encodeURIComponent(fbToken)}`)
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        show('❌ Invalid token — ' + (data.error?.message || 'unknown error'), 'err')
+      } else {
+        show('✅ Connected as: ' + (data.name || data.id), 'ok')
+      }
+    } catch(e) {
+      show('❌ Network error: ' + e.message, 'err')
+    }
+  }
+
   /* ── Status helpers ─────────────────────────────────────────── */
   function setStatus(msg, type) {
     const el = document.getElementById('post-status')
@@ -818,9 +942,9 @@ Return ONLY valid JSON — no markdown, no extra text:
       if (!res.ok || data.error) {
         const code = data.error?.code
         if (code === 190) {
-          setStatus('❌ Token expired — generate a new Page Access Token in <a href="https://developers.facebook.com/tools/explorer/" target="_blank" style="color:#93c5fd;text-decoration:underline;">Graph API Explorer</a>', 'error')
+          setStatus('❌ Token expired — go to Settings and paste a new Page Access Token from <a href="https://developers.facebook.com/tools/explorer/" target="_blank" style="color:#f87171;text-decoration:underline;">developers.facebook.com/tools/explorer</a>', 'error')
         } else {
-          setStatus('❌ Facebook error: ' + (data.error?.message || JSON.stringify(data)), 'error')
+          setStatus('❌ Error: ' + (data.error?.message || JSON.stringify(data)), 'error')
         }
       } else {
         setStatus('✅ Posted to Facebook! Post ID: ' + data.id, 'success')
@@ -838,7 +962,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     const igId     = getCredential('xts_ig_id')
     const imgbbKey = getCredential('xts_imgbb_key')
     if (!fbToken)  { setStatus('❌ No Facebook token — open Settings and save your Page Access Token.', 'error'); return }
-    if (!igId)     { setStatus('❌ No Instagram Business Account ID — open Settings and save it.', 'error'); return }
+    if (!igId)     { setStatus('❌ Instagram Business Account ID not set. Open Settings and add it.', 'error'); return }
     if (!imgbbKey) { setStatus('❌ No imgbb API key — open Settings and save it.', 'error'); return }
     if (!lastResult) { setStatus('❌ Generate a post first.', 'error'); return }
 
@@ -890,7 +1014,7 @@ Return ONLY valid JSON — no markdown, no extra text:
       setStatus('✅ Posted to Instagram! Post ID: ' + publishData.id, 'success')
 
     } catch(e) {
-      setStatus('❌ Instagram error: ' + e.message, 'error')
+      setStatus('❌ Error: ' + e.message, 'error')
     } finally {
       setSocialBtnsDisabled(false)
     }

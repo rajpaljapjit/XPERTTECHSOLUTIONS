@@ -451,6 +451,9 @@
         <button class="btn-action" onclick="copyCaption()" style="padding:12px;font-size:0.82rem;text-align:center;">
           📋 Copy Caption
         </button>
+        <button id="regenerate-dalle-btn" class="btn-action" onclick="generateDallePoster()" style="display:none;padding:12px;font-size:0.82rem;text-align:center;grid-column:1/-1;">
+          🔄 Regenerate DALL-E Image
+        </button>
       </div>
 
       <!-- ── PUBLISH BUTTONS — always visible ── -->
@@ -628,6 +631,7 @@
     document.getElementById('hashtag-text').textContent = data.hashtags || ''
     document.getElementById('caption-box').style.display = 'block'
     document.getElementById('action-buttons').style.display = 'grid'
+    document.getElementById('regenerate-dalle-btn').style.display = 'none'
     document.getElementById('post-status').style.display = 'none'
     document.getElementById('publish-hint').textContent = '✅ Post ready — click a button below to publish.'
     document.getElementById('publish-hint').style.color = '#4ade80'
@@ -766,6 +770,7 @@ Return ONLY valid JSON — no markdown, no extra text:
       document.getElementById('hashtag-text').textContent = capData.hashtags || ''
       document.getElementById('caption-box').style.display = 'block'
       document.getElementById('action-buttons').style.display = 'grid'
+      document.getElementById('regenerate-dalle-btn').style.display = 'block'
       document.getElementById('post-status').style.display = 'none'
       document.getElementById('publish-hint').textContent = '✅ DALL-E image ready — click a button below to publish.'
       document.getElementById('publish-hint').style.color = '#4ade80'

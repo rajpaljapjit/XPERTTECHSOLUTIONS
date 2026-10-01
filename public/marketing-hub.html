@@ -86,14 +86,14 @@
 
     /* Poster styles */
     .poster-placeholder {
-      background: rgba(255,255,255,0.03);
-      border: 2px dashed rgba(255,255,255,0.1);
+      background: #050816;
+      border: 2px dashed rgba(245,158,11,0.35);
       border-radius: 16px;
       width: 100%; max-width: 540px;
       aspect-ratio: 1;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      color: #334155; font-size: 0.9rem;
+      color: #f59e0b; font-size: 0.9rem;
       text-align: center; padding: 20px;
       margin: 0 auto;
     }
@@ -422,10 +422,10 @@
       <div>
         <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;margin-bottom:12px;">Poster Preview</p>
 
-        <div id="poster-placeholder" class="poster-placeholder" style="background:#050816;border-color:rgba(245,158,11,0.2);">
-          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.5;">🖼️</div>
-          <p style="font-weight:700;color:#f59e0b;font-family:'Space Grotesk',sans-serif;">Your poster will appear here</p>
-          <p style="font-size:0.78rem;color:rgba(245,158,11,0.6);margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
+        <div id="poster-placeholder" class="poster-placeholder">
+          <div style="font-size:2.5rem;margin-bottom:12px;">🖼️</div>
+          <p style="font-weight:700;font-family:'Space Grotesk',sans-serif;">Your poster will appear here</p>
+          <p style="font-size:0.78rem;opacity:0.6;margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
         </div>
 
         <div id="posterPreview" style="display:none;">

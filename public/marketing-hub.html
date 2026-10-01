@@ -102,159 +102,111 @@
 
     #poster-canvas {
       width: 100%;
+      max-width: 540px;
       aspect-ratio: 1;
-      border-radius: 16px;
       position: relative;
       overflow: hidden;
       display: none;
-      background: linear-gradient(145deg, #050816, #0a1628);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #050816 0%, #0d1b3e 50%, #050816 100%);
+      font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+      margin: 0 auto;
     }
-    .poster-bg-glow {
-      position: absolute;
-      width: 80%;
-      height: 80%;
-      border-radius: 50%;
-      top: -20%;
-      right: -20%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .poster-gold-glow {
-      position: absolute;
-      width: 60%;
-      height: 60%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
-      bottom: 5%;
-      left: -10%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .poster-dots {
-      position: absolute;
-      inset: 0;
-      background-image: repeating-radial-gradient(circle, rgba(245,158,11,0.1) 1px, transparent 1px);
-      background-size: 22px 22px;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .poster-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 2px solid rgba(245,158,11,0.2);
-      z-index: 0;
-      pointer-events: none;
-    }
-    .poster-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      padding: 6%;
-      box-sizing: border-box;
-    }
-    .poster-topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 5%;
-    }
-    .poster-xts {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 900;
-      font-size: clamp(1.2rem, 3vw, 2rem);
-      color: #f59e0b;
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-    .poster-brand-tag {
-      font-size: clamp(0.48rem, 1.2vw, 0.68rem);
-      color: rgba(255,255,255,0.55);
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      text-align: right;
-      line-height: 1.4;
-    }
-    .poster-badge-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 5%;
-    }
-    .poster-badge {
-      display: inline-flex;
-      align-items: center;
-      background: rgba(245,158,11,0.12);
-      border: 1.5px solid rgba(245,158,11,0.5);
-      border-radius: 30px;
-      padding: 3px 14px;
-      font-size: clamp(0.5rem, 1.1vw, 0.65rem);
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #f59e0b;
-      width: fit-content;
-    }
-    .poster-headline {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.4rem, 3.5vw, 2.8rem);
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.12;
-      text-align: center;
-      margin-bottom: 4%;
-      letter-spacing: -0.01em;
-    }
-    .poster-divider {
-      width: 50px;
-      height: 3px;
+    .p-topbar-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
       background: linear-gradient(90deg, transparent, #f59e0b, transparent);
-      border-radius: 2px;
-      margin: 0 auto 4%;
+      z-index: 2; pointer-events: none;
+    }
+    .p-circle-lg {
+      position: absolute; width: 74%; height: 74%;
+      border: 2px solid rgba(245,158,11,0.15); border-radius: 50%;
+      top: -18.5%; right: -18.5%; z-index: 0; pointer-events: none;
+    }
+    .p-circle-sm {
+      position: absolute; width: 37%; height: 37%;
+      border: 1px solid rgba(245,158,11,0.25); border-radius: 50%;
+      bottom: -9%; left: -9%; z-index: 0; pointer-events: none;
+    }
+    .p-diag-1 {
+      position: absolute; top: 0; right: calc(20% + 6px); width: 1px; height: 35%;
+      background: linear-gradient(180deg, rgba(245,158,11,0.4), transparent);
+      transform: rotate(25deg); transform-origin: top center;
+      z-index: 0; pointer-events: none;
+    }
+    .p-diag-2 {
+      position: absolute; top: 0; right: 20%; width: 1px; height: 26%;
+      background: linear-gradient(180deg, rgba(245,158,11,0.22), transparent);
+      transform: rotate(15deg); transform-origin: top center;
+      z-index: 0; pointer-events: none;
+    }
+    .p-glow {
+      position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
+    }
+    .p-inner {
+      position: absolute; inset: 0; z-index: 1;
+      display: flex; flex-direction: column;
+      padding: 20px 24px 68px; box-sizing: border-box;
+    }
+    .p-row-top {
+      display: flex; justify-content: space-between; align-items: center;
       flex-shrink: 0;
     }
-    .poster-sub {
-      font-size: clamp(0.6rem, 1.5vw, 0.85rem);
-      color: rgba(255,255,255,0.6);
-      text-align: center;
-      line-height: 1.55;
-      flex: 1;
+    .p-xts {
+      font-weight: 900; font-size: clamp(18px, 2.9vw, 28px);
+      color: #f59e0b; letter-spacing: 4px; line-height: 1;
     }
-    .poster-footer-bar {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.13);
-      border-radius: 10px;
-      padding: 3% 4%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 5%;
-      flex-shrink: 0;
+    .p-url {
+      font-size: clamp(8px, 1.1vw, 10px);
+      color: rgba(255,255,255,0.5); text-align: right;
     }
-    .poster-phone {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.62rem, 1.6vw, 0.9rem);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.2;
+    .p-mid {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 0 12px;
     }
-    .poster-website {
-      font-size: clamp(0.46rem, 1.1vw, 0.6rem);
-      color: rgba(255,255,255,0.45);
-      margin-top: 2px;
+    .p-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(245,158,11,0.2); border: 1px solid #f59e0b;
+      border-radius: 20px; padding: 5px 16px;
+      font-size: clamp(8px, 1.1vw, 11px); font-weight: 800;
+      color: #f59e0b; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 14px;
     }
-    .poster-cta-pill {
-      background: #f59e0b;
-      color: #000;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 800;
-      font-size: clamp(0.5rem, 1.3vw, 0.72rem);
-      padding: 5px 12px;
-      border-radius: 30px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      flex-shrink: 0;
+    .p-headline {
+      font-weight: 800; font-size: clamp(26px, 4.7vw, 46px);
+      color: #fff; line-height: 1.1; text-align: center;
+      margin-bottom: 14px; letter-spacing: -0.02em;
+      text-shadow: 0 0 40px rgba(245,158,11,0.3);
+    }
+    .p-divider {
+      width: 60px; height: 3px; background: #f59e0b;
+      border-radius: 2px; margin: 0 auto 14px; flex-shrink: 0;
+    }
+    .p-subtitle {
+      font-size: clamp(11px, 1.7vw, 16px);
+      color: rgba(255,255,255,0.7); line-height: 1.4; text-align: center;
+    }
+    .p-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      padding: 13px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(245,158,11,0.2); box-sizing: border-box;
+    }
+    .p-phone {
+      font-size: clamp(10px, 1.4vw, 14px); font-weight: 700;
+      color: #f59e0b; letter-spacing: 0.5px;
+    }
+    .p-cta-btn {
+      background: transparent; border: 1.5px solid #f59e0b;
+      color: #f59e0b; font-size: clamp(9px, 1.2vw, 12px); font-weight: 800;
+      padding: 6px 18px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
+    }
+    .p-company {
+      font-size: clamp(9px, 1.2vw, 12px); font-weight: 700;
+      color: #fff; text-align: right; line-height: 1.3;
     }
 
     /* Password overlay */
@@ -646,54 +598,50 @@
   }
 
   /* ── Gradients ──────────────────────────────────────────────── */
-  /* ── Type Accents ───────────────────────────────────────────────── */
-  const TYPE_ACCENTS = {
-    'Special Offer':  'rgba(239,68,68,0.22)',
-    'Tech Tip':       'rgba(37,99,235,0.22)',
-    'Before & After': 'rgba(124,58,237,0.22)',
-    'FAQ':            'rgba(20,184,166,0.22)',
-    'Testimonial':    'rgba(236,72,153,0.22)',
-    'Service':        'rgba(34,197,94,0.22)',
+  /* ── Type Meta ──────────────────────────────────────────────────── */
+  const TYPE_META = {
+    'Special Offer':  { glow: 'rgba(245,158,11,0.4)',  icon: '⚡' },
+    'Tech Tip':       { glow: 'rgba(59,130,246,0.4)',  icon: '💡' },
+    'Before & After': { glow: 'rgba(168,85,247,0.4)',  icon: '🔧' },
+    'FAQ':            { glow: 'rgba(20,184,166,0.4)',  icon: '❓' },
+    'Testimonial':    { glow: 'rgba(236,72,153,0.4)',  icon: '★★★★★' },
+    'Service':        { glow: 'rgba(34,197,94,0.4)',   icon: '🖥️' },
   }
 
   /* ── Render Poster ──────────────────────────────────────────── */
   function renderPoster(data) {
-    const accentGlow = TYPE_ACCENTS[selectedType] || 'rgba(245,158,11,0.15)'
+    const meta = TYPE_META[selectedType] || { glow: 'rgba(245,158,11,0.3)', icon: '✨' }
     const canvas = document.getElementById('poster-canvas')
-    canvas.style.background = 'linear-gradient(145deg, #050816, #0a1628)'
     canvas.innerHTML = `
-      <div class="poster-bg-glow" style="background:radial-gradient(circle, ${accentGlow} 0%, transparent 70%);"></div>
-      <div class="poster-gold-glow"></div>
-      <div class="poster-dots"></div>
-      <div class="poster-ring" style="width:44%;height:44%;top:-12%;right:-10%;"></div>
-      <div class="poster-ring" style="width:32%;height:32%;bottom:-8%;left:-8%;"></div>
-      <div style="position:absolute;top:0;right:0;width:0;height:0;border-top:110px solid rgba(245,158,11,0.07);border-left:110px solid transparent;z-index:0;"></div>
-      <div style="position:absolute;top:11%;right:5%;width:130px;height:2px;background:linear-gradient(270deg,rgba(245,158,11,0.55),transparent);transform:rotate(45deg);transform-origin:right center;z-index:0;pointer-events:none;"></div>
-      <div class="poster-content">
-        <div class="poster-topbar">
-          <div class="poster-xts">XTS</div>
-          <div class="poster-brand-tag">Xpert Tech Solutions<br/>Brisbane · Gold Coast</div>
+      <div class="p-topbar-line"></div>
+      <div class="p-circle-lg"></div>
+      <div class="p-circle-sm"></div>
+      <div class="p-diag-1"></div>
+      <div class="p-diag-2"></div>
+      <div class="p-glow" style="top:38%;left:50%;transform:translate(-50%,-50%);width:60%;height:60%;background:radial-gradient(ellipse,${meta.glow} 0%,transparent 70%);"></div>
+      <div class="p-inner">
+        <div class="p-row-top">
+          <div class="p-xts">XTS</div>
+          <div class="p-url">xperttechsolutions.com.au</div>
         </div>
-        <div class="poster-badge-wrap">
-          <div class="poster-badge">${data.badge}</div>
+        <div class="p-mid">
+          <div class="p-badge">${meta.icon} ${data.badge}</div>
+          <div class="p-headline">${data.posterHeadline || data.headline || ''}</div>
+          <div class="p-divider"></div>
+          <div class="p-subtitle">${data.posterSubtitle || data.sub || ''}</div>
         </div>
-        <div class="poster-headline">${data.headline}</div>
-        <div class="poster-divider"></div>
-        <div class="poster-sub">${data.sub}</div>
-        <div class="poster-footer-bar">
-          <div>
-            <div class="poster-phone">📞 0424 167 601</div>
-            <div class="poster-website">xperttechsolutions.com.au</div>
-          </div>
-          <div class="poster-cta-pill">${data.cta}</div>
-        </div>
+      </div>
+      <div class="p-bottom">
+        <div class="p-phone">0424 167 601</div>
+        <div class="p-cta-btn">${data.posterCTA || data.cta || 'Book Now'}</div>
+        <div class="p-company">Xpert Tech<br/>Solutions</div>
       </div>
     `
     document.getElementById('poster-placeholder').style.display = 'none'
     canvas.style.display = 'block'
 
     document.getElementById('caption-text').textContent = data.caption
-    document.getElementById('hashtag-text').textContent = data.hashtags
+    document.getElementById('hashtag-text').textContent = data.hashtags || ''
     document.getElementById('caption-box').style.display = 'block'
     document.getElementById('action-buttons').style.display = 'grid'
     document.getElementById('post-status').style.display = 'none'
@@ -724,12 +672,10 @@
 
 Return ONLY valid JSON — no markdown, no extra text:
 {
-  "badge": "2-3 word label (e.g. Limited Offer, Quick Tip, Success Story)",
-  "emoji": "one relevant emoji",
-  "headline": "Max 7 words, punchy and bold",
-  "sub": "One sentence, max 18 words, specific",
-  "cta": "2-4 words (e.g. Book Now!, Call Today!)",
-  "style": "purple OR gold OR blue OR dark",
+  "badge": "2-3 word label in CAPS (e.g. LIMITED OFFER, QUICK TIP, SUCCESS STORY)",
+  "posterHeadline": "5-7 words ALL CAPS, punchy and bold — shown large on poster",
+  "posterSubtitle": "One clear sentence max 15 words — supporting detail shown under headline",
+  "posterCTA": "2-3 word action phrase (e.g. Book Now, Call Today, Get Fixed)",
   "caption": "2-3 sentences, conversational Australian tone, mention Brisbane/Gold Coast suburbs naturally",
   "hashtags": "#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions #LaptopRepairs #ITSupport #TechHelp #Brisbane #GoldCoast plus 6-8 more relevant hashtags"
 }`

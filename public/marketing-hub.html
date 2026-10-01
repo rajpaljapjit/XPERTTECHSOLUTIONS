@@ -342,7 +342,7 @@
             </div>
             <div>
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">🎨 OpenAI API Key (for DALL-E posters)</label>
-              <input id="openai-key" type="password" class="input-field" style="font-family:monospace;font-size:0.8rem;" placeholder="sk-..."/>
+              <input id="openaiApiKey" type="password" class="input-field" style="font-family:monospace;font-size:0.8rem;" placeholder="sk-..."/>
               <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Get key at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#60a5fa;">platform.openai.com/api-keys →</a></p>
             </div>
             <button onclick="saveSettings()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:#f59e0b;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;width:100%;transition:all 0.2s;">
@@ -422,10 +422,10 @@
       <div>
         <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;margin-bottom:12px;">Poster Preview</p>
 
-        <div id="poster-placeholder" class="poster-placeholder">
-          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.3;">🖼️</div>
-          <p style="font-weight:600;color:#475569;">Your poster will appear here</p>
-          <p style="font-size:0.78rem;color:#1e293b;margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
+        <div id="poster-placeholder" class="poster-placeholder" style="background:#050816;border-color:rgba(245,158,11,0.2);">
+          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.5;">🖼️</div>
+          <p style="font-weight:700;color:#f59e0b;font-family:'Space Grotesk',sans-serif;">Your poster will appear here</p>
+          <p style="font-size:0.78rem;color:rgba(245,158,11,0.6);margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
         </div>
 
         <div id="posterPreview" style="display:none;">
@@ -497,10 +497,14 @@
   let lastResult = null
   let selectedAI = 'claude'
 
-  function setAI(mode) {
-    selectedAI = mode
-    document.getElementById('useClaudeBtn').classList.toggle('active', mode === 'claude')
-    document.getElementById('useDalleBtn').classList.toggle('active', mode === 'dalle')
+  function setAI(type) {
+    selectedAI = type
+    document.getElementById('useClaudeBtn').style.background   = type==='claude' ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.05)'
+    document.getElementById('useClaudeBtn').style.borderColor  = type==='claude' ? '#f59e0b' : 'rgba(255,255,255,0.2)'
+    document.getElementById('useClaudeBtn').style.color        = type==='claude' ? '#f59e0b' : 'rgba(255,255,255,0.5)'
+    document.getElementById('useDalleBtn').style.background    = type==='dalle'  ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.05)'
+    document.getElementById('useDalleBtn').style.borderColor   = type==='dalle'  ? '#f59e0b' : 'rgba(255,255,255,0.2)'
+    document.getElementById('useDalleBtn').style.color         = type==='dalle'  ? '#f59e0b' : 'rgba(255,255,255,0.5)'
   }
 
   /* ── Auth ──────────────────────────────────────────────────── */
@@ -711,16 +715,8 @@ Return ONLY valid JSON — no markdown, no extra text:
 
   /* ── DALL-E Poster ──────────────────────────────────────────── */
   async function generateDallePoster() {
-    const openaiKey = getCredential('xts_openai_key')
-    if (!openaiKey) {
-      alert('⚠️ Please add your OpenAI API key in Settings to use DALL-E.')
-      return
-    }
-    const anthropicKey = localStorage.getItem('xts_api_key')
-    if (!anthropicKey) {
-      alert('⚠️ Please add your Anthropic API key — it\'s still needed for captions.')
-      return
-    }
+    const openaiKey = localStorage.getItem('xts_openai_key')
+    if (!openaiKey) { alert('Add your OpenAI API key in Settings first'); return; }
     const desc = document.getElementById('post-desc').value.trim()
     if (!desc) { alert('Please describe your post idea first.'); return; }
 
@@ -728,13 +724,17 @@ Return ONLY valid JSON — no markdown, no extra text:
     btn.disabled = true
     btn.innerHTML = '<span class="spinner"></span> Generating DALL-E image...'
 
+    const posterEl = document.getElementById('posterPreview')
+    posterEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#f59e0b;font-size:14px;font-family:\'Space Grotesk\',sans-serif;">⏳ Generating DALL-E image...</div>'
+    document.getElementById('poster-placeholder').style.display = 'none'
+    posterEl.style.display = 'block'
+
     try {
-      // 1. Build DALL-E prompt
-      const dallePrompt = `Professional social media poster for an IT support business called "Xpert Tech Solutions" (XTS). Post type: ${selectedType}. Concept: ${desc}. Style: dark tech background (#050816), gold (#f59e0b) accent colours, modern professional design. Include visual elements relevant to IT and computer repair. Square format, high quality, photorealistic.`
+      const dallePrompt = `Professional social media advertising poster for "Xpert Tech Solutions" - an IT support company in Brisbane, Australia. Post type: ${selectedType}. Topic: ${desc}. Design style: dark navy/black background (#050816), gold accents (#f59e0b), modern tech aesthetic, circuit board patterns, glowing effects, geometric shapes. Must include: bold promotional headline text, tech icons (laptop, wifi router, shield), contact details "0424 167 601" and "xperttechsolutions.com.au" at bottom. Square 1:1 format. Ultra high quality professional digital marketing poster. No watermarks.`
 
       const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + openaiKey },
         body: JSON.stringify({ model: 'dall-e-3', prompt: dallePrompt, n: 1, size: '1024x1024', quality: 'hd' })
       })
       if (!imgRes.ok) {
@@ -742,42 +742,41 @@ Return ONLY valid JSON — no markdown, no extra text:
         throw new Error(e.error?.message || `OpenAI error ${imgRes.status}`)
       }
       const imgJson = await imgRes.json()
-      const imageUrl = imgJson.data[0].url
+      const imgUrl = imgJson.data[0].url
 
-      // 2. Show DALL-E image in poster area
       window.usingDalleImage = true
-      window.currentDalleImageUrl = imageUrl
-      const poster = document.getElementById('posterPreview')
-      poster.innerHTML = `<img src="${imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" crossorigin="anonymous"/>`
-      document.getElementById('poster-placeholder').style.display = 'none'
-      poster.style.display = 'block'
+      window.currentDalleImageUrl = imgUrl
+      posterEl.innerHTML = `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" crossorigin="anonymous"/><button onclick="generateDallePoster()" style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.7);color:#f59e0b;border:1px solid #f59e0b;border-radius:20px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:700;">🔄 Regenerate</button>`
+      posterEl.style.position = 'relative'
 
-      // 3. Get caption from Claude
-      btn.innerHTML = '<span class="spinner"></span> Generating caption...'
-      const captionPrompt = `Write a social media caption for an IT support business (Xpert Tech Solutions, Brisbane/Gold Coast). Post type: ${selectedType}. Concept: "${desc}". Return ONLY valid JSON: {"caption":"2-3 sentences, conversational Australian tone","hashtags":"#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions plus 8-10 more relevant hashtags"}`
+      // Get caption from Claude (still needed for social posting)
+      const anthropicKey = localStorage.getItem('xts_api_key')
+      if (anthropicKey) {
+        btn.innerHTML = '<span class="spinner"></span> Generating caption...'
+        const captionPrompt = `Write a social media caption for an IT support business (Xpert Tech Solutions, Brisbane/Gold Coast). Post type: ${selectedType}. Concept: "${desc}". Return ONLY valid JSON: {"caption":"2-3 sentences, conversational Australian tone","hashtags":"#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions plus 8-10 more relevant hashtags"}`
+        const capRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-api-key': anthropicKey, 'anthropic-dangerous-direct-browser-access': 'true' },
+          body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 500, messages: [{ role: 'user', content: captionPrompt }] })
+        })
+        const capJson = await capRes.json()
+        const capText = capJson.content[0].text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/\s*```$/i,'').trim()
+        const capData = JSON.parse(capText)
+        lastResult = capData
+        document.getElementById('caption-text').textContent = capData.caption
+        document.getElementById('hashtag-text').textContent = capData.hashtags || ''
+        document.getElementById('caption-box').style.display = 'block'
+      }
 
-      const capRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-api-key': anthropicKey, 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 500, messages: [{ role: 'user', content: captionPrompt }] })
-      })
-      const capJson = await capRes.json()
-      const capText = capJson.content[0].text.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/\s*```$/i,'').trim()
-      const capData = JSON.parse(capText)
-      lastResult = capData
-
-      document.getElementById('caption-text').textContent = capData.caption
-      document.getElementById('hashtag-text').textContent = capData.hashtags || ''
-      document.getElementById('caption-box').style.display = 'block'
       document.getElementById('action-buttons').style.display = 'grid'
       document.getElementById('regenerate-dalle-btn').style.display = 'block'
       document.getElementById('post-status').style.display = 'none'
       document.getElementById('publish-hint').textContent = '✅ DALL-E image ready — click a button below to publish.'
       document.getElementById('publish-hint').style.color = '#4ade80'
 
-    } catch (err) {
-      console.error(err)
-      alert('❌ DALL-E Error: ' + err.message)
+    } catch(e) {
+      console.error(e)
+      posterEl.innerHTML = `<div style="color:#f87171;padding:20px;text-align:center;font-size:14px;">❌ DALL-E Error: ${e.message}</div>`
     } finally {
       btn.disabled = false
       btn.innerHTML = '✨ Generate Today\'s Ad'
@@ -864,7 +863,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     const fbPageId  = document.getElementById('fb-page-id').value.trim()
     const igId      = document.getElementById('ig-id').value.trim()
     const imgbbKey  = document.getElementById('imgbb-key').value.trim()
-    const openaiKey = document.getElementById('openai-key').value.trim()
+    const openaiKey = document.getElementById('openaiApiKey').value.trim()
     if (fbToken)   localStorage.setItem('xts_fb_token', fbToken)
     if (fbPageId)  localStorage.setItem('xts_fb_page_id', fbPageId)
     if (igId)      localStorage.setItem('xts_ig_id', igId)
@@ -881,7 +880,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     document.getElementById('fb-page-id').value = getCredential('xts_fb_page_id')
     document.getElementById('ig-id').value      = getCredential('xts_ig_id')
     document.getElementById('imgbb-key').value  = getCredential('xts_imgbb_key')
-    document.getElementById('openai-key').value = getCredential('xts_openai_key')
+    document.getElementById('openaiApiKey').value = getCredential('xts_openai_key')
     updateCredIndicators()
   }
   loadSettings()

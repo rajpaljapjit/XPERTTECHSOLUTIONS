@@ -4,7 +4,8 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>XTS Marketing Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -84,23 +85,19 @@
     .post-type-btn .emoji { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
     /* Poster styles */
-    #poster-wrap { aspect-ratio: 1; width: 100%; position: relative; border-radius: 16px; overflow: hidden; }
     .poster-placeholder {
       background: rgba(255,255,255,0.03);
       border: 2px dashed rgba(255,255,255,0.1);
       border-radius: 16px;
+      width: 100%; max-width: 540px;
       aspect-ratio: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #334155;
-      font-size: 0.9rem;
-      text-align: center;
-      padding: 20px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: #334155; font-size: 0.9rem;
+      text-align: center; padding: 20px;
+      margin: 0 auto;
     }
-
-    #poster-canvas {
+    #posterPreview {
       width: 100%;
       max-width: 540px;
       aspect-ratio: 1;
@@ -108,105 +105,48 @@
       overflow: hidden;
       display: none;
       border-radius: 12px;
-      background: linear-gradient(135deg, #050816 0%, #0d1b3e 50%, #050816 100%);
-      font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
       margin: 0 auto;
     }
-    .p-topbar-line {
-      position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, transparent, #f59e0b, transparent);
-      z-index: 2; pointer-events: none;
+    .pp-circuit {
+      position: absolute; left: 0; width: 40px; height: 1px;
+      background: rgba(245,158,11,0.3); z-index: 1; pointer-events: none;
     }
-    .p-circle-lg {
-      position: absolute; width: 74%; height: 74%;
-      border: 2px solid rgba(245,158,11,0.15); border-radius: 50%;
-      top: -18.5%; right: -18.5%; z-index: 0; pointer-events: none;
+    .pp-circuit::after {
+      content: ''; position: absolute; right: -3px; top: -3px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(245,158,11,0.55);
     }
-    .p-circle-sm {
-      position: absolute; width: 37%; height: 37%;
-      border: 1px solid rgba(245,158,11,0.25); border-radius: 50%;
-      bottom: -9%; left: -9%; z-index: 0; pointer-events: none;
-    }
-    .p-diag-1 {
-      position: absolute; top: 0; right: calc(20% + 6px); width: 1px; height: 35%;
-      background: linear-gradient(180deg, rgba(245,158,11,0.4), transparent);
-      transform: rotate(25deg); transform-origin: top center;
-      z-index: 0; pointer-events: none;
-    }
-    .p-diag-2 {
-      position: absolute; top: 0; right: 20%; width: 1px; height: 26%;
-      background: linear-gradient(180deg, rgba(245,158,11,0.22), transparent);
-      transform: rotate(15deg); transform-origin: top center;
-      z-index: 0; pointer-events: none;
-    }
-    .p-glow {
-      position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
-    }
-    .p-inner {
-      position: absolute; inset: 0; z-index: 1;
-      display: flex; flex-direction: column;
-      padding: 20px 24px 68px; box-sizing: border-box;
-    }
-    .p-row-top {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-shrink: 0;
-    }
-    .p-xts {
-      font-weight: 900; font-size: clamp(18px, 2.9vw, 28px);
-      color: #f59e0b; letter-spacing: 4px; line-height: 1;
-    }
-    .p-url {
-      font-size: clamp(8px, 1.1vw, 10px);
-      color: rgba(255,255,255,0.5); text-align: right;
-    }
-    .p-mid {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 0 12px;
-    }
-    .p-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(245,158,11,0.2); border: 1px solid #f59e0b;
-      border-radius: 20px; padding: 5px 16px;
-      font-size: clamp(8px, 1.1vw, 11px); font-weight: 800;
-      color: #f59e0b; letter-spacing: 0.12em; text-transform: uppercase;
+    .pp-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4);
+      border-radius: 20px; padding: 6px 16px;
+      font-size: clamp(9px, 1.2vw, 11px); font-weight: 700;
+      color: #f59e0b; letter-spacing: 2px; text-transform: uppercase;
       margin-bottom: 14px;
     }
-    .p-headline {
-      font-weight: 800; font-size: clamp(26px, 4.7vw, 46px);
-      color: #fff; line-height: 1.1; text-align: center;
-      margin-bottom: 14px; letter-spacing: -0.02em;
-      text-shadow: 0 0 40px rgba(245,158,11,0.3);
+    .pp-headline {
+      font-weight: 900; font-size: clamp(26px, 4.8vw, 42px);
+      color: #fff; line-height: 1.15; text-align: center;
+      margin-bottom: 0; letter-spacing: -0.01em;
     }
-    .p-divider {
-      width: 60px; height: 3px; background: #f59e0b;
-      border-radius: 2px; margin: 0 auto 14px; flex-shrink: 0;
+    .pp-subtitle {
+      font-size: clamp(11px, 1.6vw, 14px);
+      color: rgba(255,255,255,0.65); line-height: 1.5; text-align: center;
     }
-    .p-subtitle {
-      font-size: clamp(11px, 1.7vw, 16px);
-      color: rgba(255,255,255,0.7); line-height: 1.4; text-align: center;
-    }
-    .p-bottom {
+    .pp-bottom {
       position: absolute; bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(10px);
-      padding: 13px 24px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px);
+      padding: 10px 20px;
       display: flex; justify-content: space-between; align-items: center;
       border-top: 1px solid rgba(245,158,11,0.2); box-sizing: border-box;
     }
-    .p-phone {
-      font-size: clamp(10px, 1.4vw, 14px); font-weight: 700;
-      color: #f59e0b; letter-spacing: 0.5px;
-    }
-    .p-cta-btn {
-      background: transparent; border: 1.5px solid #f59e0b;
-      color: #f59e0b; font-size: clamp(9px, 1.2vw, 12px); font-weight: 800;
-      padding: 6px 18px; border-radius: 20px;
-      text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
-    }
-    .p-company {
-      font-size: clamp(9px, 1.2vw, 12px); font-weight: 700;
-      color: #fff; text-align: right; line-height: 1.3;
+    .pp-cta-btn {
+      background: #f59e0b; color: #050816;
+      font-weight: 700; font-size: clamp(9px, 1.2vw, 11px);
+      padding: 6px 16px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
     }
 
     /* Password overlay */
@@ -467,7 +407,7 @@
           <p style="font-size:0.78rem;color:#1e293b;margin-top:6px;">Select a post type, write a description,<br/>then click Generate</p>
         </div>
 
-        <div id="poster-canvas" style="display:none;">
+        <div id="posterPreview" style="display:none;">
           <!-- dynamically populated -->
         </div>
       </div>
@@ -600,45 +540,59 @@
   /* ── Gradients ──────────────────────────────────────────────── */
   /* ── Type Meta ──────────────────────────────────────────────────── */
   const TYPE_META = {
-    'Special Offer':  { glow: 'rgba(245,158,11,0.4)',  icon: '⚡' },
-    'Tech Tip':       { glow: 'rgba(59,130,246,0.4)',  icon: '💡' },
-    'Before & After': { glow: 'rgba(168,85,247,0.4)',  icon: '🔧' },
-    'FAQ':            { glow: 'rgba(20,184,166,0.4)',  icon: '❓' },
-    'Testimonial':    { glow: 'rgba(236,72,153,0.4)',  icon: '★★★★★' },
-    'Service':        { glow: 'rgba(34,197,94,0.4)',   icon: '🖥️' },
+    'Special Offer':  { glow: 'rgba(245,158,11,0.25)',  shadow: 'rgba(245,158,11,0.5)',  faIcon: 'fas fa-tag'             },
+    'Tech Tip':       { glow: 'rgba(59,130,246,0.25)',  shadow: 'rgba(59,130,246,0.5)',  faIcon: 'fas fa-lightbulb'       },
+    'Before & After': { glow: 'rgba(168,85,247,0.25)',  shadow: 'rgba(168,85,247,0.5)',  faIcon: 'fas fa-magic'           },
+    'FAQ':            { glow: 'rgba(20,184,166,0.25)',  shadow: 'rgba(20,184,166,0.5)',  faIcon: 'fas fa-question-circle' },
+    'Testimonial':    { glow: 'rgba(236,72,153,0.25)',  shadow: 'rgba(236,72,153,0.5)',  faIcon: 'fas fa-star'            },
+    'Service':        { glow: 'rgba(34,197,94,0.25)',   shadow: 'rgba(34,197,94,0.5)',   faIcon: 'fas fa-tools'           },
   }
 
   /* ── Render Poster ──────────────────────────────────────────── */
   function renderPoster(data) {
-    const meta = TYPE_META[selectedType] || { glow: 'rgba(245,158,11,0.3)', icon: '✨' }
-    const canvas = document.getElementById('poster-canvas')
-    canvas.innerHTML = `
-      <div class="p-topbar-line"></div>
-      <div class="p-circle-lg"></div>
-      <div class="p-circle-sm"></div>
-      <div class="p-diag-1"></div>
-      <div class="p-diag-2"></div>
-      <div class="p-glow" style="top:38%;left:50%;transform:translate(-50%,-50%);width:60%;height:60%;background:radial-gradient(ellipse,${meta.glow} 0%,transparent 70%);"></div>
-      <div class="p-inner">
-        <div class="p-row-top">
-          <div class="p-xts">XTS</div>
-          <div class="p-url">xperttechsolutions.com.au</div>
+    const meta = TYPE_META[selectedType] || { glow: 'rgba(245,158,11,0.2)', shadow: 'rgba(245,158,11,0.4)', faIcon: 'fas fa-star' }
+    const badgeLabel = selectedType.toUpperCase()
+    const headShadow = `0 0 60px ${meta.shadow}, 0 2px 4px rgba(0,0,0,0.5)`
+    const techIcons = [['fa-laptop','Repairs'],['fa-wifi','Wi-Fi'],['fa-shield-virus','Virus'],['fa-server','Network']]
+      .map(([ic, lb]) => `<div style="text-align:center;"><div style="width:36px;height:36px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><i class="fas ${ic}" style="color:#f59e0b;font-size:14px;"></i></div><span style="font-size:8px;color:rgba(255,255,255,0.4);">${lb}</span></div>`).join('')
+
+    const poster = document.getElementById('posterPreview')
+    poster.innerHTML = `
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#050816 0%,#0a1628 40%,#0d2044 70%,#050816 100%);z-index:0;"></div>
+      <div style="position:absolute;width:300px;height:300px;border-radius:50%;top:-50px;right:-50px;z-index:0;background:radial-gradient(circle,${meta.glow},transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;width:200px;height:200px;border-radius:50%;bottom:-30px;left:-30px;z-index:0;background:radial-gradient(circle,rgba(245,158,11,0.08),transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle,rgba(245,158,11,0.15) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;"></div>
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;z-index:2;background:linear-gradient(90deg,transparent 0%,#f59e0b 30%,#f59e0b 70%,transparent 100%);"></div>
+      <div style="position:absolute;width:380px;height:380px;border:1px solid rgba(245,158,11,0.1);border-radius:50%;top:-100px;right:-120px;z-index:0;pointer-events:none;"></div>
+      <div style="position:absolute;width:180px;height:180px;border:1px solid rgba(245,158,11,0.15);border-radius:50%;bottom:-60px;left:-60px;z-index:0;pointer-events:none;"></div>
+      <div style="position:absolute;top:0;right:80px;width:1px;height:200px;background:linear-gradient(180deg,#f59e0b,transparent);transform:rotate(15deg);transform-origin:top center;z-index:0;pointer-events:none;"></div>
+      <div class="pp-circuit" style="top:35%;"></div>
+      <div class="pp-circuit" style="top:50%;"></div>
+      <div class="pp-circuit" style="top:65%;"></div>
+      <div style="position:relative;z-index:10;height:100%;display:flex;flex-direction:column;padding-bottom:52px;box-sizing:border-box;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <img src="https://xperttechsolutions.com.au/logo.png" height="32" style="filter:brightness(10) saturate(0);" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+            <span style="display:none;font-size:22px;font-weight:900;color:#f59e0b;letter-spacing:3px;font-family:'Poppins',sans-serif;">XTS</span>
+          </div>
+          <span style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;">BRISBANE · GOLD COAST</span>
         </div>
-        <div class="p-mid">
-          <div class="p-badge">${meta.icon} ${data.badge}</div>
-          <div class="p-headline">${data.posterHeadline || data.headline || ''}</div>
-          <div class="p-divider"></div>
-          <div class="p-subtitle">${data.posterSubtitle || data.sub || ''}</div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px;text-align:center;">
+          <div class="pp-badge"><i class="${meta.faIcon}"></i> ${badgeLabel}</div>
+          <div class="pp-headline" style="text-shadow:${headShadow};">${(data.posterHeadline || '').toUpperCase()}</div>
+          <div style="width:50px;height:3px;background:#f59e0b;border-radius:2px;margin:8px auto;flex-shrink:0;"></div>
+          <div class="pp-subtitle">${data.posterSubtitle || ''}</div>
+          <div style="display:flex;justify-content:center;gap:20px;margin-top:14px;">${techIcons}</div>
         </div>
       </div>
-      <div class="p-bottom">
-        <div class="p-phone">0424 167 601</div>
-        <div class="p-cta-btn">${data.posterCTA || data.cta || 'Book Now'}</div>
-        <div class="p-company">Xpert Tech<br/>Solutions</div>
+      <div class="pp-bottom">
+        <div><i class="fas fa-phone" style="color:#f59e0b;margin-right:6px;"></i><span style="color:white;font-size:clamp(11px,1.4vw,13px);font-weight:600;">0424 167 601</span></div>
+        <div class="pp-cta-btn">${data.posterCTA || 'Book Now'}</div>
+        <span style="color:rgba(255,255,255,0.5);font-size:clamp(7px,1vw,9px);">xperttechsolutions.com.au</span>
       </div>
     `
     document.getElementById('poster-placeholder').style.display = 'none'
-    canvas.style.display = 'block'
+    poster.style.display = 'block'
 
     document.getElementById('caption-text').textContent = data.caption
     document.getElementById('hashtag-text').textContent = data.hashtags || ''
@@ -668,13 +622,12 @@
 
     const systemPrompt = `You are a social media marketing expert for "Xpert Tech Solutions" — a professional computer repair and IT support business run by Jamie Rajpal (Master of IT, CCNA Certified) serving Brisbane and Gold Coast, Queensland, Australia. Website: xperttechsolutions.com.au`
 
-    const userPrompt = `Create a ${selectedType} social media post based on this idea: "${desc}"
+    const userPrompt = `Create a ${selectedType} social media post for an IT support business based on this idea: "${desc}"
 
 Return ONLY valid JSON — no markdown, no extra text:
 {
-  "badge": "2-3 word label in CAPS (e.g. LIMITED OFFER, QUICK TIP, SUCCESS STORY)",
-  "posterHeadline": "5-7 words ALL CAPS, punchy and bold — shown large on poster",
-  "posterSubtitle": "One clear sentence max 15 words — supporting detail shown under headline",
+  "posterHeadline": "MAX 5 WORDS ALL CAPS — punchy and bold, shown large on poster",
+  "posterSubtitle": "One supporting sentence, max 12 words — shown under the headline",
   "posterCTA": "2-3 word action phrase (e.g. Book Now, Call Today, Get Fixed)",
   "caption": "2-3 sentences, conversational Australian tone, mention Brisbane/Gold Coast suburbs naturally",
   "hashtags": "#ComputerRepairsBrisbane #ComputerRepairsGoldCoast #XpertTechSolutions #LaptopRepairs #ITSupport #TechHelp #Brisbane #GoldCoast plus 6-8 more relevant hashtags"
@@ -722,7 +675,7 @@ Return ONLY valid JSON — no markdown, no extra text:
 
   /* ── Download Poster ────────────────────────────────────────── */
   async function downloadPoster() {
-    const el = document.getElementById('poster-canvas')
+    const el = document.getElementById('posterPreview')
     try {
       const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null })
       const a = document.createElement('a')
@@ -917,7 +870,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     try {
       // Step 1: capture poster
       setStatus('📸 Capturing poster...', 'info')
-      const posterEl = document.getElementById('poster-canvas')
+      const posterEl = document.getElementById('posterPreview')
       const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
       const base64 = canvas.toDataURL('image/png').split(',')[1]
 
@@ -1008,7 +961,7 @@ Return ONLY valid JSON — no markdown, no extra text:
     const imgbbKey = getCredential('xts_imgbb_key')
     if (!fbToken || !igId || !imgbbKey) throw new Error('Missing Instagram settings — check Settings.')
     setStatus('📸 Capturing poster for Instagram...', 'info')
-    const posterEl = document.getElementById('poster-canvas')
+    const posterEl = document.getElementById('posterPreview')
     const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })
     const base64 = canvas.toDataURL('image/png').split(',')[1]
     setStatus('☁️ Uploading image...', 'info')

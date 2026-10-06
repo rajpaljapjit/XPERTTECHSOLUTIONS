@@ -343,7 +343,7 @@
             </div>
             <div>
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Facebook Page ID</label>
-              <input id="fb-page-id" type="text" class="input-field" value="1275753969129194" placeholder="1275753969129194"/>
+              <input id="fb-page-id" type="text" class="input-field" placeholder="1275753969129194"/>
             </div>
             <div>
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">Instagram Business Account ID</label>
@@ -351,7 +351,7 @@
             </div>
             <div>
               <label style="display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#f59e0b;margin-bottom:6px;">imgbb API Key</label>
-              <input id="imgbb-key" type="password" class="input-field" value="70de87aa92ddb84d229b71844a0972ab" style="font-family:monospace;font-size:0.8rem;"/>
+              <input id="imgbb-key" type="password" class="input-field" style="font-family:monospace;font-size:0.8rem;" placeholder="Enter imgbb key..."/>
               <p style="font-size:0.68rem;color:#334155;margin-top:4px;">Free image host for Instagram posts — <a href="https://api.imgbb.com/" target="_blank" style="color:#60a5fa;">api.imgbb.com →</a></p>
             </div>
             <div>
@@ -962,9 +962,9 @@ FORMAT: Perfect square 1:1 ratio. Ultra high resolution. NO watermarks. NO lorem
   }
   /* ── Defaults ──────────────────────────────────────────────── */
   const DEFAULTS = {
-    xts_fb_token:   'EAAXCwloA9s8BSuX8ZA19eB0oFsFvop5APLxjs1zTa3tmwCgA5vWe9VpH3MRt2jGYZBIon0z1SmC3pb2oOezbjfzZAvZARl6A1MtGdJylJC74FQMrwpEaJ6fQkpgZBL7daLvPwqZAVAF6MoM9zDLr58OYMfj9cjEmfuFQdGhadngOgsUywjfFfFf9cuEyMu5Xl2xZBs6hm0FYDPsMdDUfTCsE2ZCChzyR8jYFqZB1agJLE8IPU',
-    xts_fb_page_id: '1275753969129194',
-    xts_imgbb_key:  '70de87aa92ddb84d229b71844a0972ab',
+    xts_fb_token:   '',
+    xts_fb_page_id: '',
+    xts_imgbb_key:  '',
     xts_ig_id:      '',
   }
   /* Returns stored value, falling back to default */
@@ -1249,12 +1249,13 @@ FORMAT: Perfect square 1:1 ratio. Ultra high resolution. NO watermarks. NO lorem
   async function postToInstagramInternal() {
     const fbToken  = getCredential('xts_fb_token')
     const igId     = getCredential('xts_ig_id')
-    const imgbbKey = getCredential('xts_imgbb_key')
-    if (!fbToken || !igId || !imgbbKey) throw new Error('Missing Instagram settings — check Settings.')
+    if (!fbToken || !igId) throw new Error('Missing Instagram settings — check Settings.')
     let imageUrl
     if (window.usingDalleImage && window.currentDalleImageUrl) {
       imageUrl = window.currentDalleImageUrl
     } else {
+      const imgbbKey = getCredential('xts_imgbb_key')
+      if (!imgbbKey) throw new Error('imgbb API key required for Claude poster Instagram posts — check Settings.')
       setStatus('📸 Capturing poster for Instagram...', 'info')
       const posterEl = document.getElementById('posterPreview')
       const canvas = await html2canvas(posterEl, { scale: 2, useCORS: true, backgroundColor: null })

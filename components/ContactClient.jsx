@@ -137,9 +137,12 @@ export default function ContactClient() {
       if (res.ok) {
         router.push('/booking-confirmed')
       } else {
+        const body = await res.json().catch(() => ({}))
+        console.error('Formspree error:', res.status, body)
         throw new Error('Submission failed')
       }
-    } catch {
+    } catch (err) {
+      console.error('Form submit error:', err)
       setSubmitting(false)
       setSubmitError(true)
     }

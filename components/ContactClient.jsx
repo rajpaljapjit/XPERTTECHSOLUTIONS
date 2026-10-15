@@ -34,7 +34,7 @@ import AnimateIn from './AnimateIn'
  *    - Docs: https://www.twilio.com/docs/sms
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkjopbdb'
 // ↑ Replace YOUR_FORM_ID after signing up at formspree.io
 
 /*
@@ -44,7 +44,7 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
  * 3. Replace YOUR_CALENDLY_USERNAME below with your Calendly username
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const CALENDLY_URL = 'https://calendly.com/YOUR_CALENDLY_USERNAME'
+const CALENDLY_URL = 'https://calendly.com/rajpaljapjit/new-meeting'
 // ↑ Replace YOUR_CALENDLY_USERNAME after setting up Calendly
 
 const faqs = [

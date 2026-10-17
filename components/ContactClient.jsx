@@ -105,7 +105,7 @@ export default function ContactClient() {
   const [openFaq, setOpenFaq] = useState(null)
   const [form, setForm] = useState({
     firstName: '', lastName: '', phone: '', email: '',
-    suburb: '', service: '', date: '', time: '', description: '', newsletter: false,
+    address: '', suburb: '', service: '', description: '', newsletter: false,
   })
 
   const handleChange = (e) => {
@@ -126,10 +126,8 @@ export default function ContactClient() {
           name: `${form.firstName} ${form.lastName}`,
           phone: form.phone,
           email: form.email,
-          suburb: form.suburb,
+          address: `${form.address}, ${form.suburb}`,
           service: form.service,
-          preferredDate: form.date,
-          preferredTime: form.time,
           description: form.description,
           newsletter: form.newsletter,
         }),
@@ -235,8 +233,8 @@ export default function ContactClient() {
                 <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
               </div>
 
-              <h2 className="font-bold text-white text-lg mb-2" style={{ fontFamily: 'var(--font-space)' }}>Book Your Appointment</h2>
-              <p className="text-sm mb-6" style={{ color: '#64748b' }}>Fill in your details and Jamie will confirm within the hour.</p>
+              <h2 className="font-bold text-white text-lg mb-2" style={{ fontFamily: 'var(--font-space)' }}>Request a Technician</h2>
+              <p className="text-sm mb-6" style={{ color: '#64748b' }}>Fill in your details and we'll call to confirm your booking within the hour. To pick a specific time, use the Calendly button above.</p>
 
               <AnimatePresence mode="wait">
                 {submitted ? (
@@ -305,6 +303,11 @@ export default function ContactClient() {
                     </div>
 
                     <div className="mb-3">
+                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Street Address</label>
+                      <input name="address" value={form.address} onChange={handleChange} className="form-input" placeholder="123 Example St" required />
+                    </div>
+
+                    <div className="mb-3">
                       <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Suburb</label>
                       <input name="suburb" value={form.suburb} onChange={handleChange} className="form-input" placeholder="Your suburb" required />
                     </div>
@@ -315,20 +318,6 @@ export default function ContactClient() {
                         <option value="">Select a service...</option>
                         {serviceOptions.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Preferred Date</label>
-                        <input name="date" type="date" value={form.date} onChange={handleChange} className="form-input" required />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Preferred Time</label>
-                        <select name="time" value={form.time} onChange={handleChange} className="form-input" required>
-                          <option value="">Select a time...</option>
-                          {timeOptions.map((t) => <option key={t} value={t}>{t}</option>)}
-                        </select>
-                      </div>
                     </div>
 
                     <div className="mb-4">
@@ -370,7 +359,7 @@ export default function ContactClient() {
                         </>
                       ) : (
                         <>
-                          <FaBolt /> Confirm Booking Request
+                          <FaBolt /> Submit Booking Request
                         </>
                       )}
                     </button>

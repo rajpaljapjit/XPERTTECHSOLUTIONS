@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -98,6 +98,15 @@ const steps = [
 
 export default function ContactClient() {
   const router = useRouter()
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.head.appendChild(script)
+    return () => { document.head.removeChild(script) }
+  }, [])
+
   const [supportType, setSupportType] = useState('home')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -216,17 +225,14 @@ export default function ContactClient() {
           {/* Right: booking form */}
           <AnimateIn direction="left" delay={0.1} className="lg:col-span-3">
             <div className="glass-card p-6">
-              {/* Calendly CTA */}
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gold flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm mb-5"
-                style={{ borderRadius: 12 }}
-              >
-                <FaCalendarDays />
-                📅 Book a Time That Suits You — Calendly
-              </a>
+              {/* Calendly inline embed */}
+              <div className="mb-6 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(124,58,237,0.2)' }}>
+                <div
+                  className="calendly-inline-widget"
+                  data-url={CALENDLY_URL}
+                  style={{ minWidth: '320px', height: '700px' }}
+                />
+              </div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
                 <span className="text-xs font-medium" style={{ color: '#475569' }}>or fill in the form below</span>

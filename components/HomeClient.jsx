@@ -257,9 +257,6 @@ export default function HomeClient() {
             <Link href="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '15px 32px' }}>
               <FaBolt /> Book a Technician
             </Link>
-            <a href="https://calendly.com/rajpaljapjit/new-meeting" target="_blank" rel="noopener noreferrer" className="btn-gold" style={{ fontSize: '1rem', padding: '15px 32px' }}>
-              <FaCalendarDays /> Pick a Time
-            </a>
             <a href="tel:0424424444" className="btn-ghost" style={{ fontSize: '1rem', padding: '15px 32px' }}>
               <FaPhone /> 0424 424 444
             </a>

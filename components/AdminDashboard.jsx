@@ -10,22 +10,9 @@ import {
 
 const ADMIN_PASSWORD = 'Jamie2727**'
 
-const DEMO_TODAY = [
-  { time: '10:00 AM', name: 'Sarah Mitchell', service: 'Laptop Repair', suburb: 'Broadbeach QLD', phone: '0412000001', status: 'Confirmed', type: 'Home Visit' },
-  { time: '1:30 PM',  name: 'Robert Chen',    service: 'Wi-Fi Setup',   suburb: 'New Farm QLD',    phone: '0412000002', status: 'Confirmed', type: 'Home Visit' },
-]
-const DEMO_WEEK = [
-  { date: 'Mon', time: '10:00 AM', name: 'Emma Watson',  service: 'Virus Removal',   suburb: 'Surfers Paradise QLD', status: 'Confirmed' },
-  { date: 'Tue', time: '11:30 AM', name: 'David Park',   service: 'Email Setup',     suburb: 'Coolangatta QLD',      status: 'Confirmed' },
-  { date: 'Wed', time: '2:00 PM',  name: 'Linda Ross',   service: 'Data Recovery',   suburb: 'Byron Bay NSW',        status: 'Pending'   },
-  { date: 'Sat', time: '10:00 AM', name: 'Michael T.',   service: 'Computer Repair', suburb: 'Tweed Heads NSW',      status: 'Confirmed' },
-  { date: 'Sun', time: '1:00 PM',  name: 'Julie K.',     service: 'Remote Support',  suburb: 'Brisbane QLD',         status: 'Confirmed' },
-]
-const DEMO_ENQUIRIES = [
-  { time: 'Today 8:45 AM',      name: 'Michael Thompson', email: 'm.thompson@email.com', service: 'Printer Setup',  message: 'Wireless printer not connecting to my Wi-Fi. Need help ASAP.',                                  status: 'New'     },
-  { time: 'Yesterday 4:20 PM',  name: 'Julie Kerr',       email: 'j.kerr@email.com',     service: 'Virus Removal',  message: 'Laptop is running very slow, possible virus. Kids use it for school.',                        status: 'New'     },
-  { time: 'Yesterday 11:00 AM', name: 'Tony Bowen',       email: 't.bowen@biz.com.au',   service: 'Remote Hands',   message: 'We need on-site support in Gold Coast for router swap. Business enquiry.',                    status: 'Replied' },
-]
+const DEMO_TODAY = []
+const DEMO_WEEK = []
+const DEMO_ENQUIRIES = []
 
 const NAV_ITEMS = [
   { id: 'today',        label: "Today's Bookings",    icon: FaCalendarCheck },

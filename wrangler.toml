@@ -1,5 +1,11 @@
 name = "xperttechsolutions"
 compatibility_date = "2024-09-23"
+main = "src/worker.js"
 
 [assets]
 directory = "./out"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "xts-bookings"
+database_id = "d3292215-aee9-4b99-ac63-d433b4812e7c"

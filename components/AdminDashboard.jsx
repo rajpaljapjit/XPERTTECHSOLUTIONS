@@ -1,25 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import {
   FaEye, FaEyeSlash, FaRotateRight, FaCalendarCheck, FaEnvelope,
-  FaPhone, FaClock, FaCircleCheck, FaTriangleExclamation, FaLock,
+  FaPhone, FaCircleCheck, FaTriangleExclamation, FaLock,
   FaChartBar, FaGear, FaRightFromBracket, FaCalendarDays, FaInbox,
 } from 'react-icons/fa6'
 
 const ADMIN_PASSWORD = 'Jamie2727**'
 
-const DEMO_TODAY = []
-const DEMO_WEEK = []
-const DEMO_ENQUIRIES = []
-
 const NAV_ITEMS = [
-  { id: 'today',        label: "Today's Bookings",    icon: FaCalendarCheck },
-  { id: 'week',         label: 'This Week',           icon: FaCalendarDays  },
-  { id: 'enquiries',    label: 'Enquiries',           icon: FaInbox         },
-  { id: 'availability', label: 'Availability',        icon: FaGear          },
-  { id: 'stats',        label: 'Stats',               icon: FaChartBar      },
+  { id: 'today',        label: "Today's Bookings",  icon: FaCalendarCheck },
+  { id: 'week',         label: 'All Bookings',      icon: FaCalendarDays  },
+  { id: 'enquiries',    label: 'Enquiries',         icon: FaInbox         },
+  { id: 'availability', label: 'Availability',      icon: FaGear          },
+  { id: 'stats',        label: 'Stats',             icon: FaChartBar      },
 ]
 
 function Badge({ status }) {
@@ -38,6 +34,12 @@ function Badge({ status }) {
   )
 }
 
+function Empty({ message }) {
+  return (
+    <p className="text-center py-12 text-sm" style={{ color: '#334155' }}>{message}</p>
+  )
+}
+
 /* ── Login Screen ─────────────────────────────────────────────────── */
 function LoginScreen({ onLogin }) {
   const [pw, setPw] = useState('')
@@ -50,27 +52,19 @@ function LoginScreen({ onLogin }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: '#0b0f1e' }}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#0b0f1e' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Image src="/logo.png" alt="Xpert Tech Solutions" width={180} height={60}
-            className="h-14 w-auto object-contain mx-auto mb-6" />
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
+          <Image src="/logo.png" alt="Xpert Tech Solutions" width={180} height={60} className="h-14 w-auto object-contain mx-auto mb-6" />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
             <FaLock className="text-white" />
           </div>
-          <h1 className="text-xl font-extrabold text-white mb-1" style={{ fontFamily: 'var(--font-space)' }}>
-            Admin Dashboard
-          </h1>
+          <h1 className="text-xl font-extrabold text-white mb-1" style={{ fontFamily: 'var(--font-space)' }}>Admin Dashboard</h1>
           <p className="text-sm" style={{ color: '#475569' }}>Xpert Tech Solutions — Private Access</p>
         </div>
-
         <div className="rounded-2xl p-7" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
           <form onSubmit={submit}>
-            <label className="block text-xs font-semibold mb-2 uppercase tracking-wider" style={{ color: '#64748b' }}>
-              Password
-            </label>
+            <label className="block text-xs font-semibold mb-2 uppercase tracking-wider" style={{ color: '#64748b' }}>Password</label>
             <div className="relative mb-4">
               <input
                 type={show ? 'text' : 'password'}
@@ -79,20 +73,14 @@ function LoginScreen({ onLogin }) {
                 placeholder="Enter admin password"
                 autoFocus
                 className="w-full px-4 py-3 pr-12 rounded-xl text-white text-sm outline-none"
-                style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  border: err ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.1)',
-                }}
+                style={{ background: 'rgba(255,255,255,0.06)', border: err ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.1)' }}
               />
-              <button type="button" onClick={() => setShow(s => !s)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                style={{ color: '#475569' }}>
+              <button type="button" onClick={() => setShow(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: '#475569' }}>
                 {show ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
             {err && <p className="text-xs mb-3" style={{ color: '#f87171' }}>Incorrect password. Try again.</p>}
-            <button type="submit"
-              className="w-full py-3 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90"
+            <button type="submit" className="w-full py-3 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
               Enter Dashboard
             </button>
@@ -104,10 +92,15 @@ function LoginScreen({ onLogin }) {
 }
 
 /* ── Today Section ────────────────────────────────────────────────── */
-function TodaySection({ todayStr, dayName, isWorkDay }) {
+function TodaySection({ bookings, enquiries, stats, onStatusChange }) {
+  const today = new Date().toISOString().split('T')[0]
+  const todayBookings = bookings.filter(b => b.created_at && b.created_at.startsWith(today))
+  const todayStr = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+  const dayName  = new Date().toLocaleDateString('en-AU', { weekday: 'long' })
+  const isWorkDay = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'].includes(dayName)
+
   return (
     <div>
-      {/* Date + status bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#f59e0b', fontFamily: 'var(--font-space)' }}>Today</p>
@@ -124,105 +117,127 @@ function TodaySection({ todayStr, dayName, isWorkDay }) {
         </div>
       </div>
 
-      {/* Quick stats */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: 'Bookings Today', value: DEMO_TODAY.length, color: '#f59e0b' },
-          { label: 'This Week',      value: DEMO_WEEK.length,  color: '#4ade80' },
-          { label: 'New Enquiries',  value: DEMO_ENQUIRIES.filter(e => e.status === 'New').length, color: '#93c5fd' },
+          { label: 'Bookings Today', value: stats.todayBookings ?? 0, color: '#f59e0b' },
+          { label: 'Total Bookings', value: stats.totalBookings ?? 0, color: '#4ade80' },
+          { label: 'New Enquiries',  value: enquiries.filter(e => e.status === 'New').length, color: '#93c5fd' },
         ].map(s => (
-          <div key={s.label} className="rounded-2xl p-5 text-center"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <div key={s.label} className="rounded-2xl p-5 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
             <p className="text-3xl font-extrabold mb-1" style={{ color: s.color, fontFamily: 'var(--font-space)' }}>{s.value}</p>
             <p className="text-xs" style={{ color: '#64748b' }}>{s.label}</p>
           </div>
         ))}
       </div>
 
-      {/* Today's bookings */}
       <div className="flex items-center gap-3 mb-4">
         <FaCalendarCheck style={{ color: '#f59e0b' }} />
         <h3 className="font-bold text-white">Today's Bookings</h3>
         <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
           style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.25)' }}>
-          {DEMO_TODAY.length}
+          {todayBookings.length}
         </span>
-        <span className="ml-auto text-xs" style={{ color: '#334155' }}>Demo data</span>
       </div>
       <div className="space-y-3">
-        {DEMO_TODAY.map((b, i) => (
-          <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl p-4"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-            <div className="flex items-center gap-4 flex-1">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-extrabold text-white flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
-                {b.time.split(' ')[0]}
+        {todayBookings.length === 0
+          ? <Empty message="No bookings today." />
+          : todayBookings.map((b) => (
+            <div key={b.id} className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl p-4"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="flex items-center gap-4 flex-1">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-extrabold text-white flex-shrink-0"
+                  style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
+                  {b.preferred_time ? b.preferred_time.split(':')[0] : '—'}
+                </div>
+                <div>
+                  <p className="font-semibold text-white text-sm">{b.first_name} {b.last_name}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>{b.service} · {b.suburb}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-white text-sm">{b.name}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>{b.service} · {b.suburb}</p>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium" style={{ color: '#94a3b8' }}>{b.preferred_time || '—'}</span>
+                <Badge status={b.status} />
+                <select value={b.status} onChange={(e) => onStatusChange('bookings', b.id, e.target.value)}
+                  className="text-xs rounded-lg px-2 py-1 outline-none"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+                  <option>Pending</option>
+                  <option>Confirmed</option>
+                </select>
+                {b.phone && (
+                  <a href={`tel:${b.phone}`} className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(22,163,74,0.12)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.2)' }}>
+                    <FaPhone className="text-xs" />
+                  </a>
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-medium" style={{ color: '#94a3b8' }}>{b.time}</span>
-              <Badge status={b.status} />
-              <a href={`tel:${b.phone}`}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-                style={{ background: 'rgba(22,163,74,0.12)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.2)' }}>
-                <FaPhone className="text-xs" />
-              </a>
-            </div>
-          </div>
-        ))}
-        {DEMO_TODAY.length === 0 && (
-          <p className="text-center py-10 text-sm" style={{ color: '#334155' }}>No bookings today.</p>
-        )}
+          ))
+        }
       </div>
     </div>
   )
 }
 
-/* ── Week Section ─────────────────────────────────────────────────── */
-function WeekSection() {
+/* ── All Bookings Section ─────────────────────────────────────────── */
+function WeekSection({ bookings, onStatusChange }) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
         <FaCalendarDays style={{ color: '#4ade80' }} />
-        <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>This Week's Bookings</h2>
+        <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>All Bookings</h2>
         <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
           style={{ background: 'rgba(22,163,74,0.15)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.25)' }}>
-          {DEMO_WEEK.length}
+          {bookings.length}
         </span>
       </div>
-      <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-        <table className="w-full text-sm">
-          <thead>
-            <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-              {['Day', 'Time', 'Customer', 'Service', 'Location', 'Status'].map(h => (
-                <th key={h} className="text-left px-5 py-3 text-xs font-bold uppercase tracking-wider" style={{ color: '#334155' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {DEMO_WEEK.map((b, i) => (
-              <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
-                <td className="px-5 py-3.5 font-bold" style={{ color: '#f59e0b' }}>{b.date}</td>
-                <td className="px-5 py-3.5 text-white">{b.time}</td>
-                <td className="px-5 py-3.5 font-medium text-white">{b.name}</td>
-                <td className="px-5 py-3.5" style={{ color: '#94a3b8' }}>{b.service}</td>
-                <td className="px-5 py-3.5" style={{ color: '#64748b' }}>{b.suburb}</td>
-                <td className="px-5 py-3.5"><Badge status={b.status} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {bookings.length === 0
+        ? <Empty message="No bookings yet." />
+        : (
+          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                    {['Date', 'Time', 'Customer', 'Phone', 'Service', 'Suburb', 'Type', 'Status'].map(h => (
+                      <th key={h} className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap" style={{ color: '#334155' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((b) => (
+                    <tr key={b.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
+                      <td className="px-4 py-3 text-xs" style={{ color: '#f59e0b' }}>{b.preferred_date || b.created_at?.split('T')[0]}</td>
+                      <td className="px-4 py-3 text-white text-xs">{b.preferred_time || '—'}</td>
+                      <td className="px-4 py-3 font-medium text-white whitespace-nowrap">{b.first_name} {b.last_name}</td>
+                      <td className="px-4 py-3">
+                        {b.phone && <a href={`tel:${b.phone}`} className="text-xs hover:text-green-400 transition-colors" style={{ color: '#94a3b8' }}>{b.phone}</a>}
+                      </td>
+                      <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{b.service}</td>
+                      <td className="px-4 py-3 text-xs" style={{ color: '#64748b' }}>{b.suburb}</td>
+                      <td className="px-4 py-3 text-xs" style={{ color: '#64748b' }}>{b.support_type}</td>
+                      <td className="px-4 py-3">
+                        <select value={b.status} onChange={(e) => onStatusChange('bookings', b.id, e.target.value)}
+                          className="text-xs rounded-lg px-2 py-1 outline-none"
+                          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+                          <option>Pending</option>
+                          <option>Confirmed</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }
 
 /* ── Enquiries Section ────────────────────────────────────────────── */
-function EnquiriesSection() {
+function EnquiriesSection({ enquiries, onStatusChange }) {
+  const newCount = enquiries.filter(e => e.status === 'New').length
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
@@ -230,32 +245,43 @@ function EnquiriesSection() {
         <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>Enquiries</h2>
         <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
           style={{ background: 'rgba(59,130,246,0.15)', color: '#93c5fd', border: '1px solid rgba(59,130,246,0.25)' }}>
-          {DEMO_ENQUIRIES.filter(e => e.status === 'New').length} new
+          {newCount} new
         </span>
       </div>
-      <div className="space-y-4">
-        {DEMO_ENQUIRIES.map((e, i) => (
-          <div key={i} className="rounded-2xl p-5"
-            style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${e.status === 'New' ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-              <div>
-                <p className="font-semibold text-white">
-                  {e.name}
-                  <span className="ml-2 text-xs font-normal" style={{ color: '#64748b' }}>— {e.service}</span>
+      {enquiries.length === 0
+        ? <Empty message="No enquiries yet." />
+        : (
+          <div className="space-y-4">
+            {enquiries.map((e) => (
+              <div key={e.id} className="rounded-2xl p-5"
+                style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${e.status === 'New' ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                  <div>
+                    <p className="font-semibold text-white">{e.first_name} {e.last_name}</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      {e.email && <a href={`mailto:${e.email}`} className="text-xs hover:text-white transition-colors" style={{ color: '#94a3b8' }}>{e.email}</a>}
+                      {e.phone && <a href={`tel:${e.phone}`} className="text-xs hover:text-green-400 transition-colors" style={{ color: '#94a3b8' }}>{e.phone}</a>}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-xs" style={{ color: '#334155' }}>{e.created_at?.split('T')[0]}</span>
+                    <Badge status={e.status} />
+                    <select value={e.status} onChange={(ev) => onStatusChange('enquiries', e.id, ev.target.value)}
+                      className="text-xs rounded-lg px-2 py-1 outline-none"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+                      <option>New</option>
+                      <option>Replied</option>
+                    </select>
+                  </div>
+                </div>
+                <p className="text-sm px-4 py-3 rounded-xl" style={{ color: '#94a3b8', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  "{e.message}"
                 </p>
-                <a href={`mailto:${e.email}`} className="text-xs hover:text-white transition-colors" style={{ color: '#94a3b8' }}>{e.email}</a>
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-xs" style={{ color: '#334155' }}>{e.time}</span>
-                <Badge status={e.status} />
-              </div>
-            </div>
-            <p className="text-sm px-4 py-3 rounded-xl" style={{ color: '#94a3b8', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              "{e.message}"
-            </p>
+            ))}
           </div>
-        ))}
-      </div>
+        )
+      }
     </div>
   )
 }
@@ -274,9 +300,7 @@ function AvailabilitySection() {
           <div className="flex flex-wrap gap-2">
             {['Mon', 'Tue', 'Wed', 'Sat', 'Sun'].map(d => (
               <span key={d} className="px-3 py-1 rounded-lg text-sm font-semibold"
-                style={{ background: 'rgba(22,163,74,0.15)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.25)' }}>
-                {d}
-              </span>
+                style={{ background: 'rgba(22,163,74,0.15)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.25)' }}>{d}</span>
             ))}
           </div>
         </div>
@@ -285,9 +309,7 @@ function AvailabilitySection() {
           <div className="flex flex-wrap gap-2">
             {['Thu', 'Fri'].map(d => (
               <span key={d} className="px-3 py-1 rounded-lg text-sm font-semibold"
-                style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)' }}>
-                {d}
-              </span>
+                style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)' }}>{d}</span>
             ))}
           </div>
         </div>
@@ -295,44 +317,36 @@ function AvailabilitySection() {
           <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#94a3b8' }}>Hours</p>
           <p className="text-lg font-bold text-white">10:00 AM – 3:00 PM</p>
         </div>
-        <div className="rounded-2xl p-5" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.18)' }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#f59e0b' }}>Outside Hours Shows As</p>
-          <p className="text-lg font-bold text-white">"Booked Out"</p>
-          <p className="text-xs mt-1" style={{ color: '#64748b' }}>Not "Unavailable"</p>
-        </div>
-      </div>
-      <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#64748b' }}>How to update in Calendly</p>
-        <p className="text-sm leading-relaxed" style={{ color: '#94a3b8' }}>
-          Log in to <strong className="text-white">Calendly</strong> → Settings → Availability → set the hours above.<br />
-          Under "When unavailable" use custom text: <strong className="text-white">"Booked Out"</strong>
-        </p>
       </div>
     </div>
   )
 }
 
 /* ── Stats Section ────────────────────────────────────────────────── */
-function StatsSection() {
-  const stats = [
-    { label: 'Total Bookings (Demo)',   value: DEMO_TODAY.length + DEMO_WEEK.length, color: '#a78bfa' },
-    { label: 'Confirmed',               value: [...DEMO_TODAY, ...DEMO_WEEK].filter(b => b.status === 'Confirmed').length, color: '#4ade80' },
-    { label: 'Pending',                 value: [...DEMO_TODAY, ...DEMO_WEEK].filter(b => b.status === 'Pending').length,   color: '#fcd34d' },
-    { label: 'Total Enquiries',         value: DEMO_ENQUIRIES.length,                color: '#93c5fd' },
-    { label: 'New Enquiries',           value: DEMO_ENQUIRIES.filter(e => e.status === 'New').length,    color: '#f87171' },
-    { label: 'Replied Enquiries',       value: DEMO_ENQUIRIES.filter(e => e.status === 'Replied').length, color: '#94a3b8' },
+function StatsSection({ bookings, enquiries, stats }) {
+  const confirmed = bookings.filter(b => b.status === 'Confirmed').length
+  const pending   = bookings.filter(b => b.status === 'Pending').length
+  const newEnq    = enquiries.filter(e => e.status === 'New').length
+  const replied   = enquiries.filter(e => e.status === 'Replied').length
+
+  const items = [
+    { label: 'Total Bookings',   value: stats.totalBookings ?? bookings.length, color: '#a78bfa' },
+    { label: 'Today\'s Bookings',value: stats.todayBookings ?? 0,               color: '#f59e0b' },
+    { label: 'Confirmed',        value: confirmed,                               color: '#4ade80' },
+    { label: 'Pending',          value: pending,                                 color: '#fcd34d' },
+    { label: 'Total Enquiries',  value: stats.totalEnquiries ?? enquiries.length, color: '#93c5fd' },
+    { label: 'New Enquiries',    value: newEnq,                                  color: '#f87171' },
+    { label: 'Replied',          value: replied,                                 color: '#94a3b8' },
   ]
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
         <FaChartBar style={{ color: '#a78bfa' }} />
         <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>Stats</h2>
-        <span className="text-xs" style={{ color: '#334155' }}>Demo data</span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {stats.map(s => (
-          <div key={s.label} className="rounded-2xl p-6"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        {items.map(s => (
+          <div key={s.label} className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
             <p className="text-4xl font-extrabold mb-2" style={{ color: s.color, fontFamily: 'var(--font-space)' }}>{s.value}</p>
             <p className="text-xs" style={{ color: '#64748b' }}>{s.label}</p>
           </div>
@@ -344,15 +358,43 @@ function StatsSection() {
 
 /* ── Main Dashboard ───────────────────────────────────────────────── */
 export default function AdminDashboard() {
-  const [authed, setAuthed]         = useState(false)
-  const [activeSection, setActive]  = useState('today')
-  const [lastRefresh, setRefresh]   = useState('')
-  const [sidebarOpen, setSidebar]   = useState(false)
+  const [authed, setAuthed]        = useState(false)
+  const [activeSection, setActive] = useState('today')
+  const [sidebarOpen, setSidebar]  = useState(false)
+  const [lastRefresh, setRefresh]  = useState('')
+
+  const [bookings,  setBookings]  = useState([])
+  const [enquiries, setEnquiries] = useState([])
+  const [stats,     setStats]     = useState({})
+  const [loading,   setLoading]   = useState(false)
 
   useEffect(() => {
     if (sessionStorage.getItem('xts_admin') === 'true') setAuthed(true)
-    setRefresh(new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }))
   }, [])
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    const headers = { 'X-Admin-Password': ADMIN_PASSWORD }
+    try {
+      const [bRes, eRes, sRes] = await Promise.all([
+        fetch('/api/admin/bookings',  { headers }),
+        fetch('/api/admin/enquiries', { headers }),
+        fetch('/api/admin/stats',     { headers }),
+      ])
+      if (bRes.ok) setBookings(await bRes.json())
+      if (eRes.ok) setEnquiries(await eRes.json())
+      if (sRes.ok) setStats(await sRes.json())
+    } catch (err) {
+      console.error('Failed to fetch admin data:', err)
+    } finally {
+      setLoading(false)
+      setRefresh(new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (authed) fetchData()
+  }, [authed, fetchData])
 
   const login = () => {
     sessionStorage.setItem('xts_admin', 'true')
@@ -362,51 +404,41 @@ export default function AdminDashboard() {
     sessionStorage.removeItem('xts_admin')
     setAuthed(false)
   }
-  const refresh = () => {
-    setRefresh(new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }))
-  }
 
-  const today    = new Date()
-  const todayStr = today.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-  const dayName  = today.toLocaleDateString('en-AU', { weekday: 'long' })
-  const isWorkDay = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'].includes(dayName)
+  const handleStatusChange = async (type, id, status) => {
+    const headers = { 'X-Admin-Password': ADMIN_PASSWORD, 'Content-Type': 'application/json' }
+    await fetch(`/api/admin/${type}/${id}`, { method: 'PATCH', headers, body: JSON.stringify({ status }) })
+    if (type === 'bookings') {
+      setBookings(bs => bs.map(b => b.id === id ? { ...b, status } : b))
+    } else {
+      setEnquiries(es => es.map(e => e.id === id ? { ...e, status } : e))
+    }
+  }
 
   if (!authed) return <LoginScreen onLogin={login} />
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0b0f1e', fontFamily: 'var(--font-inter)' }}>
 
-      {/* ── Top Header Bar ── */}
+      {/* Header */}
       <header className="flex-shrink-0 flex items-center justify-between px-5 py-3 z-50"
         style={{ background: '#0f1425', borderBottom: '1px solid rgba(255,255,255,0.07)', height: 64 }}>
-
-        {/* Left: Logo + title */}
         <div className="flex items-center gap-4">
-          {/* Mobile sidebar toggle */}
           <button onClick={() => setSidebar(o => !o)}
             className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center"
             style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
             <span className="text-lg">☰</span>
           </button>
-          <Image src="/logo.png" alt="Xpert Tech Solutions" width={140} height={48}
-            className="h-10 w-auto object-contain" />
+          <Image src="/logo.png" alt="Xpert Tech Solutions" width={140} height={48} className="h-10 w-auto object-contain" />
           <div className="hidden sm:block w-px h-6" style={{ background: 'rgba(255,255,255,0.1)' }} />
-          <span className="hidden sm:block text-sm font-bold" style={{ color: '#94a3b8', fontFamily: 'var(--font-space)' }}>
-            Admin Dashboard
-          </span>
+          <span className="hidden sm:block text-sm font-bold" style={{ color: '#94a3b8', fontFamily: 'var(--font-space)' }}>Admin Dashboard</span>
         </div>
-
-        {/* Right: Refresh + Logout */}
         <div className="flex items-center gap-2">
-          {lastRefresh && (
-            <span className="hidden sm:block text-xs mr-2" style={{ color: '#334155' }}>
-              Updated {lastRefresh}
-            </span>
-          )}
-          <button onClick={refresh}
+          {lastRefresh && <span className="hidden sm:block text-xs mr-2" style={{ color: '#334155' }}>Updated {lastRefresh}</span>}
+          <button onClick={fetchData}
             className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors hover:text-white"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', color: '#64748b' }}>
-            <FaRotateRight className="text-xs" />
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', color: loading ? '#7c3aed' : '#64748b' }}>
+            <FaRotateRight className={`text-xs ${loading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Refresh</span>
           </button>
           <button onClick={logout}
@@ -418,26 +450,22 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      {/* ── Body: Sidebar + Content ── */}
+      {/* Body */}
       <div className="flex flex-1 overflow-hidden">
 
         {/* Sidebar */}
-        <aside
-          className={`flex-shrink-0 flex flex-col transition-all duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} fixed lg:static inset-y-0 left-0 top-16 z-40 lg:z-auto`}
+        <aside className={`flex-shrink-0 flex flex-col transition-all duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} fixed lg:static inset-y-0 left-0 top-16 z-40 lg:z-auto`}
           style={{ width: 220, background: '#0d1121', borderRight: '1px solid rgba(255,255,255,0.06)', paddingTop: 24 }}>
-
           <nav className="flex flex-col gap-1 px-3">
             {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
               const active = activeSection === id
               return (
-                <button key={id}
-                  onClick={() => { setActive(id); setSidebar(false) }}
+                <button key={id} onClick={() => { setActive(id); setSidebar(false) }}
                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-left transition-all w-full"
                   style={{
                     background: active ? 'rgba(124,58,237,0.15)' : 'transparent',
-                    color:      active ? '#c4b5fd' : '#475569',
-                    border:     active ? '1px solid rgba(124,58,237,0.25)' : '1px solid transparent',
-                    fontFamily: 'var(--font-space)',
+                    border: active ? '1px solid rgba(124,58,237,0.25)' : '1px solid transparent',
+                    color: active ? '#c4b5fd' : '#475569',
                   }}>
                   <Icon className="text-sm flex-shrink-0" />
                   {label}
@@ -445,34 +473,16 @@ export default function AdminDashboard() {
               )
             })}
           </nav>
-
-          <div className="mt-auto px-4 pb-6 flex flex-col gap-3">
-            <a href="/marketing-hub.html"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all w-full"
-              style={{ background: 'rgba(245,158,11,0.08)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)', fontFamily: 'var(--font-space)', textDecoration: 'none' }}>
-              <span className="text-sm">📣</span>
-              Marketing Hub
-            </a>
-            <div className="rounded-xl p-3 text-xs" style={{ background: 'rgba(255,255,255,0.02)', color: '#1e293b' }}>
-              Private — not linked publicly
-            </div>
-          </div>
         </aside>
-
-        {/* Mobile sidebar overlay */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-30 lg:hidden" style={{ background: 'rgba(0,0,0,0.6)' }}
-            onClick={() => setSidebar(false)} />
-        )}
 
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-          <div className="max-w-4xl">
-            {activeSection === 'today'        && <TodaySection todayStr={todayStr} dayName={dayName} isWorkDay={isWorkDay} />}
-            {activeSection === 'week'         && <WeekSection />}
-            {activeSection === 'enquiries'    && <EnquiriesSection />}
+          <div className="max-w-5xl mx-auto">
+            {activeSection === 'today'        && <TodaySection    bookings={bookings} enquiries={enquiries} stats={stats} onStatusChange={handleStatusChange} />}
+            {activeSection === 'week'         && <WeekSection     bookings={bookings} onStatusChange={handleStatusChange} />}
+            {activeSection === 'enquiries'    && <EnquiriesSection enquiries={enquiries} onStatusChange={handleStatusChange} />}
             {activeSection === 'availability' && <AvailabilitySection />}
-            {activeSection === 'stats'        && <StatsSection />}
+            {activeSection === 'stats'        && <StatsSection    bookings={bookings} enquiries={enquiries} stats={stats} />}
           </div>
         </main>
       </div>

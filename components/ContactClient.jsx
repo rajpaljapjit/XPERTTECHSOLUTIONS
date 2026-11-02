@@ -44,7 +44,7 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkjopbdb'
  * 3. Replace YOUR_CALENDLY_USERNAME below with your Calendly username
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const CALENDLY_URL = 'https://calendly.com/rajpaljapjit/new-meeting'
+const CALENDLY_URL = 'https://calendly.com/rajpaljapjit/new-meeting?background_color=0f1728&text_color=ffffff&primary_color=7c3aed'
 // ↑ Replace YOUR_CALENDLY_USERNAME after setting up Calendly
 
 const faqs = [
@@ -235,12 +235,12 @@ export default function ContactClient() {
               </div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                <span className="text-xs font-medium" style={{ color: '#475569' }}>or fill in the form below</span>
+                <span className="text-xs font-medium" style={{ color: '#475569' }}>or send us a message</span>
                 <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
               </div>
 
-              <h2 className="font-bold text-white text-lg mb-2" style={{ fontFamily: 'var(--font-space)' }}>Request a Technician</h2>
-              <p className="text-sm mb-6" style={{ color: '#64748b' }}>Fill in your details and we'll call to confirm your booking within the hour. To pick a specific time, use the Calendly button above.</p>
+              <h2 className="font-bold text-white text-lg mb-2" style={{ fontFamily: 'var(--font-space)' }}>Contact Us</h2>
+              <p className="text-sm mb-6" style={{ color: '#64748b' }}>Have a question or not sure what you need? Send us a message and we'll get back to you shortly.</p>
 
               <AnimatePresence mode="wait">
                 {submitted ? (
@@ -254,38 +254,14 @@ export default function ContactClient() {
                     <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl" style={{ background: 'rgba(34,197,94,0.15)' }}>
                       <FaCircleCheck style={{ color: '#22c55e' }} />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Booking Request Received!</h3>
-                    <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>We will call you within the hour to confirm your appointment and provide an estimate.</p>
+                    <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
+                    <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>Thanks for getting in touch. We'll get back to you shortly.</p>
                     <a href="tel:0424424444" className="btn-primary">
                       <FaPhone /> Call Us Now
                     </a>
                   </motion.div>
                 ) : (
                   <motion.form key="form" onSubmit={handleSubmit} id="bookingForm">
-                    {/* Support type */}
-                    <div className="flex gap-2 mb-5">
-                      {[
-                        { value: 'home', label: 'Home Visit' },
-                        { value: 'remote', label: 'Remote Session' },
-                        { value: 'unsure', label: 'Not Sure' },
-                      ].map((opt) => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          onClick={() => setSupportType(opt.value)}
-                          className="flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all"
-                          style={{
-                            background: supportType === opt.value ? 'rgba(124,58,237,0.2)' : 'rgba(255,255,255,0.04)',
-                            border: `1.5px solid ${supportType === opt.value ? 'rgba(124,58,237,0.5)' : 'rgba(255,255,255,0.1)'}`,
-                            color: supportType === opt.value ? '#c4b5fd' : '#64748b',
-                            fontFamily: 'var(--font-space)',
-                          }}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
                         <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>First Name</label>
@@ -308,47 +284,19 @@ export default function ContactClient() {
                       </div>
                     </div>
 
-                    <div className="mb-3">
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Street Address</label>
-                      <input name="address" value={form.address} onChange={handleChange} className="form-input" placeholder="123 Example St" required />
-                    </div>
-
-                    <div className="mb-3">
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Suburb</label>
-                      <input name="suburb" value={form.suburb} onChange={handleChange} className="form-input" placeholder="Your suburb" required />
-                    </div>
-
-                    <div className="mb-3">
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Service Needed</label>
-                      <select name="service" value={form.service} onChange={handleChange} className="form-input" required>
-                        <option value="">Select a service...</option>
-                        {serviceOptions.map((s) => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-
                     <div className="mb-4">
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Describe Your Problem (optional)</label>
+                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Your Message</label>
                       <textarea
                         name="description"
                         value={form.description}
                         onChange={handleChange}
                         className="form-input"
-                        rows={3}
-                        placeholder="Tell us what's happening -- as much or as little as you like..."
-                        style={{ resize: 'vertical', minHeight: 80 }}
+                        rows={4}
+                        placeholder="What can we help you with? Ask us anything..."
+                        style={{ resize: 'vertical', minHeight: 100 }}
+                        required
                       />
                     </div>
-
-                    <label className="flex items-start gap-3 mb-5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="newsletter"
-                        checked={form.newsletter}
-                        onChange={handleChange}
-                        className="mt-0.5 accent-green-600"
-                      />
-                      <span className="text-xs" style={{ color: '#94a3b8' }}>Send me occasional tips and special offers. No spam, unsubscribe any time.</span>
-                    </label>
 
                     {submitError && (
                       <div className="mb-4 flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)' }}>
@@ -365,7 +313,7 @@ export default function ContactClient() {
                         </>
                       ) : (
                         <>
-                          <FaBolt /> Submit Booking Request
+                          <FaBolt /> Send Message
                         </>
                       )}
                     </button>

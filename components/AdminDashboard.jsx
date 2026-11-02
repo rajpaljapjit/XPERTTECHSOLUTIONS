@@ -8,7 +8,7 @@ import {
   FaChartBar, FaGear, FaRightFromBracket, FaCalendarDays, FaInbox,
 } from 'react-icons/fa6'
 
-const ADMIN_PASSWORD = 'XTS2024admin'
+const ADMIN_PASSWORD = 'Jamie2727**'
 
 const DEMO_TODAY = [
   { time: '10:00 AM', name: 'Sarah Mitchell', service: 'Laptop Repair', suburb: 'Broadbeach QLD', phone: '0412000001', status: 'Confirmed', type: 'Home Visit' },

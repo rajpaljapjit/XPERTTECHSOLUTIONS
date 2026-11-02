@@ -288,36 +288,106 @@ function EnquiriesSection({ enquiries, onStatusChange }) {
 
 /* ── Availability Section ─────────────────────────────────────────── */
 function AvailabilitySection() {
+  const [days, setDays] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/availability')
+      .then(r => r.json())
+      .then(data => { setDays(data); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const update = (dayName, field, value) => {
+    setDays(ds => ds.map(d => d.day_of_week === dayName ? { ...d, [field]: value } : d))
+    setSaved(false)
+  }
+
+  const save = async () => {
+    setSaving(true)
+    try {
+      await fetch('/api/admin/availability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': ADMIN_PASSWORD },
+        body: JSON.stringify(days),
+      })
+      setSaved(true)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) return <p className="text-center py-12 text-sm" style={{ color: '#475569' }}>Loading...</p>
+
   return (
     <div>
-      <div className="flex items-center gap-3 mb-6">
-        <FaGear style={{ color: '#f59e0b' }} />
-        <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>Availability Settings</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <FaGear style={{ color: '#f59e0b' }} />
+          <h2 className="text-xl font-extrabold text-white" style={{ fontFamily: 'var(--font-space)' }}>Availability</h2>
+        </div>
+        <button onClick={save} disabled={saving}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all"
+          style={{
+            background: saved ? 'rgba(22,163,74,0.15)' : 'linear-gradient(135deg, #7c3aed, #2563eb)',
+            color: saved ? '#4ade80' : 'white',
+            border: saved ? '1px solid rgba(22,163,74,0.3)' : 'none',
+            opacity: saving ? 0.7 : 1,
+          }}>
+          {saving ? 'Saving...' : saved ? '✓ Saved' : 'Save Changes'}
+        </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        <div className="rounded-2xl p-5" style={{ background: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.18)' }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#4ade80' }}>Work Days</p>
-          <div className="flex flex-wrap gap-2">
-            {['Mon', 'Tue', 'Wed', 'Sat', 'Sun'].map(d => (
-              <span key={d} className="px-3 py-1 rounded-lg text-sm font-semibold"
-                style={{ background: 'rgba(22,163,74,0.15)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.25)' }}>{d}</span>
-            ))}
+
+      <div className="space-y-3">
+        {days.map(day => (
+          <div key={day.day_of_week} className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl p-4"
+            style={{
+              background: day.is_available ? 'rgba(22,163,74,0.05)' : 'rgba(255,255,255,0.02)',
+              border: `1px solid ${day.is_available ? 'rgba(22,163,74,0.2)' : 'rgba(255,255,255,0.06)'}`,
+            }}>
+
+            {/* Day toggle */}
+            <div className="flex items-center gap-3 w-36 flex-shrink-0">
+              <button type="button"
+                onClick={() => update(day.day_of_week, 'is_available', day.is_available ? 0 : 1)}
+                className="relative w-11 h-6 rounded-full transition-all flex-shrink-0"
+                style={{ background: day.is_available ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
+                <span className="absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all shadow"
+                  style={{ left: day.is_available ? '22px' : '2px' }} />
+              </button>
+              <span className="text-sm font-semibold" style={{ color: day.is_available ? '#4ade80' : '#475569' }}>
+                {day.day_of_week}
+              </span>
+            </div>
+
+            {/* Time range */}
+            {day.is_available ? (
+              <div className="flex items-center gap-3">
+                <div>
+                  <label className="block text-xs mb-1" style={{ color: '#64748b' }}>Start</label>
+                  <input type="time" value={day.start_time}
+                    onChange={e => update(day.day_of_week, 'start_time', e.target.value)}
+                    className="px-3 py-1.5 rounded-lg text-sm text-white outline-none"
+                    style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                </div>
+                <span className="text-sm mt-4" style={{ color: '#475569' }}>to</span>
+                <div>
+                  <label className="block text-xs mb-1" style={{ color: '#64748b' }}>End</label>
+                  <input type="time" value={day.end_time}
+                    onChange={e => update(day.day_of_week, 'end_time', e.target.value)}
+                    className="px-3 py-1.5 rounded-lg text-sm text-white outline-none"
+                    style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                </div>
+              </div>
+            ) : (
+              <span className="text-sm" style={{ color: '#334155' }}>Day off — not bookable</span>
+            )}
           </div>
-        </div>
-        <div className="rounded-2xl p-5" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)' }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#f87171' }}>Days Off</p>
-          <div className="flex flex-wrap gap-2">
-            {['Thu', 'Fri'].map(d => (
-              <span key={d} className="px-3 py-1 rounded-lg text-sm font-semibold"
-                style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)' }}>{d}</span>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-          <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#94a3b8' }}>Hours</p>
-          <p className="text-lg font-bold text-white">10:00 AM – 3:00 PM</p>
-        </div>
+        ))}
       </div>
+      <p className="text-xs mt-4" style={{ color: '#334155' }}>Changes take effect immediately on the booking form.</p>
     </div>
   )
 }

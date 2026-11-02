@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -67,9 +67,41 @@ function useForm(initial) {
   return [form, handleChange, setForm]
 }
 
+function generateTimeSlots(startTime, endTime) {
+  const slots = []
+  const [startH] = startTime.split(':').map(Number)
+  const [endH]   = endTime.split(':').map(Number)
+  for (let h = startH; h < endH; h++) {
+    const label = h < 12 ? `${h}:00 am` : h === 12 ? '12:00 pm' : `${h - 12}:00 pm`
+    slots.push(label)
+  }
+  return slots
+}
+
 export default function ContactClient() {
   const router = useRouter()
   const [openFaq, setOpenFaq] = useState(null)
+  const [availability, setAvailability] = useState([])
+
+  useEffect(() => {
+    fetch('/api/availability')
+      .then(r => r.json())
+      .then(setAvailability)
+      .catch(() => {})
+  }, [])
+
+  const getAvailableDay = (dateStr) => {
+    if (!dateStr || !availability.length) return null
+    const dayName = new Date(dateStr + 'T12:00:00').toLocaleDateString('en-AU', { weekday: 'long' })
+    return availability.find(d => d.day_of_week === dayName && d.is_available)
+  }
+
+  const isDateDisabled = (dateStr) => {
+    if (!availability.length) return false
+    const dayName = new Date(dateStr + 'T12:00:00').toLocaleDateString('en-AU', { weekday: 'long' })
+    const day = availability.find(d => d.day_of_week === dayName)
+    return day ? !day.is_available : true
+  }
 
   // ── Booking form state ────────────────────────────────────────
   const [supportType, setSupportType] = useState('home')
@@ -282,14 +314,33 @@ export default function ContactClient() {
                       <div className="grid grid-cols-2 gap-3 mb-3">
                         <div>
                           <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Preferred Date</label>
-                          <input name="preferredDate" type="date" value={bookForm.preferredDate} onChange={bookChange} className="form-input" required />
+                          <input name="preferredDate" type="date" value={bookForm.preferredDate}
+                            min={new Date().toISOString().split('T')[0]}
+                            onChange={e => { bookChange(e); }}
+                            className="form-input" required />
+                          {bookForm.preferredDate && isDateDisabled(bookForm.preferredDate) && (
+                            <p className="text-xs mt-1" style={{ color: '#f87171' }}>
+                              We're not available on {new Date(bookForm.preferredDate + 'T12:00:00').toLocaleDateString('en-AU', { weekday: 'long' })}s. Please choose another date.
+                            </p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Preferred Time</label>
                           <select name="preferredTime" value={bookForm.preferredTime} onChange={bookChange} className="form-input" required>
                             <option value="">Select a time...</option>
-                            {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
+                            {(() => {
+                              const avDay = getAvailableDay(bookForm.preferredDate)
+                              const slots = avDay
+                                ? generateTimeSlots(avDay.start_time, avDay.end_time)
+                                : timeOptions
+                              return slots.map(t => <option key={t} value={t}>{t}</option>)
+                            })()}
                           </select>
+                          {getAvailableDay(bookForm.preferredDate) && (
+                            <p className="text-xs mt-1" style={{ color: '#4ade80' }}>
+                              Available {getAvailableDay(bookForm.preferredDate).start_time} – {getAvailableDay(bookForm.preferredDate).end_time}
+                            </p>
+                          )}
                         </div>
                       </div>
 

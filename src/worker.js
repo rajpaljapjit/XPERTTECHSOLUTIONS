@@ -156,6 +156,26 @@ export default {
       return json({ ok: true })
     }
 
+    // ── GET /api/availability (public) ──────────────────────────
+    if (url.pathname === '/api/availability' && request.method === 'GET') {
+      const { results } = await env.DB.prepare(
+        'SELECT * FROM availability ORDER BY CASE day_of_week WHEN "Monday" THEN 1 WHEN "Tuesday" THEN 2 WHEN "Wednesday" THEN 3 WHEN "Thursday" THEN 4 WHEN "Friday" THEN 5 WHEN "Saturday" THEN 6 WHEN "Sunday" THEN 7 END'
+      ).all()
+      return json(results)
+    }
+
+    // ── POST /api/admin/availability ────────────────────────────
+    if (url.pathname === '/api/admin/availability' && request.method === 'POST') {
+      if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)
+      const days = await request.json()
+      for (const day of days) {
+        await env.DB.prepare(
+          'UPDATE availability SET is_available = ?, start_time = ?, end_time = ? WHERE day_of_week = ?'
+        ).bind(day.is_available ? 1 : 0, day.start_time, day.end_time, day.day_of_week).run()
+      }
+      return json({ ok: true })
+    }
+
     // ── Static assets ───────────────────────────────────────────
     return env.ASSETS.fetch(request)
   },

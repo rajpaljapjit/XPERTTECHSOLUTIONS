@@ -1,6 +1,5 @@
 const ADMIN_PASSWORD = 'Jamie2727**'
-const NOTIFICATION_EMAIL = 'xperttechsolutions@mail.com'
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkjopbdb'
+const NOTIFICATION_EMAIL = 'rajpaljapjit@gmail.com'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,12 +18,22 @@ function checkAdmin(request) {
   return request.headers.get('X-Admin-Password') === ADMIN_PASSWORD
 }
 
-async function sendEmailNotification(subject, data) {
+async function sendEmailNotification(env, subject, data) {
+  if (!env.RESEND_API_KEY) return
   try {
-    await fetch(FORMSPREE_ENDPOINT, {
+    const text = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n')
+    await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ _subject: subject, ...data }),
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'XTS Bookings <onboarding@resend.dev>',
+        to: [NOTIFICATION_EMAIL],
+        subject,
+        text,
+      }),
     })
   } catch (e) {
     console.error('Email notification failed:', e)
@@ -53,7 +62,7 @@ export default {
           d.supportType || 'home', d.description || ''
         ).run()
 
-        await sendEmailNotification(`New Booking — ${d.firstName} ${d.lastName}`, {
+        await sendEmailNotification(env, `New Booking — ${d.firstName} ${d.lastName}`, {
           name: `${d.firstName} ${d.lastName}`,
           phone: d.phone,
           email: d.email,
@@ -80,7 +89,7 @@ export default {
           VALUES (?, ?, ?, ?, ?)
         `).bind(d.firstName, d.lastName, d.phone, d.email, d.message || '').run()
 
-        await sendEmailNotification(`New Enquiry — ${d.firstName} ${d.lastName}`, {
+        await sendEmailNotification(env, `New Enquiry — ${d.firstName} ${d.lastName}`, {
           name: `${d.firstName} ${d.lastName}`,
           phone: d.phone,
           email: d.email,

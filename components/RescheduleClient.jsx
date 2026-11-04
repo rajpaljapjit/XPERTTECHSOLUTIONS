@@ -50,10 +50,20 @@ function RescheduleForm() {
   const [submitted, setSubmitted]   = useState(false)
   const [error, setError]           = useState(false)
   const [availability, setAvailability] = useState([])
+  const [bookedSlots, setBookedSlots]   = useState([])
 
   useEffect(() => {
     fetch('/api/availability').then(r => r.json()).then(setAvailability).catch(() => {})
   }, [])
+
+  // Fetch booked slots whenever date changes
+  useEffect(() => {
+    if (!date) { setBookedSlots([]); return }
+    fetch(`/api/booked-slots?date=${date}`)
+      .then(r => r.json())
+      .then(setBookedSlots)
+      .catch(() => setBookedSlots([]))
+  }, [date])
 
   const isDateDisabled = (dateStr) => {
     if (!availability.length) return false
@@ -171,8 +181,15 @@ function RescheduleForm() {
                       <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>New Time</label>
                       <select value={time} onChange={e => setTime(e.target.value)} className="form-input" required>
                         <option value="">Select a time...</option>
-                        {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
+                        {timeOptions
+                          .filter(t => !bookedSlots.includes(t))
+                          .map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
+                      {bookedSlots.length > 0 && (
+                        <p className="text-xs mt-1" style={{ color: '#f59e0b' }}>
+                          {bookedSlots.length} slot{bookedSlots.length > 1 ? 's' : ''} already booked on this date.
+                        </p>
+                      )}
                     </div>
                   </div>
 

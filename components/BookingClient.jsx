@@ -82,6 +82,7 @@ export default function BookingClient() {
   const [bookSubmitting, setBookSubmitting] = useState(false)
   const [bookSubmitted, setBookSubmitted] = useState(false)
   const [bookError, setBookError] = useState(false)
+  const [bookedSlots, setBookedSlots] = useState([])
 
   useEffect(() => {
     fetch('/api/availability')
@@ -89,6 +90,14 @@ export default function BookingClient() {
       .then(setAvailability)
       .catch(() => {})
   }, [])
+
+  const fetchBookedSlots = (dateStr) => {
+    if (!dateStr) { setBookedSlots([]); return }
+    fetch(`/api/booked-slots?date=${dateStr}`)
+      .then(r => r.json())
+      .then(setBookedSlots)
+      .catch(() => setBookedSlots([]))
+  }
 
   const getAvailableDay = (dateStr) => {
     if (!dateStr || !availability.length) return null
@@ -233,7 +242,7 @@ export default function BookingClient() {
                         <label className="block text-xs font-semibold mb-1.5" style={{ color: '#64748b' }}>Preferred Date</label>
                         <input name="preferredDate" type="date" value={bookForm.preferredDate}
                           min={new Date().toISOString().split('T')[0]}
-                          onChange={e => { bookChange(e) }}
+                          onChange={e => { bookChange(e); fetchBookedSlots(e.target.value) }}
                           className="form-input" required />
                         {bookForm.preferredDate && isDateDisabled(bookForm.preferredDate) && (
                           <p className="text-xs mt-1" style={{ color: '#f87171' }}>
@@ -250,12 +259,21 @@ export default function BookingClient() {
                             const slots = avDay
                               ? generateTimeSlots(avDay.start_time, avDay.end_time)
                               : timeOptions
-                            return slots.map(t => <option key={t} value={t}>{t}</option>)
+                            const available = slots.filter(t => !bookedSlots.includes(t))
+                            if (available.length === 0 && slots.length > 0) {
+                              return <option disabled value="">No times available on this date</option>
+                            }
+                            return available.map(t => <option key={t} value={t}>{t}</option>)
                           })()}
                         </select>
                         {getAvailableDay(bookForm.preferredDate) && (
                           <p className="text-xs mt-1" style={{ color: '#4ade80' }}>
                             Available {getAvailableDay(bookForm.preferredDate).start_time} – {getAvailableDay(bookForm.preferredDate).end_time}
+                          </p>
+                        )}
+                        {bookedSlots.length > 0 && (
+                          <p className="text-xs mt-1" style={{ color: '#f59e0b' }}>
+                            {bookedSlots.length} slot{bookedSlots.length > 1 ? 's' : ''} already booked on this date.
                           </p>
                         )}
                       </div>

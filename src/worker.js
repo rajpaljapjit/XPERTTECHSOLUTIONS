@@ -309,6 +309,17 @@ export default {
       return json({ ok: true })
     }
 
+    // ── GET /api/booked-slots?date=YYYY-MM-DD (public) ─────────
+    // Returns times already taken on a given date so the booking form can hide them
+    if (url.pathname === '/api/booked-slots' && request.method === 'GET') {
+      const date = url.searchParams.get('date')
+      if (!date) return json({ error: 'date param required' }, 400)
+      const { results } = await env.DB.prepare(
+        "SELECT preferred_time FROM bookings WHERE preferred_date = ? AND status != 'Cancelled'"
+      ).bind(date).all()
+      return json(results.map(r => r.preferred_time).filter(Boolean))
+    }
+
     // ── GET /api/availability (public) ──────────────────────────
     if (url.pathname === '/api/availability' && request.method === 'GET') {
       const { results } = await env.DB.prepare(

@@ -6,6 +6,7 @@ import {
   FaEye, FaEyeSlash, FaRotateRight, FaCalendarCheck, FaEnvelope,
   FaPhone, FaCircleCheck, FaTriangleExclamation, FaLock,
   FaChartBar, FaGear, FaRightFromBracket, FaCalendarDays, FaInbox,
+  FaCheck, FaPaperPlane, FaXmark,
 } from 'react-icons/fa6'
 
 const ADMIN_PASSWORD = 'Jamie2727**'
@@ -37,6 +38,61 @@ function Badge({ status }) {
 function Empty({ message }) {
   return (
     <p className="text-center py-12 text-sm" style={{ color: '#334155' }}>{message}</p>
+  )
+}
+
+/* ── Confirm Panel ────────────────────────────────────────────────── */
+function ConfirmPanel({ booking, onConfirm, onClose }) {
+  const defaultNote = `Hi ${booking.first_name}, your booking for ${booking.service} on ${booking.preferred_date} at ${booking.preferred_time} is confirmed. We'll see you then! If you need to reschedule, call us on 0424 424 444.`
+  const [note, setNote] = useState(defaultNote)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+
+  const handleSend = async () => {
+    setSending(true)
+    await onConfirm(booking.id, note)
+    setSending(false)
+    setSent(true)
+    setTimeout(onClose, 1500)
+  }
+
+  return (
+    <div className="mt-3 p-4 rounded-xl" style={{ background: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.2)' }}>
+      {sent ? (
+        <div className="flex items-center gap-2 text-sm" style={{ color: '#4ade80' }}>
+          <FaCircleCheck /> Confirmation email sent to {booking.email}
+        </div>
+      ) : (
+        <>
+          <p className="text-xs font-semibold mb-2" style={{ color: '#64748b' }}>
+            Confirmation email to: <span style={{ color: '#94a3b8' }}>{booking.email}</span>
+          </p>
+          <textarea
+            value={note}
+            onChange={e => setNote(e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none mb-3"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', resize: 'vertical' }}
+            placeholder="Add a note to the customer (optional)..."
+          />
+          <p className="text-xs mb-3" style={{ color: '#475569' }}>
+            Need to suggest a different time? Edit the message above.
+          </p>
+          <div className="flex gap-2">
+            <button onClick={handleSend} disabled={sending}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold text-white transition-opacity hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', opacity: sending ? 0.7 : 1 }}>
+              <FaPaperPlane /> {sending ? 'Sending...' : 'Send Confirmation'}
+            </button>
+            <button onClick={onClose}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#64748b' }}>
+              <FaXmark /> Cancel
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -92,12 +148,13 @@ function LoginScreen({ onLogin }) {
 }
 
 /* ── Today Section ────────────────────────────────────────────────── */
-function TodaySection({ bookings, enquiries, stats, onStatusChange }) {
+function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBooking }) {
   const today = new Date().toISOString().split('T')[0]
   const todayBookings = bookings.filter(b => b.created_at && b.created_at.startsWith(today))
   const todayStr = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
   const dayName  = new Date().toLocaleDateString('en-AU', { weekday: 'long' })
   const isWorkDay = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'].includes(dayName)
+  const [confirmingId, setConfirmingId] = useState(null)
 
   return (
     <div>
@@ -142,34 +199,44 @@ function TodaySection({ bookings, enquiries, stats, onStatusChange }) {
         {todayBookings.length === 0
           ? <Empty message="No bookings today." />
           : todayBookings.map((b) => (
-            <div key={b.id} className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl p-4"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="flex items-center gap-4 flex-1">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-extrabold text-white flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
-                  {b.preferred_time ? b.preferred_time.split(':')[0] : '—'}
+            <div key={b.id}>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl p-4"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-extrabold text-white flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
+                    {b.preferred_time ? b.preferred_time.split(':')[0] : '—'}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white text-sm">{b.first_name} {b.last_name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>{b.service} · {b.suburb}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-white text-sm">{b.first_name} {b.last_name}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>{b.service} · {b.suburb}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm font-medium" style={{ color: '#94a3b8' }}>{b.preferred_time || '—'}</span>
+                  <Badge status={b.status} />
+                  {b.phone && (
+                    <a href={`tel:${b.phone}`} className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(22,163,74,0.12)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.2)' }}>
+                      <FaPhone className="text-xs" />
+                    </a>
+                  )}
+                  {b.status !== 'Confirmed' && (
+                    <button onClick={() => setConfirmingId(confirmingId === b.id ? null : b.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                      style={{ background: 'rgba(22,163,74,0.12)', border: '1px solid rgba(22,163,74,0.25)', color: '#4ade80' }}>
+                      <FaCheck /> Confirm
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium" style={{ color: '#94a3b8' }}>{b.preferred_time || '—'}</span>
-                <Badge status={b.status} />
-                <select value={b.status} onChange={(e) => onStatusChange('bookings', b.id, e.target.value)}
-                  className="text-xs rounded-lg px-2 py-1 outline-none"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
-                  <option>Pending</option>
-                  <option>Confirmed</option>
-                </select>
-                {b.phone && (
-                  <a href={`tel:${b.phone}`} className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ background: 'rgba(22,163,74,0.12)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.2)' }}>
-                    <FaPhone className="text-xs" />
-                  </a>
-                )}
-              </div>
+              {confirmingId === b.id && (
+                <ConfirmPanel
+                  booking={b}
+                  onConfirm={async (id, note) => { await onConfirmBooking(id, note); setConfirmingId(null) }}
+                  onClose={() => setConfirmingId(null)}
+                />
+              )}
             </div>
           ))
         }
@@ -179,7 +246,9 @@ function TodaySection({ bookings, enquiries, stats, onStatusChange }) {
 }
 
 /* ── All Bookings Section ─────────────────────────────────────────── */
-function WeekSection({ bookings, onStatusChange }) {
+function WeekSection({ bookings, onStatusChange, onConfirmBooking }) {
+  const [confirmingId, setConfirmingId] = useState(null)
+
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
@@ -193,41 +262,79 @@ function WeekSection({ bookings, onStatusChange }) {
       {bookings.length === 0
         ? <Empty message="No bookings yet." />
         : (
-          <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                    {['Date', 'Time', 'Customer', 'Phone', 'Service', 'Suburb', 'Type', 'Status'].map(h => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap" style={{ color: '#334155' }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((b) => (
-                    <tr key={b.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
-                      <td className="px-4 py-3 text-xs" style={{ color: '#f59e0b' }}>{b.preferred_date || b.created_at?.split('T')[0]}</td>
-                      <td className="px-4 py-3 text-white text-xs">{b.preferred_time || '—'}</td>
-                      <td className="px-4 py-3 font-medium text-white whitespace-nowrap">{b.first_name} {b.last_name}</td>
-                      <td className="px-4 py-3">
-                        {b.phone && <a href={`tel:${b.phone}`} className="text-xs hover:text-green-400 transition-colors" style={{ color: '#94a3b8' }}>{b.phone}</a>}
-                      </td>
-                      <td className="px-4 py-3 text-xs" style={{ color: '#94a3b8' }}>{b.service}</td>
-                      <td className="px-4 py-3 text-xs" style={{ color: '#64748b' }}>{b.suburb}</td>
-                      <td className="px-4 py-3 text-xs" style={{ color: '#64748b' }}>{b.support_type}</td>
-                      <td className="px-4 py-3">
-                        <select value={b.status} onChange={(e) => onStatusChange('bookings', b.id, e.target.value)}
-                          className="text-xs rounded-lg px-2 py-1 outline-none"
-                          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
-                          <option>Pending</option>
-                          <option>Confirmed</option>
-                        </select>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="space-y-3">
+            {bookings.map((b) => (
+              <div key={b.id}>
+                <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+                    {/* Info */}
+                    <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-1.5 text-xs">
+                      <div>
+                        <span style={{ color: '#475569' }}>Customer</span>
+                        <p className="font-semibold text-white mt-0.5">{b.first_name} {b.last_name}</p>
+                      </div>
+                      <div>
+                        <span style={{ color: '#475569' }}>Date</span>
+                        <p className="text-white mt-0.5">{b.preferred_date || b.created_at?.split('T')[0]}</p>
+                      </div>
+                      <div>
+                        <span style={{ color: '#475569' }}>Time</span>
+                        <p className="text-white mt-0.5">{b.preferred_time || '—'}</p>
+                      </div>
+                      <div>
+                        <span style={{ color: '#475569' }}>Service</span>
+                        <p style={{ color: '#94a3b8' }} className="mt-0.5">{b.service}</p>
+                      </div>
+                      <div>
+                        <span style={{ color: '#475569' }}>Location</span>
+                        <p style={{ color: '#94a3b8' }} className="mt-0.5">{b.suburb}</p>
+                      </div>
+                      <div>
+                        <span style={{ color: '#475569' }}>Type</span>
+                        <p style={{ color: '#64748b' }} className="mt-0.5">{b.support_type}</p>
+                      </div>
+                    </div>
+                    {/* Actions */}
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 flex-shrink-0">
+                      <Badge status={b.status} />
+                      <div className="flex items-center gap-2">
+                        {b.phone && (
+                          <a href={`tel:${b.phone}`} className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: 'rgba(22,163,74,0.12)', color: '#4ade80', border: '1px solid rgba(22,163,74,0.2)' }}>
+                            <FaPhone className="text-xs" />
+                          </a>
+                        )}
+                        {b.email && (
+                          <a href={`mailto:${b.email}`} className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: 'rgba(96,165,250,0.12)', color: '#60a5fa', border: '1px solid rgba(96,165,250,0.2)' }}>
+                            <FaEnvelope className="text-xs" />
+                          </a>
+                        )}
+                        {b.status !== 'Confirmed' && (
+                          <button onClick={() => setConfirmingId(confirmingId === b.id ? null : b.id)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                            style={{ background: 'rgba(22,163,74,0.12)', border: '1px solid rgba(22,163,74,0.25)', color: '#4ade80' }}>
+                            <FaCheck /> Confirm
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {b.description && (
+                    <p className="mt-3 text-xs px-3 py-2 rounded-lg" style={{ color: '#64748b', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      {b.description}
+                    </p>
+                  )}
+                </div>
+                {confirmingId === b.id && (
+                  <ConfirmPanel
+                    booking={b}
+                    onConfirm={async (id, note) => { await onConfirmBooking(id, note); setConfirmingId(null) }}
+                    onClose={() => setConfirmingId(null)}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         )
       }
@@ -485,6 +592,16 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleConfirmBooking = async (id, note) => {
+    const headers = { 'X-Admin-Password': ADMIN_PASSWORD, 'Content-Type': 'application/json' }
+    await fetch(`/api/admin/bookings/${id}/confirm`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ note }),
+    })
+    setBookings(bs => bs.map(b => b.id === id ? { ...b, status: 'Confirmed' } : b))
+  }
+
   if (!authed) return <LoginScreen onLogin={login} />
 
   return (
@@ -548,8 +665,8 @@ export default function AdminDashboard() {
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           <div className="max-w-5xl mx-auto">
-            {activeSection === 'today'        && <TodaySection    bookings={bookings} enquiries={enquiries} stats={stats} onStatusChange={handleStatusChange} />}
-            {activeSection === 'week'         && <WeekSection     bookings={bookings} onStatusChange={handleStatusChange} />}
+            {activeSection === 'today'        && <TodaySection    bookings={bookings} enquiries={enquiries} stats={stats} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} />}
+            {activeSection === 'week'         && <WeekSection     bookings={bookings} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} />}
             {activeSection === 'enquiries'    && <EnquiriesSection enquiries={enquiries} onStatusChange={handleStatusChange} />}
             {activeSection === 'availability' && <AvailabilitySection />}
             {activeSection === 'stats'        && <StatsSection    bookings={bookings} enquiries={enquiries} stats={stats} />}

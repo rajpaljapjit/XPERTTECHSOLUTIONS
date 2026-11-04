@@ -254,7 +254,7 @@ export default function HomeClient() {
             transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-wrap justify-center gap-4 mb-14"
           >
-            <Link href="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '15px 32px' }}>
+            <Link href="/booking" className="btn-primary" style={{ fontSize: '1rem', padding: '15px 32px' }}>
               <FaBolt /> Book a Technician
             </Link>
             <a href="tel:0424424444" className="btn-ghost" style={{ fontSize: '1rem', padding: '15px 32px' }}>
@@ -628,7 +628,7 @@ export default function HomeClient() {
               ))}
             </div>
             <AnimateIn delay={0.4} className="mt-8">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/booking" className="btn-primary">
                 <FaBolt /> Book in Your Area
               </Link>
             </AnimateIn>
@@ -721,7 +721,7 @@ export default function HomeClient() {
             No callout fees. No fix, no charge. Book online in 60 seconds.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact" className="btn-primary" style={{ fontSize: '1rem', padding: '15px 36px' }}>
+            <Link href="/booking" className="btn-primary" style={{ fontSize: '1rem', padding: '15px 36px' }}>
               <FaBolt /> Book Online Now
             </Link>
             <a href="tel:0424424444" className="btn-ghost" style={{ fontSize: '1rem', padding: '15px 36px' }}>

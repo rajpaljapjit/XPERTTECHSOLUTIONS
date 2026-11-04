@@ -12,6 +12,7 @@ const links = [
   { href: '/branding', label: 'Branding & Web', badge: 'New' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
+  { href: '/booking', label: 'Book Now' },
   { href: '/contact', label: 'Contact' },
 ]
 
@@ -91,7 +92,7 @@ export default function Navbar() {
               <FaPhone className="text-purple-400 text-xs" />
               0424 424 444
             </a>
-            <Link href="/contact" className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.875rem' }}>
+            <Link href="/booking" className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.875rem' }}>
               Book Now
             </Link>
           </div>
@@ -144,7 +145,7 @@ export default function Navbar() {
                   <a href="tel:0424424444" className="btn-ghost" style={{ justifyContent: 'center', padding: '12px 20px', fontSize: '0.875rem' }}>
                     <FaPhone /> 0424 424 444
                   </a>
-                  <Link href="/contact" className="btn-primary" style={{ justifyContent: 'center', padding: '12px 20px', fontSize: '0.875rem' }}>
+                  <Link href="/booking" className="btn-primary" style={{ justifyContent: 'center', padding: '12px 20px', fontSize: '0.875rem' }}>
                     Book a Technician
                   </Link>
                 </div>

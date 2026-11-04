@@ -18,10 +18,9 @@ function checkAdmin(request) {
   return request.headers.get('X-Admin-Password') === ADMIN_PASSWORD
 }
 
-async function sendEmailNotification(env, subject, data) {
+async function sendEmail(env, to, subject, text) {
   if (!env.RESEND_API_KEY) return
   try {
-    const text = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n')
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -29,14 +28,14 @@ async function sendEmailNotification(env, subject, data) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'XTS Bookings <onboarding@resend.dev>',
-        to: [NOTIFICATION_EMAIL],
+        from: 'Xpert Tech Solutions <onboarding@resend.dev>',
+        to: [to],
         subject,
         text,
       }),
     })
   } catch (e) {
-    console.error('Email notification failed:', e)
+    console.error('Email failed:', e)
   }
 }
 
@@ -62,17 +61,17 @@ export default {
           d.supportType || 'home', d.description || ''
         ).run()
 
-        await sendEmailNotification(env, `New Booking — ${d.firstName} ${d.lastName}`, {
-          name: `${d.firstName} ${d.lastName}`,
-          phone: d.phone,
-          email: d.email,
-          address: `${d.address}, ${d.suburb}`,
-          service: d.service,
-          preferred_date: d.preferredDate,
-          preferred_time: d.preferredTime,
-          type: d.supportType,
-          notes: d.description || 'None',
-        })
+        // Notify admin
+        await sendEmail(env, NOTIFICATION_EMAIL,
+          `New Booking — ${d.firstName} ${d.lastName}`,
+          `New booking received:\n\nName: ${d.firstName} ${d.lastName}\nPhone: ${d.phone}\nEmail: ${d.email}\nAddress: ${d.address}, ${d.suburb}\nService: ${d.service}\nDate: ${d.preferredDate}\nTime: ${d.preferredTime}\nType: ${d.supportType}\nNotes: ${d.description || 'None'}`
+        )
+
+        // Confirm receipt to customer
+        await sendEmail(env, d.email,
+          'Booking Request Received — Xpert Tech Solutions',
+          `Hi ${d.firstName},\n\nThank you for booking with Xpert Tech Solutions!\n\nWe've received your request for:\n  Service: ${d.service}\n  Date: ${d.preferredDate}\n  Time: ${d.preferredTime}\n  Address: ${d.address}, ${d.suburb}\n\nOne of our team will call you within the hour to confirm your appointment and provide a quote.\n\nIf you need to reach us in the meantime, call us on 0424 424 444.\n\nWe look forward to helping you!\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+        )
 
         return json({ ok: true })
       } catch (err) {
@@ -89,12 +88,17 @@ export default {
           VALUES (?, ?, ?, ?, ?)
         `).bind(d.firstName, d.lastName, d.phone, d.email, d.message || '').run()
 
-        await sendEmailNotification(env, `New Enquiry — ${d.firstName} ${d.lastName}`, {
-          name: `${d.firstName} ${d.lastName}`,
-          phone: d.phone,
-          email: d.email,
-          message: d.message,
-        })
+        // Notify admin
+        await sendEmail(env, NOTIFICATION_EMAIL,
+          `New Enquiry — ${d.firstName} ${d.lastName}`,
+          `New enquiry received:\n\nName: ${d.firstName} ${d.lastName}\nPhone: ${d.phone}\nEmail: ${d.email}\nMessage: ${d.message}`
+        )
+
+        // Confirm receipt to customer
+        await sendEmail(env, d.email,
+          'We\'ve Received Your Enquiry — Xpert Tech Solutions',
+          `Hi ${d.firstName},\n\nThank you for getting in touch with Xpert Tech Solutions!\n\nWe've received your message and will get back to you as soon as possible.\n\nIf you need to speak with someone urgently, call us on 0424 424 444. We're available Monday to Sunday, 7am–9pm.\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+        )
 
         return json({ ok: true })
       } catch (err) {
@@ -138,8 +142,35 @@ export default {
       })
     }
 
+    // ── POST /api/admin/bookings/:id/confirm ────────────────────
+    // Confirms a booking and emails the customer
+    if (/^\/api\/admin\/bookings\/\d+\/confirm$/.test(url.pathname) && request.method === 'POST') {
+      if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)
+      const id = url.pathname.split('/')[4]
+      const { note } = await request.json()
+
+      // Update status
+      await env.DB.prepare('UPDATE bookings SET status = ? WHERE id = ?').bind('Confirmed', id).run()
+
+      // Fetch booking to get customer details
+      const booking = await env.DB.prepare('SELECT * FROM bookings WHERE id = ?').bind(id).first()
+
+      if (booking && booking.email) {
+        const noteText = note && note.trim()
+          ? `\n\nMessage from our team:\n${note.trim()}`
+          : ''
+
+        await sendEmail(env, booking.email,
+          'Your Booking is Confirmed — Xpert Tech Solutions',
+          `Hi ${booking.first_name},\n\nGreat news! Your booking with Xpert Tech Solutions has been confirmed.\n\nBooking details:\n  Service: ${booking.service}\n  Date: ${booking.preferred_date}\n  Time: ${booking.preferred_time}\n  Address: ${booking.address}, ${booking.suburb}${noteText}\n\nIf you need to reschedule or have any questions, please call us on 0424 424 444.\n\nWe look forward to seeing you!\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+        )
+      }
+
+      return json({ ok: true })
+    }
+
     // ── PATCH /api/admin/bookings/:id ───────────────────────────
-    if (url.pathname.startsWith('/api/admin/bookings/') && request.method === 'PATCH') {
+    if (/^\/api\/admin\/bookings\/\d+$/.test(url.pathname) && request.method === 'PATCH') {
       if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)
       const id = url.pathname.split('/').pop()
       const { status } = await request.json()

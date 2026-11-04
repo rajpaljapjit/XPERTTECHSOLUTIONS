@@ -141,10 +141,10 @@ function SuggestTimePanel({ booking, onSend, onClose }) {
             <div>
               <label className="block text-xs mb-1" style={{ color: '#64748b' }}>Proposed Time</label>
               <select value={newTime} onChange={e => setNewTime(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
-                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                <option value="">Select time...</option>
-                {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
+                className="w-full px-3 py-2 rounded-lg text-sm outline-none"
+                style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.12)', color: '#e2e8f0' }}>
+                <option value="" style={{ background: '#1e293b', color: '#94a3b8' }}>Select time...</option>
+                {timeOptions.map(t => <option key={t} value={t} style={{ background: '#1e293b', color: '#e2e8f0' }}>{t}</option>)}
               </select>
             </div>
           </div>
@@ -481,9 +481,9 @@ function EnquiriesSection({ enquiries, onStatusChange }) {
                     <Badge status={e.status} />
                     <select value={e.status} onChange={(ev) => onStatusChange('enquiries', e.id, ev.target.value)}
                       className="text-xs rounded-lg px-2 py-1 outline-none"
-                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
-                      <option>New</option>
-                      <option>Replied</option>
+                      style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+                      <option style={{ background: '#1e293b', color: '#e2e8f0' }}>New</option>
+                      <option style={{ background: '#1e293b', color: '#e2e8f0' }}>Replied</option>
                     </select>
                   </div>
                 </div>
@@ -728,7 +728,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-4">
           <button onClick={() => setSidebar(o => !o)}
             className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+            style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
             <span className="text-lg">☰</span>
           </button>
           <Image src="/logo.png" alt="Xpert Tech Solutions" width={140} height={48} className="h-10 w-auto object-contain" />

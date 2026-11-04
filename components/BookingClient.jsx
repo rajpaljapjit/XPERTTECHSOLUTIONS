@@ -155,43 +155,7 @@ export default function BookingClient() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-          {/* Left: contact info */}
-          <AnimateIn direction="right" className="lg:col-span-2">
-            <div className="glass-card p-6 h-full" style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.07) 0%, rgba(37,99,235,0.05) 100%)', border: '1px solid rgba(124,58,237,0.18)' }}>
-              <h2 className="font-bold text-white text-lg mb-6" style={{ fontFamily: 'var(--font-space)' }}>Get in Touch</h2>
-              <div className="space-y-4 mb-8">
-                {contactItems.map((item) => (
-                  <div key={item.label} className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-sm" style={{ background: `${item.color}18` }}>
-                      <item.icon style={{ color: item.color }} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: '#475569' }}>{item.label}</p>
-                      {item.href
-                        ? <a href={item.href} className="text-sm font-medium text-white hover:text-green-400 transition-colors">{item.value}</a>
-                        : <p className="text-sm font-medium text-white">{item.value}</p>
-                      }
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: '$0',    sublabel: 'Callout Fee',    color: '#a78bfa' },
-                  { label: '4.9',   sublabel: 'Star Rating',    color: '#f59e0b' },
-                  { label: '7 days',sublabel: 'Per Week',       color: '#34d399' },
-                  { label: '1 hr',  sublabel: 'Response Time',  color: '#60a5fa' },
-                ].map((stat) => (
-                  <div key={stat.label} className="p-3 rounded-xl text-center" style={{ background: 'rgba(124,58,237,0.07)', border: '1px solid rgba(124,58,237,0.15)' }}>
-                    <p className="text-xl font-extrabold" style={{ color: stat.color }}>{stat.label}</p>
-                    <p className="text-xs" style={{ color: '#64748b' }}>{stat.sublabel}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimateIn>
-
-          {/* Right: booking form */}
+          {/* Booking form — first in DOM so it appears at top on mobile */}
           <AnimateIn direction="left" delay={0.1} className="lg:col-span-3">
             <div className="glass-card p-6">
               <div className="flex items-center gap-3 mb-4">
@@ -326,6 +290,42 @@ export default function BookingClient() {
                   </motion.form>
                 )}
               </AnimatePresence>
+            </div>
+          </AnimateIn>
+
+          {/* Contact info — second so it appears below form on mobile */}
+          <AnimateIn direction="right" className="lg:col-span-2">
+            <div className="glass-card p-6 h-full" style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.07) 0%, rgba(37,99,235,0.05) 100%)', border: '1px solid rgba(124,58,237,0.18)' }}>
+              <h2 className="font-bold text-white text-lg mb-6" style={{ fontFamily: 'var(--font-space)' }}>Get in Touch</h2>
+              <div className="space-y-4 mb-8">
+                {contactItems.map((item) => (
+                  <div key={item.label} className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-sm" style={{ background: `${item.color}18` }}>
+                      <item.icon style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: '#475569' }}>{item.label}</p>
+                      {item.href
+                        ? <a href={item.href} className="text-sm font-medium text-white hover:text-green-400 transition-colors">{item.value}</a>
+                        : <p className="text-sm font-medium text-white">{item.value}</p>
+                      }
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: '$0',    sublabel: 'Callout Fee',    color: '#a78bfa' },
+                  { label: '4.9',   sublabel: 'Star Rating',    color: '#f59e0b' },
+                  { label: '7 days',sublabel: 'Per Week',       color: '#34d399' },
+                  { label: '1 hr',  sublabel: 'Response Time',  color: '#60a5fa' },
+                ].map((stat) => (
+                  <div key={stat.label} className="p-3 rounded-xl text-center" style={{ background: 'rgba(124,58,237,0.07)', border: '1px solid rgba(124,58,237,0.15)' }}>
+                    <p className="text-xl font-extrabold" style={{ color: stat.color }}>{stat.label}</p>
+                    <p className="text-xs" style={{ color: '#64748b' }}>{stat.sublabel}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </AnimateIn>
         </div>

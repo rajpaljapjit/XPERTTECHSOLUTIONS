@@ -18,25 +18,98 @@ function checkAdmin(request) {
   return request.headers.get('X-Admin-Password') === ADMIN_PASSWORD
 }
 
-async function sendEmail(env, to, subject, text) {
+async function sendEmail(env, to, subject, text, html) {
   if (!env.RESEND_API_KEY) return
   try {
+    const body = {
+      from: 'Xpert Tech Solutions <onboarding@resend.dev>',
+      to: [to],
+      subject,
+      text,
+    }
+    if (html) body.html = html
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from: 'Xpert Tech Solutions <onboarding@resend.dev>',
-        to: [to],
-        subject,
-        text,
-      }),
+      body: JSON.stringify(body),
     })
   } catch (e) {
     console.error('Email failed:', e)
   }
+}
+
+function rescheduleEmailHtml({ firstName, service, newDate, newTime, noteText, rescheduleLink }) {
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0b0f1e;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0b0f1e;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <!-- Header -->
+        <tr><td style="background:linear-gradient(135deg,#4c1d95,#1e3a8a);border-radius:16px 16px 0 0;padding:32px 36px;text-align:center;">
+          <p style="margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c4b5fd;">Xpert Tech Solutions</p>
+          <h1 style="margin:0;font-size:24px;font-weight:800;color:#ffffff;">Appointment Reschedule</h1>
+        </td></tr>
+
+        <!-- Body -->
+        <tr><td style="background:#111827;padding:32px 36px;">
+          <p style="margin:0 0 16px;font-size:16px;color:#e2e8f0;">Hi <strong>${firstName}</strong>,</p>
+          <p style="margin:0 0 20px;font-size:14px;color:#94a3b8;line-height:1.7;">
+            Thank you for your booking with Xpert Tech Solutions. Unfortunately we are unable to accommodate your original appointment time for <strong style="color:#e2e8f0;">${service}</strong>.
+          </p>
+          <p style="margin:0 0 8px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;">We suggest:</p>
+
+          <!-- Suggested time box -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr>
+              <td width="50%" style="padding:16px;background:#1e1b4b;border-radius:12px 0 0 12px;border:1px solid rgba(124,58,237,0.3);border-right:none;">
+                <p style="margin:0 0 4px;font-size:11px;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Date</p>
+                <p style="margin:0;font-size:18px;font-weight:800;color:#ffffff;">${newDate}</p>
+              </td>
+              <td width="50%" style="padding:16px;background:#1e1b4b;border-radius:0 12px 12px 0;border:1px solid rgba(124,58,237,0.3);border-left:1px solid rgba(124,58,237,0.15);">
+                <p style="margin:0 0 4px;font-size:11px;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Time</p>
+                <p style="margin:0;font-size:18px;font-weight:800;color:#ffffff;">${newTime}</p>
+              </td>
+            </tr>
+          </table>
+
+          ${noteText ? `<p style="margin:0 0 24px;font-size:14px;color:#94a3b8;line-height:1.7;padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;">${noteText}</p>` : ''}
+
+          <p style="margin:0 0 24px;font-size:14px;color:#94a3b8;line-height:1.7;">
+            Your details are already saved — just click the button below to confirm this new time, or choose a different one.
+          </p>
+
+          <!-- CTA Button -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+            <tr><td align="center">
+              <a href="${rescheduleLink}"
+                style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#ffffff;text-decoration:none;font-size:16px;font-weight:800;border-radius:12px;letter-spacing:0.3px;">
+                ✓ &nbsp; Confirm My New Appointment
+              </a>
+            </td></tr>
+          </table>
+
+          <p style="margin:0;font-size:13px;color:#475569;text-align:center;">
+            If this time doesn't suit you, the page also lets you choose a different time.<br>
+            Or call us: <a href="tel:0424424444" style="color:#7c3aed;text-decoration:none;">0424 424 444</a>
+          </p>
+        </td></tr>
+
+        <!-- Footer -->
+        <tr><td style="background:#0d1121;border-radius:0 0 16px 16px;padding:20px 36px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);">
+          <p style="margin:0;font-size:12px;color:#334155;">Xpert Tech Solutions &nbsp;·&nbsp; 0424 424 444 &nbsp;·&nbsp; xperttechsolutions.com.au</p>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`
 }
 
 export default {
@@ -196,11 +269,23 @@ export default {
       })
       const rescheduleLink = `https://xperttechsolutions.com.au/reschedule?${params.toString()}`
 
-      const noteText = note && note.trim() ? `\n\nNote from our team: ${note.trim()}\n` : ''
+      const noteText = note && note.trim() ? note.trim() : ''
+
+      const plainText = `Hi ${b.first_name},\n\nWe'd like to reschedule your appointment for ${b.service}.\n\nSuggested Date: ${newDate}\nSuggested Time: ${newTime}\n${noteText ? `\n${noteText}\n` : ''}\nYour details are already saved. Click the link below to confirm:\n${rescheduleLink}\n\nOr call us: 0424 424 444\n\nXpert Tech Solutions`
+
+      const html = rescheduleEmailHtml({
+        firstName: b.first_name,
+        service: b.service,
+        newDate,
+        newTime,
+        noteText,
+        rescheduleLink,
+      })
 
       await sendEmail(env, b.email,
         'We\'d Like to Reschedule Your Appointment — Xpert Tech Solutions',
-        `Hi ${b.first_name},\n\nThank you for your booking with Xpert Tech Solutions.\n\nUnfortunately we are unable to accommodate your original appointment time for ${b.service}. We'd like to suggest the following alternative:\n\n  Proposed Date: ${newDate}\n  Proposed Time: ${newTime}\n${noteText}\nTo confirm this new time (or choose a different one), simply click the link below. Your details are already filled in — just confirm the date and time:\n\n  ${rescheduleLink}\n\nIf you need to speak with us directly, call 0424 424 444.\n\nWe apologise for any inconvenience.\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+        plainText,
+        html
       )
 
       return json({ ok: true })

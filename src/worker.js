@@ -169,6 +169,23 @@ export default {
       return json({ ok: true })
     }
 
+    // ── POST /api/admin/bookings/:id/suggest-time ───────────────
+    // Emails customer a proposed new time with a "Book this time" button
+    if (/^\/api\/admin\/bookings\/\d+\/suggest-time$/.test(url.pathname) && request.method === 'POST') {
+      if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)
+      const { email, firstName, service, newDate, newTime, note } = await request.json()
+
+      const noteText = note && note.trim() ? `\n\n${note.trim()}\n` : ''
+      const bookingLink = 'https://xperttechsolutions.com.au/booking'
+
+      await sendEmail(env, email,
+        'Appointment Reschedule Request — Xpert Tech Solutions',
+        `Hi ${firstName},\n\nThank you for your booking with Xpert Tech Solutions.\n\nUnfortunately we are unable to accommodate your original time for ${service}. We'd like to suggest the following alternative:\n\n  Proposed Date: ${newDate}\n  Proposed Time: ${newTime}\n${noteText}\nIf this new time works for you, please click the link below to re-submit your booking with the updated details:\n\n  Book Now: ${bookingLink}\n\nIf you have any questions or need a different time, please call us on 0424 424 444.\n\nWe apologise for any inconvenience and look forward to helping you.\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+      )
+
+      return json({ ok: true })
+    }
+
     // ── PATCH /api/admin/bookings/:id ───────────────────────────
     if (/^\/api\/admin\/bookings\/\d+$/.test(url.pathname) && request.method === 'PATCH') {
       if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)

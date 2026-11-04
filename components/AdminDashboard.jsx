@@ -6,7 +6,7 @@ import {
   FaEye, FaEyeSlash, FaRotateRight, FaCalendarCheck, FaEnvelope,
   FaPhone, FaCircleCheck, FaTriangleExclamation, FaLock,
   FaChartBar, FaGear, FaRightFromBracket, FaCalendarDays, FaInbox,
-  FaCheck, FaPaperPlane, FaXmark,
+  FaCheck, FaPaperPlane, FaXmark, FaClockRotateLeft,
 } from 'react-icons/fa6'
 
 const ADMIN_PASSWORD = 'Jamie2727**'
@@ -96,6 +96,86 @@ function ConfirmPanel({ booking, onConfirm, onClose }) {
   )
 }
 
+/* ── Suggest New Time Panel ───────────────────────────────────────── */
+function SuggestTimePanel({ booking, onSend, onClose }) {
+  const [newDate, setNewDate]   = useState(booking.preferred_date || '')
+  const [newTime, setNewTime]   = useState('')
+  const [note, setNote]         = useState('')
+  const [sending, setSending]   = useState(false)
+  const [sent, setSent]         = useState(false)
+
+  const handleSend = async () => {
+    if (!newDate || !newTime) return
+    setSending(true)
+    await onSend(booking.id, booking.email, booking.first_name, booking.service, newDate, newTime, note)
+    setSending(false)
+    setSent(true)
+    setTimeout(onClose, 1800)
+  }
+
+  const timeOptions = [
+    '7:00 am', '8:00 am', '9:00 am', '10:00 am', '11:00 am',
+    '12:00 pm', '1:00 pm', '2:00 pm', '3:00 pm', '3:30 pm',
+    '4:00 pm', '4:30 pm', '5:00 pm', '6:00 pm', '7:00 pm', '8:00 pm',
+  ]
+
+  return (
+    <div className="mt-3 p-4 rounded-xl" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}>
+      {sent ? (
+        <div className="flex items-center gap-2 text-sm" style={{ color: '#fcd34d' }}>
+          <FaCircleCheck /> Reschedule request sent to {booking.email}
+        </div>
+      ) : (
+        <>
+          <p className="text-xs font-semibold mb-3" style={{ color: '#94a3b8' }}>
+            Suggest a new time to: <span style={{ color: '#fcd34d' }}>{booking.email}</span>
+          </p>
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label className="block text-xs mb-1" style={{ color: '#64748b' }}>Proposed Date</label>
+              <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }} />
+            </div>
+            <div>
+              <label className="block text-xs mb-1" style={{ color: '#64748b' }}>Proposed Time</label>
+              <select value={newTime} onChange={e => setNewTime(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <option value="">Select time...</option>
+                {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="mb-3">
+            <label className="block text-xs mb-1" style={{ color: '#64748b' }}>Additional note (optional)</label>
+            <textarea value={note} onChange={e => setNote(e.target.value)} rows={2}
+              placeholder="e.g. Sorry, we're fully booked at 2pm. Does 3:30pm work for you?"
+              className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', resize: 'vertical' }} />
+          </div>
+          <p className="text-xs mb-3" style={{ color: '#475569' }}>
+            The email will include a "Yes, book me in" button linking to your booking page.
+          </p>
+          <div className="flex gap-2">
+            <button onClick={handleSend} disabled={sending || !newDate || !newTime}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold text-white transition-opacity hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #d97706, #b45309)', opacity: (sending || !newDate || !newTime) ? 0.5 : 1 }}>
+              <FaPaperPlane /> {sending ? 'Sending...' : 'Send Request'}
+            </button>
+            <button onClick={onClose}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#64748b' }}>
+              <FaXmark /> Cancel
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 /* ── Login Screen ─────────────────────────────────────────────────── */
 function LoginScreen({ onLogin }) {
   const [pw, setPw] = useState('')
@@ -148,13 +228,14 @@ function LoginScreen({ onLogin }) {
 }
 
 /* ── Today Section ────────────────────────────────────────────────── */
-function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBooking }) {
+function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBooking, onSuggestTime }) {
   const today = new Date().toISOString().split('T')[0]
   const todayBookings = bookings.filter(b => b.created_at && b.created_at.startsWith(today))
   const todayStr = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
   const dayName  = new Date().toLocaleDateString('en-AU', { weekday: 'long' })
   const isWorkDay = ['Monday', 'Tuesday', 'Wednesday', 'Saturday', 'Sunday'].includes(dayName)
   const [confirmingId, setConfirmingId] = useState(null)
+  const [suggestingId, setSuggestingId] = useState(null)
 
   return (
     <div>
@@ -222,12 +303,17 @@ function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBoo
                     </a>
                   )}
                   {b.status !== 'Confirmed' && (
-                    <button onClick={() => setConfirmingId(confirmingId === b.id ? null : b.id)}
+                    <button onClick={() => { setConfirmingId(confirmingId === b.id ? null : b.id); setSuggestingId(null) }}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
                       style={{ background: 'rgba(22,163,74,0.12)', border: '1px solid rgba(22,163,74,0.25)', color: '#4ade80' }}>
                       <FaCheck /> Confirm
                     </button>
                   )}
+                  <button onClick={() => { setSuggestingId(suggestingId === b.id ? null : b.id); setConfirmingId(null) }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                    style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', color: '#fcd34d' }}>
+                    <FaClockRotateLeft /> New Time
+                  </button>
                 </div>
               </div>
               {confirmingId === b.id && (
@@ -235,6 +321,13 @@ function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBoo
                   booking={b}
                   onConfirm={async (id, note) => { await onConfirmBooking(id, note); setConfirmingId(null) }}
                   onClose={() => setConfirmingId(null)}
+                />
+              )}
+              {suggestingId === b.id && (
+                <SuggestTimePanel
+                  booking={b}
+                  onSend={async (...args) => { await onSuggestTime(...args); setSuggestingId(null) }}
+                  onClose={() => setSuggestingId(null)}
                 />
               )}
             </div>
@@ -246,8 +339,9 @@ function TodaySection({ bookings, enquiries, stats, onStatusChange, onConfirmBoo
 }
 
 /* ── All Bookings Section ─────────────────────────────────────────── */
-function WeekSection({ bookings, onStatusChange, onConfirmBooking }) {
+function WeekSection({ bookings, onStatusChange, onConfirmBooking, onSuggestTime }) {
   const [confirmingId, setConfirmingId] = useState(null)
+  const [suggestingId, setSuggestingId] = useState(null)
 
   return (
     <div>
@@ -311,12 +405,17 @@ function WeekSection({ bookings, onStatusChange, onConfirmBooking }) {
                           </a>
                         )}
                         {b.status !== 'Confirmed' && (
-                          <button onClick={() => setConfirmingId(confirmingId === b.id ? null : b.id)}
+                          <button onClick={() => { setConfirmingId(confirmingId === b.id ? null : b.id); setSuggestingId(null) }}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
                             style={{ background: 'rgba(22,163,74,0.12)', border: '1px solid rgba(22,163,74,0.25)', color: '#4ade80' }}>
                             <FaCheck /> Confirm
                           </button>
                         )}
+                        <button onClick={() => { setSuggestingId(suggestingId === b.id ? null : b.id); setConfirmingId(null) }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                          style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', color: '#fcd34d' }}>
+                          <FaClockRotateLeft /> New Time
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -331,6 +430,13 @@ function WeekSection({ bookings, onStatusChange, onConfirmBooking }) {
                     booking={b}
                     onConfirm={async (id, note) => { await onConfirmBooking(id, note); setConfirmingId(null) }}
                     onClose={() => setConfirmingId(null)}
+                  />
+                )}
+                {suggestingId === b.id && (
+                  <SuggestTimePanel
+                    booking={b}
+                    onSend={async (...args) => { await onSuggestTime(...args); setSuggestingId(null) }}
+                    onClose={() => setSuggestingId(null)}
                   />
                 )}
               </div>
@@ -602,6 +708,15 @@ export default function AdminDashboard() {
     setBookings(bs => bs.map(b => b.id === id ? { ...b, status: 'Confirmed' } : b))
   }
 
+  const handleSuggestTime = async (id, email, firstName, service, newDate, newTime, note) => {
+    const headers = { 'X-Admin-Password': ADMIN_PASSWORD, 'Content-Type': 'application/json' }
+    await fetch(`/api/admin/bookings/${id}/suggest-time`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ email, firstName, service, newDate, newTime, note }),
+    })
+  }
+
   if (!authed) return <LoginScreen onLogin={login} />
 
   return (
@@ -665,8 +780,8 @@ export default function AdminDashboard() {
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           <div className="max-w-5xl mx-auto">
-            {activeSection === 'today'        && <TodaySection    bookings={bookings} enquiries={enquiries} stats={stats} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} />}
-            {activeSection === 'week'         && <WeekSection     bookings={bookings} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} />}
+            {activeSection === 'today'        && <TodaySection    bookings={bookings} enquiries={enquiries} stats={stats} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} onSuggestTime={handleSuggestTime} />}
+            {activeSection === 'week'         && <WeekSection     bookings={bookings} onStatusChange={handleStatusChange} onConfirmBooking={handleConfirmBooking} onSuggestTime={handleSuggestTime} />}
             {activeSection === 'enquiries'    && <EnquiriesSection enquiries={enquiries} onStatusChange={handleStatusChange} />}
             {activeSection === 'availability' && <AvailabilitySection />}
             {activeSection === 'stats'        && <StatsSection    bookings={bookings} enquiries={enquiries} stats={stats} />}

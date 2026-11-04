@@ -173,14 +173,34 @@ export default {
     // Emails customer a proposed new time with a "Book this time" button
     if (/^\/api\/admin\/bookings\/\d+\/suggest-time$/.test(url.pathname) && request.method === 'POST') {
       if (!checkAdmin(request)) return json({ error: 'Unauthorized' }, 401)
-      const { email, firstName, service, newDate, newTime, note } = await request.json()
+      const id = url.pathname.split('/')[4]
+      const { newDate, newTime, note } = await request.json()
 
-      const noteText = note && note.trim() ? `\n\n${note.trim()}\n` : ''
-      const bookingLink = 'https://xperttechsolutions.com.au/booking'
+      // Fetch the original booking so we can pre-fill the reschedule page
+      const b = await env.DB.prepare('SELECT * FROM bookings WHERE id = ?').bind(id).first()
+      if (!b) return json({ error: 'Booking not found' }, 404)
 
-      await sendEmail(env, email,
-        'Appointment Reschedule Request — Xpert Tech Solutions',
-        `Hi ${firstName},\n\nThank you for your booking with Xpert Tech Solutions.\n\nUnfortunately we are unable to accommodate your original time for ${service}. We'd like to suggest the following alternative:\n\n  Proposed Date: ${newDate}\n  Proposed Time: ${newTime}\n${noteText}\nIf this new time works for you, please click the link below to re-submit your booking with the updated details:\n\n  Book Now: ${bookingLink}\n\nIf you have any questions or need a different time, please call us on 0424 424 444.\n\nWe apologise for any inconvenience and look forward to helping you.\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
+      // Build a pre-filled reschedule URL — customer only needs to confirm date/time
+      const params = new URLSearchParams({
+        fn: b.first_name,
+        ln: b.last_name,
+        ph: b.phone,
+        em: b.email,
+        ad: b.address,
+        sb: b.suburb,
+        sv: b.service,
+        st: b.support_type,
+        desc: b.description || '',
+        date: newDate,
+        time: newTime,
+      })
+      const rescheduleLink = `https://xperttechsolutions.com.au/reschedule?${params.toString()}`
+
+      const noteText = note && note.trim() ? `\n\nNote from our team: ${note.trim()}\n` : ''
+
+      await sendEmail(env, b.email,
+        'We\'d Like to Reschedule Your Appointment — Xpert Tech Solutions',
+        `Hi ${b.first_name},\n\nThank you for your booking with Xpert Tech Solutions.\n\nUnfortunately we are unable to accommodate your original appointment time for ${b.service}. We'd like to suggest the following alternative:\n\n  Proposed Date: ${newDate}\n  Proposed Time: ${newTime}\n${noteText}\nTo confirm this new time (or choose a different one), simply click the link below. Your details are already filled in — just confirm the date and time:\n\n  ${rescheduleLink}\n\nIf you need to speak with us directly, call 0424 424 444.\n\nWe apologise for any inconvenience.\n\nXpert Tech Solutions\nPhone: 0424 424 444\nxperttechsolutions.com.au`
       )
 
       return json({ ok: true })
